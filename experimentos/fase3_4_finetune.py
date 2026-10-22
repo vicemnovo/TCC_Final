@@ -21,8 +21,8 @@ parser.add_argument('mode', choices=('prepare', 'smoke', 'train', 'resume', 'aut
 args = parser.parse_args()
 
 import torch
-from google.colab import drive
-drive.mount('/content/drive')
+if not ROOT.is_dir():
+    raise RuntimeError(f'Monte o Google Drive no notebook antes de executar: {ROOT}')
 if not SOURCE.is_file() or not START.is_file():
     raise FileNotFoundError('Necessários: código sincronizado e checkpoint 3.3 no Drive.')
 if args.mode == 'auto':
