@@ -12,10 +12,12 @@ Abra `experimentos/rodar_fase3_4_colab.ipynb`, conecte a GPU do Colab e execute 
 
 Na primeira sessão, execute a célula 6 para coletar o OpenFake em `TCC_Final/dados_fase3_4/` no Drive. Depois execute a 7 para testar dados, arquitetura, checkpoint, forward e gravação sem treino. Em sessões posteriores, dados e smoke existentes são preservados.
 
+As células de preparação, smoke test e treino mostram a saída do script conforme ela é produzida. Se não houver novas linhas, exibem um aviso a cada 30 segundos com o tempo decorrido; esse aviso confirma que o processo ainda está ativo, mas não garante que houve avanço nos dados.
+
 Quando quiser treinar, retire `#` da linha de comando da célula 8 e execute-a. O modo `auto` começa se a pasta de execução não existir, retoma de `last.pt` após desconexão e encerra sem alterações se `final_metrics.json` já existir. O treino salva em `TCC_Final/modelos/fase3_4_finetune_v1/`; checkpoints, histórico e métricas das experiências anteriores não são alterados.
 
 O conjunto externo de 20 imagens é consultado somente por hashes para bloquear duplicação em treino ou validação. A avaliação final usa o teste OpenFake depois de fixar época, temperatura e limiar pelas duas validações internas. Uma avaliação externa independente posterior deve ser feita uma única vez com o modelo congelado.
 
 ## Limite importante
 
-Este projeto foi implementado localmente sem commit ou push. Antes da primeira sincronização, a branch remota precisa conter `fase3_4_finetune.py` e o notebook original `fase3.3_compressao.ipynb`. A autenticação cifrada não transfere alterações locais não publicadas.
+A branch remota precisa conter a versão desejada de `fase3_4_finetune.py` e do notebook original `fase3.3_compressao.ipynb`. A autenticação cifrada não transfere alterações locais não publicadas.

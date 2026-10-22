@@ -92,3 +92,9 @@ Quando um erro de execução for apresentado:
   runtime remoto do Google Colab.
 - Informar o que foi alterado e o que precisa ser
   executado novamente.
+
+## Progresso de execuções longas
+
+- Células que baixam dados, preparam amostras, fazem verificações extensas ou treinam devem mostrar logs em tempo real e um aviso periódico durante intervalos sem saída.
+- O aviso periódico indica que o processo continua ativo, mas não substitui métricas, checkpoints ou confirmação de avanço efetivo.
+- Manter a execução do treinamento como ação manual no notebook.
