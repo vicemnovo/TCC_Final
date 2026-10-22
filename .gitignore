@@ -34,6 +34,9 @@ dataset/
 data/
 cache/
 modelos/
+dados_fase3_4/
+credenciais/
+*.enc
 checkpoints/
 
 # Arquivos compactados
