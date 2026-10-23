@@ -38,6 +38,11 @@ dados_fase3_4/
 credenciais/
 *.enc
 checkpoints/
+minhas_imagens/
+teste_externo/
+validacao_fase3/
+**/huggingface/.cache/
+**/.cache/huggingface/
 
 # Arquivos compactados
 *.zip

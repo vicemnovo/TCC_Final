@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path('/content/drive/MyDrive/TCC_Final')
 CODE_ROOT = Path(os.environ.get('TCC_CODE_ROOT', '/content/tcc_codigo/ausente'))
-SOURCE = CODE_ROOT / 'Notebooks/fase3 - openfake/fase3.3_compressao.ipynb'
+SOURCE = CODE_ROOT / 'Notebooks/fase_3/fase3.3_compressao.ipynb'
 RUN_NAME = 'fase3_4_finetune_v1'
 RUN_DIR = ROOT / 'modelos' / RUN_NAME
 START = ROOT / 'modelos/fase3_3_compressao_v1/phase3_final.pt'
@@ -41,7 +41,7 @@ nb = json.loads(SOURCE.read_text(encoding='utf-8'))
 def cell(index, prefix=None):
     src = ''.join(nb['cells'][index]['source'])
     if index == 13:
-        src = src.replace('hf_token = userdata.get("HF_TOKEN")', 'hf_token = None')
+        src = src.replace('hf_token = userdata.get("HF_TOKEN")', 'hf_token = os.environ.get("HF_TOKEN")')
     if prefix:
         src = src.split(prefix, 1)[0]
     exec(compile(src, f'{SOURCE.name}:cell{index}', 'exec'), globals())

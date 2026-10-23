@@ -2,8 +2,13 @@
 # TCC_Final — Instruções para o Codex
 
 ## Objetivo
-Concluir o projeto de detecção de imagens sintéticas geradas ou
-alteradas por inteligência artificial.
+Concluir o projeto de detecção robusta de imagens reais e imagens
+sintéticas geradas ou alteradas por inteligência artificial, seguido
+pelo desenvolvimento de uma aplicação web com API.
+
+A detecção de vídeos está fora do escopo atual por prazo e custo;
+poderá ser considerada em trabalho futuro, sem direcionar os
+experimentos ou entregas desta etapa.
 
 Meta: alcançar pelo menos 85% de acurácia em um conjunto externo
 independente, com imagens não utilizadas no treinamento.
@@ -21,9 +26,26 @@ A meta é um objetivo experimental, não um resultado já alcançado.
 Projeto local: E:\TCC\TCC_Final
 Google Drive no Colab: /content/drive/MyDrive/TCC_Final
 
+## Organização do repositório
+- `Notebooks/fase_1/`: notebook original e documentação histórica da Fase 1.
+- `Notebooks/fase_2/`: treinamento e teste histórico da Fase 2.
+- `Notebooks/fase_3/`: Fases 3.1, 3.2, 3.3 e interface Colab da 3.4.
+- `Notebooks/configuracao/`: configuração inicial de credenciais no Colab.
+- `experimentos/`: código Python principal dos experimentos; a Fase 3.4 depende
+  de `Notebooks/fase_3/fase3.3_compressao.ipynb` no snapshot do GitHub.
+- `docs/`: instruções de execução; `README.md` é o índice do projeto.
+- `modelos/`, `minhas_imagens/`, `teste_externo/` e `validacao_fase3/`
+  permanecem nos caminhos legados para preservar o Drive e os artefatos.
+- Não mover dados, checkpoints ou resultados para acompanhar mudanças de código.
+
 ## Prioridade atual
 Continuar a Fase 3, especialmente o ajuste fino do detector
 para melhorar a generalização em imagens externas.
+
+Antes de novos treinos, auditar distribuição, formatos, resoluções e
+duplicatas dos dados; avaliar generalização por gerador e fonte;
+planejar mudanças incrementais de robustez. Depois de estabilizar
+e avaliar o detector de imagens, desenvolver a aplicação web e a API.
 
 Examinar os notebooks e checkpoints existentes antes de
 alterar a arquitetura ou iniciar novos experimentos.
@@ -47,6 +69,8 @@ alterar a arquitetura ou iniciar novos experimentos.
 - Registrar hiperparâmetros, métricas e checkpoints.
 - Considerar limitações de GPU e armazenamento do Colab.
 - Prevenir vazamento de dados entre treino e avaliação.
+- Não usar as imagens externas para treinar, calibrar ou escolher
+  hiperparâmetros, mesmo quando a meta externa ainda não for atingida.
 
 ## Avaliação
 - O conjunto externo não pode ser utilizado para treinamento,
@@ -67,9 +91,10 @@ alterar a arquitetura ou iniciar novos experimentos.
 
 ## Automação Colab e GitHub
 - Branch de código para Colab: `fase3-ajuste-fino` do repositório privado `vicemnovo/TCC_Final`.
-- O primeiro acesso usa `experimentos/configurar_github_colab.ipynb` no navegador do Colab. O segredo `GITHUB_TOKEN` deve ter apenas leitura de conteúdo desse repositório. A senha de desbloqueio não é salva no projeto.
-- Nas sessões seguintes, `experimentos/rodar_fase3_4_colab.ipynb` solicita a senha e baixa um snapshot do commit para `/content/tcc_codigo/<sha>`. Não usar `files.upload()`, `userdata.get()` no runtime do VS Code, URL com token ou cabeçalhos persistidos no Git.
+- O primeiro acesso usa `Notebooks/configuracao/configurar_github_colab.ipynb` no navegador do Colab. O segredo `GITHUB_TOKEN` deve ter apenas leitura de conteúdo desse repositório. A senha de desbloqueio não é salva no projeto.
+- Nas sessões seguintes, `Notebooks/fase_3/rodar_fase3_4_colab.ipynb` solicita a senha e baixa um snapshot do commit para `/content/tcc_codigo/<sha>`. Não usar `files.upload()`, `userdata.get()` no runtime do VS Code, URL com token ou cabeçalhos persistidos no Git.
 - A credencial criptografada fica em `/content/drive/MyDrive/TCC_Final/credenciais/github.enc`, ignorada pelo Git. Código sincronizado fica no runtime; datasets, checkpoints e resultados ficam no Drive. Não sobrescrever checkpoints ou resultados anteriores.
+- O OpenFake pode ser baixado sem autenticação. Se for usado `HF_TOKEN`, configurá-lo uma vez no navegador com `Notebooks/configuracao/configurar_hf_colab.ipynb` e ler somente a credencial cifrada `credenciais/huggingface.enc` no runtime do VS Code. Não imprimir nem versionar o token.
 - Alterações locais só chegam ao Colab depois de publicação autorizada na branch. Não fazer commit ou push sem autorização do usuário.
 - `fase3_4_finetune.py auto` inicia ou retoma apenas quando explicitamente executado. O notebook não deve iniciar treinamento ao abrir.
 
