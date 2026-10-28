@@ -34,8 +34,9 @@ Google Drive no Colab: /content/drive/MyDrive/TCC_Final
 - `experimentos/`: código Python principal dos experimentos; a Fase 3.4 depende
   de `Notebooks/fase_3/fase3.3_compressao.ipynb` no snapshot do GitHub.
 - `docs/`: instruções de execução; `README.md` é o índice do projeto.
-- `modelos/`, `minhas_imagens/`, `teste_externo/` e `validacao_fase3/`
-  permanecem nos caminhos legados para preservar o Drive e os artefatos.
+- `modelos/`, `minhas_imagens/` e `validacao_fase3/` contêm artefatos
+  legados. A pasta local `teste_externo/` foi retirada; resultados históricos
+  permanecem documentados e cópias das imagens existem nos outros caminhos.
 - Não mover dados, checkpoints ou resultados para acompanhar mudanças de código.
 
 ## Prioridade atual
@@ -102,6 +103,21 @@ alterar a arquitetura ou iniciar novos experimentos.
 ## Avaliação
 - O conjunto externo não pode ser utilizado para treinamento,
   calibração ou escolha de hiperparâmetros.
+- Para novas avaliações externas, preparar uma versão congelada e documentada
+  com alvo de 200 imagens reais e 200 sintéticas, procedência e hashes por
+  arquivo. Esse conjunto ainda não foi obtido; não declarar avaliações nele
+  como executadas. O tamanho final depende da disponibilidade e da auditoria.
+- Baixar as imagens selecionadas das fontes oficiais uma vez, guardar a seleção
+  imutável e o manifesto no Drive e, a cada nova sessão do Colab, copiar ambas
+  as classes para `/content`, conferir contagens e hashes e avaliar a partir do
+  disco local. Não baixar novamente os arquivos-fonte completos a cada teste;
+  o arquivo único do Synthbuster tem 12,4 GB. Se a cópia local não couber,
+  interromper a avaliação e revisar a fonte ou o tamanho antes de executá-la.
+- Não usar `teste_externo/` para novas avaliações. Resultados anteriores com
+  20 imagens permanecem históricos e não podem ser substituídos
+  retrospectivamente por métricas de um conjunto ainda inexistente. Para
+  comparar modelos antigos no novo conjunto, fazer novas avaliações com seus
+  checkpoints e limiares congelados, em diretórios de resultado separados.
 - Usar validação interna para selecionar modelos e limiares.
 - Medir acurácia, AUC, acurácia balanceada, precisão,
   recall, F1 e especificidade.
