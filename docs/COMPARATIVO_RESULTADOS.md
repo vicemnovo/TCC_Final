@@ -1,5 +1,11 @@
 # Resultados verificados e decisão após a Fase 3.4 v2
 
+Esta tabela reúne **testes históricos em conjuntos diferentes**. O novo
+benchmark congelado RAISE + MNW, planejado com 1.000 imagens por classe, está
+descrito em `docs/BENCHMARK_EXTERNO_2000.md` e ainda não produziu métricas.
+Quando executado, seus resultados terão tabela própria; não substituirão
+os números antigos.
+
 Os valores abaixo vêm de `modelos/*/final_metrics.json` (Fases 2–3.3),
 da saída salva de `Notebooks/fase_1/fase1_vit.ipynb` (Fase 1) e das saídas
 das células 8–9 da Fase 3.4 v1/v2 fornecidas pelo usuário. Os checkpoints
@@ -26,11 +32,27 @@ com oito falsos positivos adicionais: TN 836, FP 164, FN 364, TP 583.
 A acurácia melhorou 1,34 ponto percentual. O AUC de seleção interna da v2
 foi 0,9671 e o AUC OpenFake, 0,8222: há uma lacuna de generalização.
 
-## Decisão pré-declarada para depois da avaliação externa
+## Avaliação externa da v2 e decisão
+
+A avaliação externa congelada foi executada uma vez no Colab, conforme log
+fornecido pelo usuário: **11/20 acertos (55%)**, AUC **0,6875**, recall
+sintético **3/12 (25%)**, especificidade real **8/8 (100%)**; TN=8, FP=0,
+FN=9, TP=3. O intervalo de Wilson de 95% para a acurácia observada foi
+**[34,21%, 74,18%]**. Não houve duplicata exata com as 3.979 imagens das
+partições v2. A procedência das 20 imagens está como `desconhecido` no CSV,
+e ausência de duplicatas exatas não garante independência semântica.
+
+Os 55% externos não são diretamente comparáveis aos 72,88% no OpenFake como
+se fossem amostras da mesma população. O erro dominante neste conjunto foi
+deixar passar imagens sintéticas: nove falsos negativos. Isso **sugere**
+uma limitação de transferência, mas 20 casos não identificam a causa nem
+justificam mudar o limiar. A v2 e sua calibração permanecem congeladas.
+
+## Critérios de decisão registrados antes da avaliação
 
 - **Primeiro:** confirmar integridade dos 20 arquivos e executar uma única
-  avaliação congelada da v2. Até essa execução, **não há resultado externo**.
-  O resultado não deve alterar checkpoint, temperatura ou limiar.
+  avaliação congelada da v2. Isso foi concluído; o resultado não altera
+  checkpoint, temperatura ou limiar.
 - **Se o desempenho externo for suficiente para a demonstração:** preservar
   a v2, documentar a incerteza de apenas 20 casos e avançar para a API web.
   Ainda é recomendável obter um conjunto adicional maior e independente para
@@ -44,6 +66,14 @@ foi 0,9671 e o AUC OpenFake, 0,8222: há uma lacuna de generalização.
   terão servido como feedback de pesquisa e não poderão ser apresentadas como
   teste final independente desse novo modelo; reservar outro conjunto externo.
 
-O limiar de 85% sobre 20 imagens equivale a 17 acertos. Cada imagem altera a
-acurácia observada em cinco pontos percentuais; registrar também a matriz de
-confusão, AUC e intervalo de Wilson em vez de apresentar apenas a acurácia.
+O limiar de 85% sobre 20 imagens equivale a 17 acertos; a v2 obteve 11.
+Cada imagem altera a acurácia observada em cinco pontos percentuais.
+
+**Próxima direção recomendada:** investigar a distribuição dos dados internos
+e incorporar, em experimento separado, um dataset novo com procedência e
+diversidade documentadas, em vez de apenas aumentar a quantidade de amostras
+do mesmo OpenFake. Essa é uma hipótese de pesquisa, não uma causa comprovada
+pelo conjunto externo. A política de download/cópia local está em
+`docs/POLITICA_DADOS_FUTUROS.md`. O conjunto de 20 imagens já forneceu
+feedback; um modelo futuro precisa de outro conjunto externo reservado para
+uma avaliação final independente.

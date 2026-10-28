@@ -35,6 +35,9 @@ data/
 cache/
 modelos/
 dados_fase3_4/
+dados_externos/
+entradas/
+RAISE_1k.csv
 credenciais/
 *.enc
 checkpoints/

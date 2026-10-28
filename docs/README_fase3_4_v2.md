@@ -31,5 +31,8 @@ saída fornecida pelo usuário, não uma nova execução local. Não rodar a cé
 8 outra vez para obter resultados.
 
 O teste OpenFake **não** é a avaliação das 20 imagens externas. A avaliação
-externa é uma operação única, manual e separada, descrita em
-`docs/AVALIACAO_EXTERNA_FASE3_4_V2.md`. A v2 não foi alterada para realizá-la.
+externa foi executada uma vez, separadamente, com o modelo congelado:
+**11/20 acertos (55%)**, AUC **0,6875**, TN=8, FP=0, FN=9, TP=3, conforme a
+saída fornecida pelo usuário. Veja `docs/AVALIACAO_EXTERNA_FASE3_4_V2.md`.
+A v2 não foi alterada para realizá-la; não repetir a célula 10 nem ajustar
+temperatura ou limiar a partir dessas imagens.

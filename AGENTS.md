@@ -104,13 +104,26 @@ alterar a arquitetura ou iniciar novos experimentos.
 - O conjunto externo não pode ser utilizado para treinamento,
   calibração ou escolha de hiperparâmetros.
 - Para novas avaliações externas, preparar uma versão congelada e documentada
-  com alvo de 200 imagens reais e 200 sintéticas, procedência e hashes por
+  com alvo de 1.000 imagens reais e 1.000 sintéticas, procedência e hashes por
   arquivo. Esse conjunto ainda não foi obtido; não declarar avaliações nele
   como executadas. O tamanho final depende da disponibilidade e da auditoria.
+- Fonte planejada para o benchmark v1: 1.000 fotografias RAISE e 1.000 imagens
+  geradas da MNW, 25 de cada um de 40 grupos elegíveis, conforme seleção fixa em
+  `experimentos/benchmark_2000.py`. O CSV oficial da RAISE exige formulário
+  do pesquisador; a MNW é pública, mas o acesso real ao Git LFS deve passar
+  por piloto antes da coleta completa. Não trocar fontes ou itens depois da
+  primeira avaliação para melhorar métricas.
+- Diversidade de geradores é importante para medir generalização, mas não
+  substitui o objetivo principal de melhorar a percepção do detector.
+  Se muitos grupos com poucas imagens prejudicarem o diagnóstico, reduzir a
+  diversidade somente em um benchmark futuro, definido antes da avaliação;
+  nunca adaptar este conjunto ou os pesos/limiares às suas respostas.
 - Baixar as imagens selecionadas das fontes oficiais uma vez, guardar a seleção
   imutável e o manifesto no Drive e, a cada nova sessão do Colab, copiar ambas
   as classes para `/content`, conferir contagens e hashes e avaliar a partir do
-  disco local. Não baixar novamente os arquivos-fonte completos a cada teste;
+  disco local. Devido à quota gratuita, baixar cada RAW original temporariamente
+  em `/content`, registrar seu hash e persistir somente o JPEG normalizado no
+  Drive. Não baixar novamente os arquivos-fonte completos a cada teste;
   o arquivo único do Synthbuster tem 12,4 GB. Se a cópia local não couber,
   interromper a avaliação e revisar a fonte ou o tamanho antes de executá-la.
 - Não usar `teste_externo/` para novas avaliações. Resultados anteriores com
