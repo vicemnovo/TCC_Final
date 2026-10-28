@@ -17,4 +17,19 @@ Publique os novos arquivos na branch `fase3-ajuste-fino` **somente com autoriza�
 
 O treino salva em `/content/drive/MyDrive/TCC_Final/modelos/fase3_4_finetune_v2_sqrt_sampler/`: `experiment_config.json`, `split_manifest.json`, `last.pt`, `best.pt`, `history.csv`, `phase3_final.pt`, métricas e predições finais. `last.pt` permite retomar após uma época concluída; se a sessão cair antes de fechar a primeira época, `auto` só reinicializa se houver apenas configuração/partições e nenhum checkpoint ou histórico parcial. A retomada preserva época, pesos e otimizador, mas não reproduz bit a bit a ordem aleatória dos lotes. Não apague arquivos para forçar uma retomada.
 
-Durante o treino, acompanhe época, perda, AUC de validação, acurácia balanceada, melhor época e avanço dos checkpoints. A avaliação do teste OpenFake ocorre apenas após seleção do modelo e calibração pela validação interna; as 20 imagens externas permanecem fora de treino, calibração e seleção. Não há resultado da v2 até que o treino seja executado.
+## Execução concluída e resultado recebido do Colab
+
+O usuário forneceu a saída das células 8 e 9: a v2 parou por *early stopping*
+após a época 9; a melhor época foi a 6, com AUC de seleção interna 0,9671.
+No teste OpenFake, a execução registrou acurácia 0,7288136, AUC 0,8222402,
+acurácia balanceada 0,7258141, precisão 0,7804552, recall 0,6156283,
+F1 0,6883117 e especificidade 0,836. A temperatura congelada é 0,4402569
+e o limiar, 0,37. A célula 9 confirmou `phase3_final.pt`, `best.pt`,
+`last.pt`, `history.csv`, `final_metrics.json` e os demais artefatos no Drive.
+O Drive remoto não foi montado nesta sessão local; estes valores são os da
+saída fornecida pelo usuário, não uma nova execução local. Não rodar a célula
+8 outra vez para obter resultados.
+
+O teste OpenFake **não** é a avaliação das 20 imagens externas. A avaliação
+externa é uma operação única, manual e separada, descrita em
+`docs/AVALIACAO_EXTERNA_FASE3_4_V2.md`. A v2 não foi alterada para realizá-la.

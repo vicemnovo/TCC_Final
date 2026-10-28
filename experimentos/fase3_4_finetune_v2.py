@@ -51,6 +51,13 @@ if args.mode == 'resume' and (RUN_DIR / 'final_metrics.json').exists():
 nb = json.loads(SOURCE.read_text(encoding='utf-8'))
 def cell(index, prefix=None):
     src = ''.join(nb['cells'][index]['source'])
+    if index == 49:
+        # A célula histórica carrega a Fase 2 para montar a arquitetura.
+        # Na v2, esse não é o checkpoint que permanecerá no modelo.
+        old_message = 'Fase 2 carregada |'
+        if old_message not in src:
+            raise RuntimeError('Mensagem de arquitetura da Fase 2 mudou no notebook de origem.')
+        src = src.replace(old_message, 'Arquitetura da Fase 2 montada |', 1)
     if prefix:
         src = src.split(prefix, 1)[0]
     exec(compile(src, f'{SOURCE.name}:cell{index}', 'exec'), globals())
@@ -146,6 +153,7 @@ test_loader = DataLoader(PathDataset(test_rows, multicrop_tf), batch_size=8, shu
 # somente os pesos iniciais pelos da variante 3.3, mantendo a mesma arquitetura.
 start = torch.load(START, map_location='cpu', weights_only=False)
 model.load_state_dict(start['model_state_dict'], strict=True)
+print(f'Pesos da Fase 3.3 carregados | checkpoint inicial: {START}', flush=True)
 del start
 if args.mode == 'smoke':
     # Uma imagem de treino; sem gradientes, avaliação ou alteração dos pesos.

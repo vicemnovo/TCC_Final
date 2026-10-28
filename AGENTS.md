@@ -72,6 +72,33 @@ alterar a arquitetura ou iniciar novos experimentos.
 - Não usar as imagens externas para treinar, calibrar ou escolher
   hiperparâmetros, mesmo quando a meta externa ainda não for atingida.
 
+## Dados de novos experimentos
+- Esta regra vale somente para datasets novos, incorporados após a Fase 3.4;
+  não alterar a coleta do OpenFake, os manifestos, os caminhos nem as
+  execuções já preparadas das Fases 3.1–3.4 por causa dela.
+- Antes de usar um novo dataset em treino, seleção, calibração ou teste,
+  definir e registrar a versão, os arquivos/splits necessários, o tamanho
+  estimado e a separação entre divisões. Baixar integralmente os arquivos
+  escolhidos para o experimento; não acessar exemplos por streaming durante
+  coleta, treino, validação ou avaliação. Não usar `streaming=True` como
+  alternativa silenciosa quando o download não couber.
+- Manter uma cópia persistente e um manifesto de integridade no Google Drive.
+  Em cada sessão, conferir espaço livre no disco do Colab, copiar os dados
+  necessários para `/content` e verificar contagem/hashes antes de iniciar
+  qualquer processamento. Ler imagens do disco local durante a execução;
+  salvar checkpoints, métricas e resultados no Drive. Após desconexão, a
+  cópia local deve ser refeita a partir da cópia persistente.
+- Se o dataset completo não couber no disco temporário ou na quota do Drive,
+  interromper a preparação e propor uma seleção menor, versionada e
+  justificável, antes de iniciar o experimento. Não misturar divisões nem
+  incluir o conjunto externo independente nessa seleção de treino/calibração.
+- Motivo: no OpenFake, o streaming serviu para selecionar e persistir imagens,
+  mas a varredura remota foi lenta e dependente da conexão; acessar muitas
+  imagens pequenas diretamente no Drive também causa latência e pode atingir
+  limites de E/S. Dados locais antes da execução oferecem leituras repetidas
+  mais previsíveis. A cópia no Drive preserva a retomada, pois `/content` é
+  temporário. Detalhes em `docs/POLITICA_DADOS_FUTUROS.md`.
+
 ## Avaliação
 - O conjunto externo não pode ser utilizado para treinamento,
   calibração ou escolha de hiperparâmetros.
@@ -81,6 +108,11 @@ alterar a arquitetura ou iniciar novos experimentos.
 - Investigar falsos positivos e falsos negativos.
 - Comparar desempenho em geradores vistos e não vistos.
 - Não prometer 85% sem evidência experimental.
+- Antes da avaliação externa final, congelar checkpoint, temperatura e limiar.
+  Registrar a execução sem ajustar o modelo a partir dessas imagens. Depois
+  que as 20 imagens externas servirem de feedback para decidir novos trabalhos,
+  elas não podem ser reutilizadas como teste independente final de outro modelo;
+  reservar um conjunto novo para essa finalidade.
 
 ## Segurança
 - Não apagar checkpoints ou notebooks originais.
@@ -101,6 +133,14 @@ alterar a arquitetura ou iniciar novos experimentos.
 
 
 ## Tratamento de erros
+
+Antes de executar ou publicar código que reutiliza notebooks, checkpoints ou
+mensagens de fases anteriores, conferir estaticamente a ordem real das operações
+e os logs correspondentes. Mensagens devem distinguir montagem da arquitetura,
+carregamento dos pesos iniciais e retomada de checkpoint; não podem sugerir que
+um checkpoint intermediário ainda é o modelo ativo. Corrigir mensagens herdadas
+enganosas e, quando possível, adicionar um teste de regressão antes do smoke
+test ou do treinamento.
 
 Quando um erro de execução for apresentado:
 
