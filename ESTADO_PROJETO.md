@@ -8,6 +8,16 @@
 - Código principal: `experimentos/fase3_4_finetune.py`. Interface de execução: `Notebooks/fase_3/rodar_fase3_4_colab.ipynb`. A arquitetura e funções da Fase 3.3 são reutilizadas de `Notebooks/fase_3/fase3.3_compressao.ipynb` no snapshot sincronizado do GitHub.
 - O notebook histórico da Fase 1, `Notebooks/fase_1/fase1_vit.ipynb`, foi incorporado da cópia fornecida pelo autor. Somente a orientação inicial foi atualizada; o treino, as saídas salvas e o checkpoint existente não foram reexecutados ou alterados. Veja `Notebooks/fase_1/README.md`.
 
+## Próxima execução: Fase 3.4 v2
+
+- Código novo: `experimentos/fase3_4_finetune_v2.py`, `experimentos/amostragem_fase3_4.py` e `experimentos/particoes_fase3_4.py`; interface: `Notebooks/fase_3/rodar_fase3_4_v2_colab.ipynb`; instruções: `docs/README_fase3_4_v2.md`.
+- Estado: **preparada localmente, sem treino ou smoke no Colab verificados**. A v1 permanece concluída e inalterada.
+- Inicialização: checkpoint da Fase 3.3 em `/content/drive/MyDrive/TCC_Final/modelos/fase3_3_compressao_v1/phase3_final.pt`. Novos artefatos: `modelos/fase3_4_finetune_v2_sqrt_sampler/`; smoke separado em `modelos/fase3_4_finetune_v2_sqrt_sampler_smoke/`.
+- A mudança experimental é a amostragem com massa por grupo proporcional a `sqrt(n)` e classes 50/50. O manifesto da v1 é reutilizado; replay efêmero desativado para garantir retomada consistente. Como a seleção real de replay da v1 não foi persistida, a comparação causal entre v1 e v2 tem essa limitação.
+- O novo `split_manifest.json` registra as partições efetivas. A retomada compara manifesto, partições, configuração e hashes de código; não reavalia nem modifica a v1. Depois de publicar com autorização, executar células 1–7 do notebook novo e, somente após verificar o smoke, a célula 8 manual para treinar.
+- Verificações locais da v2: três testes unitários sem GPU passaram (balanceamento de classes, redução de repetição de grupo raro, persistência/recusa de partições alteradas); sintaxe dos scripts e das células Python do notebook conferida. Ainda faltam smoke e importação com dependências reais na GPU do Colab.
+- Auditoria recebida da célula 11 da v1: três pares de duplicatas exatas estão **somente no teste**, todos em `seedream-v5.0`; não há duplicata exata treino/teste. Doze pares treino/teste foram sinalizados por dHash, mas a MAE RGB não confirma identidade; nenhuma imagem foi removida. Esses dados servem para integridade, não para ajustar hiperparâmetros da v2.
+
 ## Arquivos e armazenamento
 
 - Arquivos do experimento: `experimentos/fase3_4_finetune.py`, `Notebooks/fase_3/rodar_fase3_4_colab.ipynb`, `Notebooks/configuracao/configurar_github_colab.ipynb`, `Notebooks/configuracao/configurar_hf_colab.ipynb` e `docs/README_fase3_4.md`.
