@@ -38,6 +38,7 @@ dados_fase3_4/
 dados_externos/
 entradas/
 RAISE_1k.csv
+RAISE_2k.csv
 credenciais/
 *.enc
 checkpoints/

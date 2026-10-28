@@ -18,7 +18,7 @@ Detector de imagens reais e sintéticas com ViT-Tiny, FFT e EfficientNet-B0. O f
 | `docs/AVALIACAO_EXTERNA_FASE3_4_V2.md` | Procedimento manual e único para avaliar a v2 congelada nas 20 imagens externas |
 | `docs/COMPARATIVO_RESULTADOS.md` | Resultados das Fases 1–3.4 v2 e critérios para decidir a etapa seguinte |
 | `docs/POLITICA_DADOS_FUTUROS.md` | Preparação local de novos datasets no Colab; não altera o OpenFake nem a Fase 3.4 |
-| `docs/BENCHMARK_EXTERNO_2000.md` | Novo protocolo de avaliação congelada RAISE + MNW, ainda sem resultados |
+| `docs/BENCHMARK_EXTERNO_2000.md` | Benchmark RAISE + MNW congelado; avaliação ainda pendente |
 | `Notebooks/fase_3/avaliar_fases_benchmark_2000_colab.ipynb` | Piloto, preparo, cópia local e reavaliação manual das Fases 1–3.4 no mesmo conjunto |
 | `ESTADO_PROJETO.md` | Estado verificado e próximos passos |
 | `modelos/` | Checkpoints e resultados locais, fora do Git |
@@ -27,7 +27,9 @@ Detector de imagens reais e sintéticas com ViT-Tiny, FFT e EfficientNet-B0. O f
 
 Os dados, checkpoints e resultados no Drive permanecem sob `/content/drive/MyDrive/TCC_Final` com os caminhos existentes. O código sincronizado do GitHub é extraído no runtime temporário em `/content/tcc_codigo/<sha>`; alterações locais só passam a valer no Colab depois de publicadas na branch `fase3-ajuste-fino` com autorização.
 
-Para continuar a Fase 3.4, abra [o guia de execução](docs/README_fase3_4.md) e depois [o notebook do Colab](Notebooks/fase_3/rodar_fase3_4_colab.ipynb). A execução salva da Fase 3.4 já contém resultados; não reinicie a pasta `fase3_4_finetune_v1`. As 20 imagens externas já avaliadas são históricas e não devem orientar treino, calibração ou seleção de hiperparâmetros. Para novas avaliações, preparar um conjunto congelado com alvo de 1.000 reais e 1.000 sintéticas no Drive e copiá-lo para `/content` em cada sessão, conforme `AGENTS.md`; a seleção ainda não existe.
+Para continuar a Fase 3.4, abra [o guia de execução](docs/README_fase3_4.md) e depois [o notebook do Colab](Notebooks/fase_3/rodar_fase3_4_colab.ipynb). A execução salva da Fase 3.4 já contém resultados; não reinicie a pasta `fase3_4_finetune_v1`. As 20 imagens externas já avaliadas são históricas e não devem orientar treino, calibração ou seleção de hiperparâmetros. O novo benchmark congelado de 1.000 reais e 1.000 sintéticas está no Drive, segundo saídas do Colab; ainda faltam suas avaliações. Em cada nova sessão, copie-o para `/content` e confira os hashes antes da inferência.
+
+A primeira tentativa de avaliar a Fase 1 nesse benchmark encontrou uma falha de carregamento de classe antes de produzir métricas. O avaliador foi corrigido, mas ainda requer teste remoto. Consulte [ESTADO_PROJETO.md](ESTADO_PROJETO.md) para a retomada exata; não repita o reparo nem a preparação das imagens.
 
 A v2 tem [guia próprio](docs/README_fase3_4_v2.md) e [notebook próprio](Notebooks/fase_3/rodar_fase3_4_v2_colab.ipynb). Seu treino e sua [avaliação externa congelada](docs/AVALIACAO_EXTERNA_FASE3_4_V2.md) terminaram conforme saídas fornecidas pelo usuário; ela não substitui a v1. O resultado externo foi 11/20 acertos (55%), abaixo da meta de 85%. Não reutilizar estas 20 imagens para ajustar um novo modelo.
 

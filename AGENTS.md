@@ -103,22 +103,20 @@ alterar a arquitetura ou iniciar novos experimentos.
 ## Avaliação
 - O conjunto externo não pode ser utilizado para treinamento,
   calibração ou escolha de hiperparâmetros.
-- Para novas avaliações externas, preparar uma versão congelada e documentada
-  com alvo de 1.000 imagens reais e 1.000 sintéticas, procedência e hashes por
-  arquivo. Esse conjunto ainda não foi obtido; não declarar avaliações nele
-  como executadas. O tamanho final depende da disponibilidade e da auditoria.
-- Fonte planejada para o benchmark v1: 1.000 fotografias RAISE e 1.000 imagens
+- O benchmark externo RAISE/MNW v1 foi informado como congelado no Drive após
+  reparar duplicatas e verificar 1.000 imagens reais + 1.000 sintéticas.
+  A cópia local íntegra também foi informada. Isso não equivale a avaliação:
+  não declarar métricas antes das inferências terminarem.
+- Fonte do benchmark v1: 1.000 fotografias RAISE e 1.000 imagens
   geradas da MNW, 25 de cada um de 40 grupos elegíveis, conforme seleção fixa em
   `experimentos/benchmark_2000.py`. O CSV oficial da RAISE exige formulário
   do pesquisador; a MNW é pública, mas o acesso real ao Git LFS deve passar
   por piloto antes da coleta completa. Não trocar fontes ou itens depois da
   primeira avaliação para melhorar métricas.
 - A preparação do benchmark RAISE-1k encontrou seis pares RAW/JPEG reais
-  exatamente duplicados antes de qualquer avaliação. Não contá-los como fotos
-  independentes nem gerar variantes artificiais para completar a meta. Usar
-  `RAISE_2k.csv` oficial para substituir somente os seis itens duplicados,
-  verificando conteúdo e registrando `plan_repaired.json` sem alterar o plano
-  original. Não iniciar avaliação enquanto o manifesto final não existir.
+  exatamente duplicados antes de qualquer avaliação. O reparo com `RAISE_2k.csv`
+  foi informado como concluído; `plan_repaired.json` preserva o plano original.
+  Não refazer a seleção nem trocar itens após o congelamento.
 - Diversidade de geradores é importante para medir generalização, mas não
   substitui o objetivo principal de melhorar a percepção do detector.
   Se muitos grupos com poucas imagens prejudicarem o diagnóstico, reduzir a

@@ -5,6 +5,7 @@ treino, calibração, seleção de pesos ou ajuste de limiar.
 """
 
 import argparse
+import ast
 import csv
 import hashlib
 import json
@@ -23,6 +24,35 @@ MODELS = {
 }
 
 
+def architecture_sources(code_root):
+    """Extrai as classes originais de cada fase sem executar células de treino."""
+    phase1_source = code_root / "Notebooks/fase_1/fase1_vit.ipynb"
+    phase2_source = code_root / "Notebooks/fase_3/fase3.3_compressao.ipynb"
+    if not phase1_source.is_file() or not phase2_source.is_file():
+        raise FileNotFoundError("Notebook original da Fase 1 ou 3.3 ausente no snapshot")
+    phase1_cells = json.loads(phase1_source.read_text(encoding="utf-8"))["cells"]
+    classes = []
+    for index in (20, 22, 24):
+        cell = ast.parse("".join(phase1_cells[index]["source"]))
+        classes.extend(node for node in cell.body if isinstance(node, ast.ClassDef))
+    if "Phase1Detector" not in {node.name for node in classes}:
+        raise RuntimeError("Classe Phase1Detector não encontrada no notebook da Fase 1")
+    phase1_module = ast.fix_missing_locations(ast.Module(body=classes, type_ignores=[]))
+    phase2_cells = json.loads(phase2_source.read_text(encoding="utf-8"))["cells"]
+    phase2_cell = "".join(phase2_cells[49]["source"])
+    marker = "# ---------- carrega o checkpoint final da Fase 2 ----------"
+    if marker not in phase2_cell:
+        raise RuntimeError("Marcador de arquitetura da célula 49 mudou")
+    phase2_code = phase2_cell.split(marker, 1)[0]
+    if "Phase2Detector" not in {node.name for node in ast.parse(phase2_code).body
+                                if isinstance(node, ast.ClassDef)}:
+        raise RuntimeError("Classe Phase2Detector não encontrada no notebook da Fase 3.3")
+    architecture_sha = hashlib.sha256(
+        (ast.dump(phase1_module, include_attributes=False) + phase2_code).encode("utf-8")
+    ).hexdigest()
+    return phase1_module, phase2_code, architecture_sha
+
+
 def load_architecture(code_root, device):
     import numpy as np
     import torch
@@ -30,21 +60,14 @@ def load_architecture(code_root, device):
     import torch.nn.functional as F
     from torchvision.models import EfficientNet_B0_Weights, efficientnet_b0
 
-    source = code_root / "Notebooks/fase_3/fase3.3_compressao.ipynb"
-    if not source.is_file():
-        raise FileNotFoundError(f"Notebook original da arquitetura ausente: {source}")
-    cells = json.loads(source.read_text(encoding="utf-8"))["cells"]
-    code = "".join(cells[49]["source"])
-    marker = "# ---------- carrega o checkpoint final da Fase 2 ----------"
-    if marker not in code:
-        raise RuntimeError("Marcador de arquitetura da célula 49 mudou")
+    phase1_module, phase2_code, architecture_sha = architecture_sources(code_root)
     namespace = {"torch": torch, "nn": nn, "F": F, "np": np, "device": device,
                  "efficientnet_b0": efficientnet_b0,
                  "EfficientNet_B0_Weights": EfficientNet_B0_Weights}
-    architecture_code = code.split(marker, 1)[0]
-    exec(compile(architecture_code, str(source) + ":cell49", "exec"), namespace)
-    architecture_sha = hashlib.sha256(architecture_code.encode("utf-8")).hexdigest()
-    return namespace["Phase1Detector"], namespace["Phase2Detector"], architecture_sha
+    phase1_namespace = dict(namespace)
+    exec(compile(phase1_module, "fase1_vit.ipynb:classes", "exec"), phase1_namespace)
+    exec(compile(phase2_code, "fase3.3_compressao.ipynb:cell49", "exec"), namespace)
+    return phase1_namespace["Phase1Detector"], namespace["Phase2Detector"], architecture_sha
 
 
 def load_model(name, checkpoint_path, phase1_cls, phase2_cls, device):

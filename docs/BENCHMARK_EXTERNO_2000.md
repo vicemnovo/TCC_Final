@@ -2,10 +2,11 @@
 
 Este protocolo **não altera** as avaliações históricas. As 20 imagens externas
 já testadas continuam identificadas como teste antigo, com origem incompleta.
-O piloto e o preparo das 2.000 imagens foram executados no Colab, mas a
-auditoria encontrou seis pares de fotos reais RAISE com conteúdo duplicado.
-O benchmark **não foi congelado nem avaliado**; não existem métricas das 2.000
-imagens neste momento.
+O piloto, a coleta e o reparo de seis duplicatas reais foram executados no
+Colab. A saída informou **benchmark congelado**, ausência de sobreposição exata
+com OpenFake v2 e com as 20 imagens antigas, e cópia local verificada de 1.000
+reais + 1.000 sintéticas. **Nenhuma avaliação concluída foi informada**; não
+existem métricas verificadas das 2.000 imagens neste momento.
 
 ## Origem, acesso e limite de uso
 
@@ -51,10 +52,10 @@ renomeada para `benchmark_externo_raise_mnw_2000_v1/` após:
 
 ### Reparo dos seis pares RAISE duplicados
 
-O diagnóstico do usuário encontrou 4.000 hashes registrados, 3.988 distintos:
+O diagnóstico inicial do usuário encontrou 4.000 hashes registrados, 3.988 distintos:
 seis pares de RAWs Nikon D90 e seus seis pares de JPEGs derivados são idênticos.
-Não há duplicatas MNW reportadas nem hashes faltantes. O script não pode tratar
-essas cópias como seis novas fotografias; o benchmark continua incompleto.
+Não houve duplicatas MNW reportadas nem hashes faltantes. O reparo posterior
+substituiu as seis fotografias repetidas antes de congelar o benchmark.
 
 Após obter `RAISE_2k.csv` da [fonte oficial](https://loki.disi.unitn.it/RAISE/download.html),
 executar a célula **7B** do notebook. O modo `repair` lê o plano original e os
@@ -66,6 +67,7 @@ sobrescreve `plan.json`, não apaga os JPEGs baixados e não usa predições do 
 Depois executar novamente a célula **7**: ela reutiliza as 1.994 imagens ativas
 e baixa apenas as seis substitutas antes de concluir a auditoria. Os arquivos
 duplicados antigos podem continuar na pasta, mas ficam fora do manifesto final.
+Esse procedimento já foi informado como concluído; não repeti-lo para a avaliação.
 
 As fotos RAW são convertidas para JPEG RGB qualidade 90 e limite de 2.048 px;
 as MNW passam pelo mesmo processamento. Os originais são baixados um a um para
@@ -106,6 +108,14 @@ predições em um diretório separado sob
 um resultado existente. Fase 1 não tem temperatura persistida no checkpoint:
 o novo protocolo usa T=1 e limiar 0,5, sem afirmar que isso reproduz uma
 calibração histórica. Fase 2 usa resize 224; Fases 3 usam cinco recortes.
+
+A primeira tentativa de avaliar a Fase 1, no snapshot `30cf718`, falhou antes
+da inferência com `KeyError: 'Phase1Detector'`: a classe estava sendo buscada
+no notebook da Fase 3.3. A correção carrega as classes da Fase 1 do notebook
+original e a arquitetura seguinte do notebook 3.3. Após publicar a correção,
+sincronize o novo snapshot, copie/verifique as imagens se a sessão mudou,
+confira os checkpoints e execute primeiro **somente** a avaliação manual da
+Fase 1. Ela ainda não foi validada no Colab.
 
 Comparar as fases **descritivamente** nas mesmas 2.000 imagens. Não usar
 predições externas para escolher arquitetura, pesos, limiar, hiperparâmetros
