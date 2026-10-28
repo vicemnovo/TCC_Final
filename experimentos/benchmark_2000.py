@@ -194,6 +194,125 @@ def verify_existing(path):
                 raise ValueError(f"RAW existente pequeno: {path}")
 
 
+def audit_hashes(plan, hashes):
+    """Diagnóstico somente-leitura dos registros; não modifica a seleção."""
+    expected = {key for row in plan["rows"]
+                for key in ("source:" + row["id"], row["image"])}
+    missing = sorted(expected - hashes.keys())
+    extra = sorted(hashes.keys() - expected)
+    groups = defaultdict(list)
+    for row in plan["rows"]:
+        for kind, key in (("original", "source:" + row["id"]),
+                          ("jpeg", row["image"])):
+            if key in hashes:
+                groups[hashes[key]].append({"kind": kind, "label": row["label"],
+                                            "group": row["group"], "id": row["id"]})
+    duplicates = [items for items in groups.values() if len(items) > 1]
+    return {"expected": len(expected), "recorded": len(hashes),
+            "missing": missing, "extra": extra, "duplicates": duplicates}
+
+
+def repair_raise_duplicates(args):
+    """Cria um plano derivado, sem mudar o plano original nem os downloads feitos."""
+    work = args.root / "dados_externos" / (NAME + ".incompleto")
+    original_path = work / "plan.json"
+    repaired_path = work / "plan_repaired.json"
+    if (args.root / "dados_externos" / NAME).exists():
+        raise FileExistsError("Benchmark já congelado; não reparar após avaliação")
+    if repaired_path.exists():
+        print("Plano reparado existente preservado:", repaired_path, flush=True)
+        return
+    if not original_path.is_file() or not (work / "hashes.json").is_file():
+        raise FileNotFoundError("Plano e hashes da preparação interrompida são necessários")
+    if not args.raise_extra_csv.is_file():
+        raise FileNotFoundError(f"CSV complementar RAISE ausente: {args.raise_extra_csv}")
+    plan = json.loads(original_path.read_text(encoding="utf-8"))
+    hashes = json.loads((work / "hashes.json").read_text(encoding="utf-8"))
+    audit = audit_hashes(plan, hashes)
+    if audit["missing"] or audit["extra"]:
+        raise ValueError("Plano original com hashes faltantes/extras; não reparar automaticamente")
+    rows = plan["rows"]
+
+    def repeated_indexes(key_for_row):
+        by_hash = defaultdict(list)
+        for index, row in enumerate(rows):
+            if row["label"] == 0:
+                by_hash[hashes[key_for_row(row)]].append(index)
+        return {index for indexes in by_hash.values() for index in indexes[1:]}
+
+    retired = repeated_indexes(lambda row: "source:" + row["id"])
+    if not retired or retired != repeated_indexes(lambda row: row["image"]):
+        raise ValueError("Duplicatas reais não coincidem entre RAW e JPEG; investigar")
+    if len(audit["duplicates"]) != 2 * len(retired):
+        raise ValueError("Há outros tipos de duplicata além dos pares reais; investigar")
+    original_ids = {row["id"] for row in rows}
+    candidates = []
+    with args.raise_extra_csv.open(newline="", encoding="utf-8-sig") as handle:
+        reader = csv.DictReader(handle)
+        if not reader.fieldnames or "NEF" not in reader.fieldnames:
+            raise ValueError("CSV complementar da RAISE precisa da coluna NEF")
+        for item in reader:
+            url = (item.get("NEF") or "").strip()
+            parsed = urllib.parse.urlparse(url)
+            if (parsed.scheme not in {"http", "https"} or parsed.hostname not in RAISE_HOSTS
+                    or not parsed.path.lower().endswith(".nef")):
+                continue
+            ident = Path(parsed.path).stem
+            if ident in original_ids:
+                continue
+            candidates.append({"label": 0, "source": "RAISE",
+                               "group": (item.get("Device") or "camera_nao_informada").strip(),
+                               "id": ident, "url": url,
+                               "image": "images/real/" + ident + ".jpg"})
+    affected_cameras = {rows[index]["group"] for index in retired}
+    candidates = sorted({row["id"]: row for row in candidates}.values(),
+                        key=lambda row: (row["group"] not in affected_cameras,
+                                         stable_key(row["id"])))
+    if len(candidates) < len(retired):
+        raise ValueError(f"CSV complementar tem só {len(candidates)} URLs novas; "
+                         f"são necessárias {len(retired)} imagens únicas")
+    active = [row for index, row in enumerate(rows) if index not in retired]
+    used_hashes = {hashes[key] for row in active
+                   for key in ("source:" + row["id"], row["image"])}
+    selected = []
+    args.local_dir.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="raise_reparo_", dir=args.local_dir.parent) as temporary:
+        temp_root = Path(temporary)
+        for index, candidate in enumerate(candidates, 1):
+            original = temp_root / "candidate.NEF"
+            converted = temp_root / "candidate.jpg"
+            download(candidate["url"], original)
+            source_sha = digest(original)
+            if source_sha not in used_hashes:
+                convert(original, converted)
+                jpeg_sha = digest(converted)
+                if jpeg_sha not in used_hashes and jpeg_sha != source_sha:
+                    selected.append({**candidate, "expected_source_sha256": source_sha,
+                                     "expected_image_sha256": jpeg_sha})
+                    used_hashes.update((source_sha, jpeg_sha))
+                    print(f"Substituta RAISE verificada: {len(selected)}/{len(retired)} "
+                          f"(candidata {index})", flush=True)
+            original.unlink()
+            if converted.exists():
+                converted.unlink()
+            if len(selected) == len(retired):
+                break
+    if len(selected) != len(retired):
+        raise ValueError("CSV complementar não forneceu substitutas únicas suficientes")
+    repaired = dict(plan)
+    new_rows = list(rows)
+    replacements = []
+    for index, candidate in zip(sorted(retired), selected):
+        replacements.append({"original_id": rows[index]["id"], "new_id": candidate["id"]})
+        new_rows[index] = candidate
+    repaired.update({"rows": new_rows, "parent_plan_sha256": digest(original_path),
+                     "raise_extra_csv_sha256": digest(args.raise_extra_csv),
+                     "retired_rows": [rows[index] for index in sorted(retired)],
+                     "replacements": replacements})
+    save_json_exclusive(repaired_path, repaired)
+    print("Plano reparado salvo sem alterar o original:", repaired_path, flush=True)
+
+
 def convert(original, target):
     from PIL import Image
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -222,7 +341,9 @@ def prepare(args):
     if final.exists():
         raise FileExistsError(f"Benchmark já congelado; não alterar: {final}")
     if work.exists():
-        plan_path = work / "plan.json"
+        plan_path = work / "plan_repaired.json"
+        if not plan_path.is_file():
+            plan_path = work / "plan.json"
         if not plan_path.is_file():
             raise FileExistsError(f"Pasta incompleta sem plano; investigar: {work}")
         plan = json.loads(plan_path.read_text(encoding="utf-8"))
@@ -264,6 +385,9 @@ def prepare(args):
                 original = temp_root / f"item_{index:04d}{suffix}"
                 download(row["url"], original)
                 source_hash = digest(original)
+                if (row.get("expected_source_sha256")
+                        and source_hash != row["expected_source_sha256"]):
+                    raise ValueError(f"RAW substituto mudou desde o reparo: {row['id']}")
                 if source_key in hashes and source_hash != hashes[source_key]:
                     raise ValueError(f"Fonte mudou desde o plano: {row['id']}")
                 hashes[source_key] = source_hash
@@ -271,12 +395,26 @@ def prepare(args):
                 if not processed.exists():
                     convert(original, processed)
                     hashes[image_key] = digest(processed)
+                    if (row.get("expected_image_sha256")
+                            and hashes[image_key] != row["expected_image_sha256"]):
+                        raise ValueError(f"JPEG substituto mudou desde o reparo: {row['id']}")
                     save_json_atomic(hashes_path, hashes)
                 original.unlink()
             if index % 25 == 0 or index == 2 * PER_CLASS:
                 print(f"Preparação: {index}/{2 * PER_CLASS} imagens completas", flush=True)
-    if len(hashes) != 4 * PER_CLASS or len(set(hashes.values())) != 4 * PER_CLASS:
-        raise ValueError("Arquivos ausentes ou duplicatas exatas no conjunto selecionado")
+    audit = audit_hashes(plan, hashes)
+    allowed_extra = {key for row in plan.get("retired_rows", [])
+                     for key in ("source:" + row["id"], row["image"])}
+    unexpected_extra = sorted(set(audit["extra"]) - allowed_extra)
+    if audit["missing"] or unexpected_extra or audit["duplicates"]:
+        print(f"Auditoria de hashes: esperados={audit['expected']} "
+              f"registrados={audit['recorded']} "
+              f"faltantes={len(audit['missing'])} extras_inesperados={len(unexpected_extra)} "
+              f"grupos duplicados={len(audit['duplicates'])}", flush=True)
+        for index, group in enumerate(audit["duplicates"][:20], 1):
+            print(f"  duplicata {index}: {group}", flush=True)
+        raise ValueError("Benchmark incompleto ou com conteúdo duplicado; "
+                         "a seleção permanece intacta para diagnóstico")
     verify_no_known_overlap(root, set(hashes.values()))
     manifest = {k: v for k, v in plan.items() if k != "rows"}
     manifest["rows"] = [{**row,
@@ -391,9 +529,11 @@ def verify_and_stage(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("mode", choices=("pilot", "prepare", "stage"))
+    parser.add_argument("mode", choices=("pilot", "prepare", "repair", "stage"))
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--raise-csv", type=Path, default=ROOT / "entradas" / "RAISE_1k.csv")
+    parser.add_argument("--raise-extra-csv", type=Path,
+                        default=ROOT / "entradas" / "RAISE_2k.csv")
     parser.add_argument("--local-dir", type=Path, default=Path("/content") / NAME)
     args = parser.parse_args()
     if not args.root.is_dir():
@@ -402,6 +542,8 @@ def main():
         pilot(args)
     elif args.mode == "prepare":
         prepare(args)
+    elif args.mode == "repair":
+        repair_raise_duplicates(args)
     else:
         verify_and_stage(args)
 

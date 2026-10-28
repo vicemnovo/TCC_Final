@@ -2,8 +2,10 @@
 
 Este protocolo **não altera** as avaliações históricas. As 20 imagens externas
 já testadas continuam identificadas como teste antigo, com origem incompleta.
-O novo benchmark ainda **não foi baixado nem executado**. Não existem métricas
-das 2.000 imagens neste momento.
+O piloto e o preparo das 2.000 imagens foram executados no Colab, mas a
+auditoria encontrou seis pares de fotos reais RAISE com conteúdo duplicado.
+O benchmark **não foi congelado nem avaliado**; não existem métricas das 2.000
+imagens neste momento.
 
 ## Origem, acesso e limite de uso
 
@@ -15,6 +17,10 @@ das 2.000 imagens neste momento.
   exigência de token de API. O usuário precisa obter o CSV e colocá-lo em
   `/content/drive/MyDrive/TCC_Final/entradas/RAISE_1k.csv`. Não salvar dados
   pessoais ou URLs assinadas no Git.
+  Embora o CSV tenha 1.000 URLs NEF diferentes, a auditoria dos bytes baixados
+  mostrou apenas 994 conteúdos reais únicos. Para manter 1.000 fotos únicas,
+  obter também o CSV de metadados RAISE-2k, não o pacote de 2.000 imagens, e
+  colocá-lo em `TCC_Final/entradas/RAISE_2k.csv`.
 - **Sintéticas:** [MNW, Microsoft–Northwestern–WITNESS](https://github.com/microsoft/MNW),
   1.000 arquivos de `AI_Images/` selecionados em 40 pastas de geradores,
   25 por pasta. A fonte é pública e não exige conta/token para navegar.
@@ -43,6 +49,24 @@ renomeada para `benchmark_externo_raise_mnw_2000_v1/` após:
 3. comparação de hashes com as 3.979 imagens das partições OpenFake v2 e
    com as 20 imagens externas históricas.
 
+### Reparo dos seis pares RAISE duplicados
+
+O diagnóstico do usuário encontrou 4.000 hashes registrados, 3.988 distintos:
+seis pares de RAWs Nikon D90 e seus seis pares de JPEGs derivados são idênticos.
+Não há duplicatas MNW reportadas nem hashes faltantes. O script não pode tratar
+essas cópias como seis novas fotografias; o benchmark continua incompleto.
+
+Após obter `RAISE_2k.csv` da [fonte oficial](https://loki.disi.unitn.it/RAISE/download.html),
+executar a célula **7B** do notebook. O modo `repair` lê o plano original e os
+hashes, escolhe candidatas externas ao RAISE-1k por ordem determinística e
+baixa somente as candidatas necessárias para confirmar que RAW e JPEG são
+distintos dos 1.994 itens preservados. Ele grava `plan_repaired.json` com hash
+do plano original, hash do CSV adicional, IDs retirados e substituições. Não
+sobrescreve `plan.json`, não apaga os JPEGs baixados e não usa predições do modelo.
+Depois executar novamente a célula **7**: ela reutiliza as 1.994 imagens ativas
+e baixa apenas as seis substitutas antes de concluir a auditoria. Os arquivos
+duplicados antigos podem continuar na pasta, mas ficam fora do manifesto final.
+
 As fotos RAW são convertidas para JPEG RGB qualidade 90 e limite de 2.048 px;
 as MNW passam pelo mesmo processamento. Os originais são baixados um a um para
 `/content` e descartados após o registro de seus hashes; somente os JPEGs
@@ -67,9 +91,12 @@ o código publicado na branch `fase3-ajuste-fino`. Depois execute, na ordem:
 
 1. célula intitulada **"5. Dependências e entradas"**: presença do CSV RAISE;
 2. **"6. PILOTO MANUAL"**: uma imagem de cada fonte;
-3. **"7. PREPARAÇÃO MANUAL"**: 2.000 imagens (uma vez; permite retomada);
-4. **"8. Cópia/verificação"**: cópia íntegra para `/content` em cada sessão;
-5. **"9. Conferência dos checkpoints"**: conferir modelos e executar
+3. **"7B. Reparo MANUAL"**: após o CSV RAISE-2k e publicação do código,
+   reexecutar as células 3, 4 e 5 para sincronizar o snapshot novo, então criar
+   o plano derivado preservando o original;
+4. **"7. PREPARAÇÃO MANUAL"** novamente: completar apenas as substitutas;
+5. **"8. Cópia/verificação"**: cópia íntegra para `/content` em cada sessão;
+6. **"9. Conferência dos checkpoints"**: conferir modelos e executar
    manualmente cada avaliação desejada nas células seguintes.
 
 `experimentos/avaliar_benchmark_2000.py` lê os checkpoints congelados das

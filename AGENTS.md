@@ -113,6 +113,12 @@ alterar a arquitetura ou iniciar novos experimentos.
   do pesquisador; a MNW é pública, mas o acesso real ao Git LFS deve passar
   por piloto antes da coleta completa. Não trocar fontes ou itens depois da
   primeira avaliação para melhorar métricas.
+- A preparação do benchmark RAISE-1k encontrou seis pares RAW/JPEG reais
+  exatamente duplicados antes de qualquer avaliação. Não contá-los como fotos
+  independentes nem gerar variantes artificiais para completar a meta. Usar
+  `RAISE_2k.csv` oficial para substituir somente os seis itens duplicados,
+  verificando conteúdo e registrando `plan_repaired.json` sem alterar o plano
+  original. Não iniciar avaliação enquanto o manifesto final não existir.
 - Diversidade de geradores é importante para medir generalização, mas não
   substitui o objetivo principal de melhorar a percepção do detector.
   Se muitos grupos com poucas imagens prejudicarem o diagnóstico, reduzir a

@@ -1,4 +1,5 @@
 import csv
+import hashlib
 import importlib.util
 import json
 import tempfile
@@ -14,6 +15,114 @@ SPEC.loader.exec_module(benchmark)
 
 
 class BenchmarkSelectionTest(unittest.TestCase):
+    def test_preparacao_reparada_reusa_1999_arquivos_e_ignora_retired(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            work = root / "dados_externos" / (benchmark.NAME + ".incompleto")
+            work.mkdir(parents=True)
+            rows, hashes = [], {}
+            for index in range(2000):
+                real = index < 1000
+                ident = f"item{index:04d}"
+                image = f"images/{'real' if real else 'fake'}/{ident}.jpg"
+                row = {"id": ident, "image": image, "label": int(not real),
+                       "source": "RAISE" if real else "MNW", "group": "g",
+                       "url": f"http://193.205.194.113/RAISE/NEF/{ident}.NEF"}
+                rows.append(row)
+                data = b"old-jpeg" if index == 1 else f"jpeg-{index}".encode()
+                path = work / image
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(data)
+                hashes[image] = benchmark.digest(path)
+                source_data = b"old-raw" if index == 1 else f"raw-{index}".encode()
+                hashes["source:" + ident] = hashlib.sha256(source_data).hexdigest()
+            (work / "plan.json").write_text(json.dumps({"rows": rows}), encoding="utf-8")
+            new_row = {**rows[1], "id": "replacement", "url": "http://193.205.194.113/RAISE/NEF/replacement.NEF",
+                       "image": "images/real/replacement.jpg",
+                       "expected_source_sha256": hashlib.sha256(b"new-raw").hexdigest(),
+                       "expected_image_sha256": hashlib.sha256(b"new-jpeg").hexdigest()}
+            repaired_rows = list(rows)
+            repaired_rows[1] = new_row
+            (work / "plan_repaired.json").write_text(json.dumps({
+                "rows": repaired_rows, "retired_rows": [rows[1]]}), encoding="utf-8")
+            (work / "hashes.json").write_text(json.dumps(hashes), encoding="utf-8")
+
+            def fake_download(url, path):
+                path.write_bytes(b"new-raw")
+
+            def fake_convert(original_path, target):
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(b"new-jpeg")
+
+            args = SimpleNamespace(root=root, local_dir=root / "content/benchmark",
+                                   raise_csv=root / "RAISE_1k.csv")
+            with patch.object(benchmark, "download", side_effect=fake_download) as dl, patch.object(
+                    benchmark, "convert", side_effect=fake_convert), patch.object(
+                    benchmark, "verify_no_known_overlap"):
+                benchmark.prepare(args)
+            self.assertEqual(dl.call_count, 1)
+            manifest = json.loads((root / "dados_externos" / benchmark.NAME / "manifest.json").read_text())
+            self.assertEqual(len(manifest["rows"]), 2000)
+            self.assertEqual(len({row["image_sha256"] for row in manifest["rows"]}), 2000)
+            self.assertTrue((root / "dados_externos" / benchmark.NAME / rows[1]["image"]).exists())
+
+    def test_reparo_cria_plano_derivado_sem_alterar_selecao_original(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            work = root / "dados_externos" / (benchmark.NAME + ".incompleto")
+            work.mkdir(parents=True)
+            rows = [
+                {"id": ident, "image": f"images/real/{ident}.jpg", "label": 0,
+                 "source": "RAISE", "group": "camera", "url": f"http://193.205.194.113/RAISE/NEF/{ident}.NEF"}
+                for ident in ("r1", "r2")
+            ]
+            rows.append({"id": "AI_Images/g/f1.jpg", "image": "images/fake/g/f1.jpg",
+                         "label": 1, "source": "MNW", "group": "g", "url": "https://github.com/f1.jpg"})
+            original = {"rows": rows, "mnw_commit": "a" * 40}
+            (work / "plan.json").write_text(json.dumps(original), encoding="utf-8")
+            hashes = {"source:r1": "same-raw", "source:r2": "same-raw",
+                      "images/real/r1.jpg": "same-jpeg", "images/real/r2.jpg": "same-jpeg",
+                      "source:AI_Images/g/f1.jpg": "fake-raw", "images/fake/g/f1.jpg": "fake-jpeg"}
+            (work / "hashes.json").write_text(json.dumps(hashes), encoding="utf-8")
+            extra = root / "RAISE_2k.csv"
+            with extra.open("w", newline="", encoding="utf-8") as handle:
+                writer = csv.DictWriter(handle, fieldnames=["NEF", "Device"])
+                writer.writeheader()
+                writer.writerow({"NEF": "http://193.205.194.113/RAISE/NEF/r3.NEF",
+                                 "Device": "camera"})
+
+            def fake_download(url, path):
+                path.write_bytes(b"new-raw")
+
+            def fake_convert(original_path, target):
+                target.write_bytes(b"new-jpeg")
+
+            args = SimpleNamespace(root=root, raise_extra_csv=extra,
+                                   local_dir=root / "content/benchmark")
+            with patch.object(benchmark, "download", side_effect=fake_download), patch.object(
+                    benchmark, "convert", side_effect=fake_convert):
+                benchmark.repair_raise_duplicates(args)
+            self.assertEqual(json.loads((work / "plan.json").read_text()), original)
+            repaired = json.loads((work / "plan_repaired.json").read_text())
+            self.assertEqual(len(repaired["retired_rows"]), 1)
+            self.assertEqual({row["id"] for row in repaired["rows"] if row["label"] == 0},
+                             {"r1", "r3"})
+
+    def test_auditoria_distingue_hash_faltante_de_duplicata(self):
+        plan = {"rows": [
+            {"id": "r1", "image": "images/real/r1.jpg", "label": 0, "group": "camera"},
+            {"id": "f1", "image": "images/fake/f1.jpg", "label": 1, "group": "gerador"},
+        ]}
+        hashes = {"source:r1": "a", "images/real/r1.jpg": "b",
+                  "source:f1": "c", "images/fake/f1.jpg": "b"}
+        result = benchmark.audit_hashes(plan, hashes)
+        self.assertEqual(result["missing"], [])
+        self.assertEqual(len(result["duplicates"]), 1)
+        self.assertEqual({item["label"] for item in result["duplicates"][0]}, {0, 1})
+        del hashes["source:f1"]
+        result = benchmark.audit_hashes(plan, hashes)
+        self.assertEqual(result["missing"], ["source:f1"])
+
     def test_raise_selects_all_1000_deterministically(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "RAISE.csv"
