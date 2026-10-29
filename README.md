@@ -18,8 +18,10 @@ Detector de imagens reais e sintéticas com ViT-Tiny, FFT e EfficientNet-B0. O f
 | `docs/AVALIACAO_EXTERNA_FASE3_4_V2.md` | Procedimento manual e único para avaliar a v2 congelada nas 20 imagens externas |
 | `docs/COMPARATIVO_RESULTADOS.md` | Resultados das Fases 1–3.4 v2 e critérios para decidir a etapa seguinte |
 | `docs/POLITICA_DADOS_FUTUROS.md` | Preparação local de novos datasets no Colab; não altera o OpenFake nem a Fase 3.4 |
-| `docs/BENCHMARK_EXTERNO_2000.md` | Benchmark RAISE + MNW congelado; avaliação ainda pendente |
+| `docs/BENCHMARK_EXTERNO_2000.md` | Benchmark RAISE + MNW congelado e avaliações históricas concluídas |
 | `Notebooks/fase_3/avaliar_fases_benchmark_2000_colab.ipynb` | Piloto, preparo, cópia local e reavaliação manual das Fases 1–3.4 no mesmo conjunto |
+| `docs/README_fase3_5.md`, `Notebooks/fase_3/rodar_fase3_5_colab.ipynb` | Piloto de novos dados internos e interface manual do ajuste fino 3.5 |
+| `experimentos/fase3_5_dados.py`, `experimentos/fase3_5_finetune.py` | Preparo imutável dos dados e treino 3.5 isolado |
 | `ESTADO_PROJETO.md` | Estado verificado e próximos passos |
 | `modelos/` | Checkpoints e resultados locais, fora do Git |
 | `minhas_imagens/`, `validacao_fase3/` | Material externo legado, separado do treino e da calibração; `teste_externo/` local foi retirado após conferir cópias idênticas |
@@ -32,5 +34,7 @@ Para continuar a Fase 3.4, abra [o guia de execução](docs/README_fase3_4.md) e
 A primeira tentativa de avaliar a Fase 1 nesse benchmark encontrou uma falha de carregamento de classe antes de produzir métricas. O avaliador foi corrigido, mas ainda requer teste remoto. Consulte [ESTADO_PROJETO.md](ESTADO_PROJETO.md) para a retomada exata; não repita o reparo nem a preparação das imagens.
 
 A v2 tem [guia próprio](docs/README_fase3_4_v2.md) e [notebook próprio](Notebooks/fase_3/rodar_fase3_4_v2_colab.ipynb). Seu treino e sua [avaliação externa congelada](docs/AVALIACAO_EXTERNA_FASE3_4_V2.md) terminaram conforme saídas fornecidas pelo usuário; ela não substitui a v1. O resultado externo foi 11/20 acertos (55%), abaixo da meta de 85%. Não reutilizar estas 20 imagens para ajustar um novo modelo.
+
+As sete fases também foram avaliadas no benchmark RAISE/MNW congelado de 2.000 imagens, conforme saídas do Colab; a melhor acurácia foi 62,1% (3.4 v2). Esse conjunto agora é diagnóstico histórico, não teste final independente da próxima versão. A [Fase 3.5](docs/README_fase3_5.md) prepara um piloto de dados internos novos e um ajuste fino isolado; ainda não foi treinada nem avaliada.
 
 As Fases 1–3.3 são históricas: o notebook da Fase 1 está em [Notebooks/fase_1/](Notebooks/fase_1/README.md), e seu checkpoint local em `modelos/phase1_best_model.pt`. A futura API web ainda não existe no repositório e deve consumir um modelo congelado, sem acoplar treino à aplicação.

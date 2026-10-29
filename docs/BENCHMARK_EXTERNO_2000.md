@@ -5,8 +5,10 @@ já testadas continuam identificadas como teste antigo, com origem incompleta.
 O piloto, a coleta e o reparo de seis duplicatas reais foram executados no
 Colab. A saída informou **benchmark congelado**, ausência de sobreposição exata
 com OpenFake v2 e com as 20 imagens antigas, e cópia local verificada de 1.000
-reais + 1.000 sintéticas. **Nenhuma avaliação concluída foi informada**; não
-existem métricas verificadas das 2.000 imagens neste momento.
+reais + 1.000 sintéticas. As sete fases históricas foram avaliadas nesse
+conjunto conforme saídas do Colab fornecidas pelo usuário; a melhor acurácia
+foi **62,1% na Fase 3.4 v2**. O conjunto já forneceu feedback e não poderá
+servir como teste final independente de versões desenvolvidas depois dele.
 
 ## Origem, acesso e limite de uso
 
@@ -111,11 +113,10 @@ calibração histórica. Fase 2 usa resize 224; Fases 3 usam cinco recortes.
 
 A primeira tentativa de avaliar a Fase 1, no snapshot `30cf718`, falhou antes
 da inferência com `KeyError: 'Phase1Detector'`: a classe estava sendo buscada
-no notebook da Fase 3.3. A correção carrega as classes da Fase 1 do notebook
-original e a arquitetura seguinte do notebook 3.3. Após publicar a correção,
-sincronize o novo snapshot, copie/verifique as imagens se a sessão mudou,
-confira os checkpoints e execute primeiro **somente** a avaliação manual da
-Fase 1. Ela ainda não foi validada no Colab.
+no notebook da Fase 3.3. A correção carregou a classe da Fase 1 do notebook
+original e foi validada no Colab com 2.000 inferências concluídas. Os sete
+resultados foram gravados em diretórios separados, com manifesto e script de
+avaliação iguais. Não recalibrar os checkpoints com estes resultados.
 
 Comparar as fases **descritivamente** nas mesmas 2.000 imagens. Não usar
 predições externas para escolher arquitetura, pesos, limiar, hiperparâmetros

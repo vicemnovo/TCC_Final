@@ -1,10 +1,12 @@
-# Estado do projeto — Fase 3.4
+# Estado do projeto — preparação da Fase 3.5
 
 ## Trabalho atual
 
 - Projeto: detector de imagens sintéticas com ViT-Tiny, FFT e EfficientNet-B0.
-- Novo benchmark externo **congelado, ainda sem avaliação concluída**: 1.000 fotografias RAISE + 1.000 imagens MNW, 25 de cada um de 40 grupos elegíveis. A primeira coleta revelou seis pares de conteúdos reais duplicados; o Colab informou que o reparo com seis substitutas RAISE-2k concluiu, preservando `plan.json`. A auditoria de sobreposição exata informou ausência de correspondência com OpenFake v2 e com as 20 imagens históricas. A célula de cópia local verificou 2.000/2.000 imagens em `/content/benchmark_externo_raise_mnw_2000_v1`; todos os sete checkpoints históricos foram informados como presentes. O conjunto congelado fica em `/content/drive/MyDrive/TCC_Final/dados_externos/benchmark_externo_raise_mnw_2000_v1`. Essas verificações são saídas do Colab, não leitura direta do Drive nesta sessão local. Código e notebook: `experimentos/benchmark_2000.py`, `experimentos/avaliar_benchmark_2000.py` e `Notebooks/fase_3/avaliar_fases_benchmark_2000_colab.ipynb`; protocolo em `docs/BENCHMARK_EXTERNO_2000.md`.
-- **Bloqueio de avaliação descoberto:** a primeira tentativa da célula manual `avaliar('fase1')` falhou no Colab com `KeyError: 'Phase1Detector'` antes de inferir ou salvar resultado. O avaliador procurava essa classe no notebook da Fase 3.3, que só define `Phase2Detector`. O código versionado agora extrai a Fase 1 do notebook original e a Fase 2/3 do notebook 3.3, separadamente. A correção passou por teste estático local, mas ainda requer validação no Colab. Não há métricas novas das 2.000 imagens verificadas.
+- Benchmark externo **congelado e avaliado**: 1.000 fotografias RAISE + 1.000 imagens MNW, 25 de cada um de 40 grupos elegíveis. A primeira coleta teve seis pares reais duplicados, substituídos antes do congelamento; a auditoria informou ausência de sobreposição exata com OpenFake v2 e as 20 imagens históricas. A cópia local verificou 2.000/2.000 imagens em `/content/benchmark_externo_raise_mnw_2000_v1`. O conjunto congelado fica em `/content/drive/MyDrive/TCC_Final/dados_externos/benchmark_externo_raise_mnw_2000_v1`. Todas essas verificações e as métricas abaixo vieram das saídas do Colab fornecidas pelo usuário; esta sessão local não montou o Drive.
+- As sete avaliações históricas terminaram no mesmo manifesto SHA-256 `2024b501e2c409c5859ecfa4c13a50b233bf23acd7ee8aeeb6da3d868f328d53` e mesmo script SHA-256 `98b2d27c0a9689fb5a79e8bfec9f694c32a5930f61c0f1e2e381913ad6e38ab1`. A primeira tentativa da Fase 1 falhou por carregar a classe errada, mas a correção foi validada no Colab: o checkpoint foi carregado e 2.000 inferências concluíram. Resultados em `resultados/benchmark_externo_raise_mnw_2000_v1/<fase>/`, sem sobrescrever avaliações anteriores. O benchmark agora é diagnóstico visto; não usá-lo para escolher dados ou hiperparâmetros da 3.5 nem como teste final independente dela.
+- Acurácia / AUC / recall sintético / especificidade: Fase 1 **0,502 / 0,5425 / 0,006 / 0,998**; Fase 2 **0,500 / 0,6426 / 0 / 1,000**; Fase 3.1 **0,5505 / 0,5568 / 0,317 / 0,784**; Fase 3.2 **0,5655 / 0,6048 / 0,288 / 0,843**; Fase 3.3 **0,5995 / 0,7384 / 0,226 / 0,973**; Fase 3.4 v1 **0,592 / 0,7362 / 0,207 / 0,977**; Fase 3.4 v2 **0,621 / 0,7375 / 0,289 / 0,953**. A melhor acurácia foi 62,1%, abaixo da meta experimental de 85%.
+- **Fase 3.5 em preparação local:** `experimentos/fase3_5_dados.py`, `experimentos/fase3_5_finetune.py`, `Notebooks/fase_3/rodar_fase3_5_colab.ipynb`, `docs/README_fase3_5.md` e testes. Fonte piloto: Community Forensics–Small em shards Parquet completos, apenas para pesquisa não comercial. Ainda não houve download, manifesto remoto, smoke, treino ou métrica 3.5. O fator experimental será a adição de dados internos; arquitetura, aumentos e sampler são reutilizados. O checkpoint inicial foi fixado como Fase 3.3. Antes do treino, o piloto precisa comprovar classes/grupos suficientes e espaço livre.
 - Fase atual: Fase 3.4 v2 concluída e avaliada externamente. A meta de 85% no conjunto externo **não foi atingida** nesta execução (11/20, 55%). Os modelos anteriores permanecem preservados.
 - Branch local: `fase3-ajuste-fino`, acompanhando `origin/fase3-ajuste-fino`. O snapshot registrado na execução do Colab foi `8fec4fff64cc064be5ae4c7892ba69137976ce70`.
 - Código principal: `experimentos/fase3_4_finetune.py`. Interface de execução: `Notebooks/fase_3/rodar_fase3_4_colab.ipynb`. A arquitetura e funções da Fase 3.3 são reutilizadas de `Notebooks/fase_3/fase3.3_compressao.ipynb` no snapshot sincronizado do GitHub.
@@ -43,11 +45,15 @@
 
 ## Retomada no Google Colab
 
-### Benchmark externo RAISE/MNW (prioridade imediata)
+### Fase 3.5 (prioridade imediata)
 
-1. Abra `Notebooks/fase_3/avaliar_fases_benchmark_2000_colab.ipynb` e conecte a GPU. Não repita piloto, reparo nem preparação: o conjunto já foi informado como congelado. Execute as células de ambiente, montagem do Drive, desbloqueio e sincronização do código (1–5 do notebook) para obter a versão publicada que corrige o carregamento da Fase 1.
-2. Execute a célula **8. Cópia/verificação** em cada nova sessão, pois `/content` é temporário. Execute **9. Conferência dos checkpoints** e confirme os sete presentes. Na sessão atual, se `/content/benchmark_externo_raise_mnw_2000_v1` continuar íntegro, a cópia já foi feita; a sincronização do novo código ainda é necessária.
-3. Execute manualmente `avaliar('fase1')` e confirme que o checkpoint carrega e que a inferência termina antes de avançar para as Fases 2–3.4 v2. As avaliações ficam em diretórios separados sob `resultados/benchmark_externo_raise_mnw_2000_v1/` e recusam sobrescrita. Por fim, execute o resumo somente-leitura. Envie as métricas e qualquer erro; não usar este benchmark para ajustar pesos, limiar, hiperparâmetros ou sua seleção.
+1. Após publicação autorizada dos arquivos novos, abra `Notebooks/fase_3/rodar_fase3_5_colab.ipynb` e execute células 1–5 em GPU Colab. Não reconfigure a credencial existente.
+2. Execute somente o piloto da célula 6 e confira contagens, grupos elegíveis e espaço. A composição dos shards `HFCF_small_0` e `HFCF_small_117` não foi validada remotamente. Se não houver pelo menos três grupos elegíveis de cada classe ou 1.500 candidatos por classe, não execute `prepare`; revise a seleção de shards com metadados internos, nunca com feedback externo.
+3. Depois de validar os dados, use células 7 (preparo imutável), 8 (cópia), 9 (smoke), 10 (treino manual) e 11 (conferência). `auto` retoma o treino interno; nenhuma dessas células avalia o benchmark RAISE/MNW. O passo completo e os limites estão em `docs/README_fase3_5.md`.
+
+### Benchmark externo RAISE/MNW (histórico concluído)
+
+As sete avaliações foram executadas e salvas no Drive segundo saídas do usuário. Não repetir células de piloto, reparo, preparação ou avaliação para escolher a Fase 3.5. O benchmark não é mais um teste final independente para novos modelos que foram desenvolvidos após seu resultado.
 
 ### Experimentos Fase 3.4 já concluídos
 

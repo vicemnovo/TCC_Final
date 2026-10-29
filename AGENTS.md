@@ -40,8 +40,9 @@ Google Drive no Colab: /content/drive/MyDrive/TCC_Final
 - Não mover dados, checkpoints ou resultados para acompanhar mudanças de código.
 
 ## Prioridade atual
-Continuar a Fase 3, especialmente o ajuste fino do detector
-para melhorar a generalização em imagens externas.
+Preparar e validar a Fase 3.5, isolada das Fases 3.3/3.4, para melhorar a
+generalização com novos dados internos. Não iniciar treino antes do piloto,
+da seleção congelada e do smoke test. Procedimento em `docs/README_fase3_5.md`.
 
 Antes de novos treinos, auditar distribuição, formatos, resoluções e
 duplicatas dos dados; avaliar generalização por gerador e fonte;
@@ -105,8 +106,10 @@ alterar a arquitetura ou iniciar novos experimentos.
   calibração ou escolha de hiperparâmetros.
 - O benchmark externo RAISE/MNW v1 foi informado como congelado no Drive após
   reparar duplicatas e verificar 1.000 imagens reais + 1.000 sintéticas.
-  A cópia local íntegra também foi informada. Isso não equivale a avaliação:
-  não declarar métricas antes das inferências terminarem.
+  As sete fases históricas foram avaliadas nele conforme saídas do usuário;
+  a melhor acurácia foi 62,1% (Fase 3.4 v2). O conjunto já forneceu feedback
+  e não deve servir para escolher ajustes da 3.5 nem ser apresentado como
+  teste final independente de um modelo desenvolvido depois desse feedback.
 - Fonte do benchmark v1: 1.000 fotografias RAISE e 1.000 imagens
   geradas da MNW, 25 de cada um de 40 grupos elegíveis, conforme seleção fixa em
   `experimentos/benchmark_2000.py`. O CSV oficial da RAISE exige formulário
@@ -163,6 +166,10 @@ alterar a arquitetura ou iniciar novos experimentos.
 - Alterações locais só chegam ao Colab depois de publicação autorizada na branch. Não fazer commit ou push sem autorização do usuário.
 - `fase3_4_finetune.py auto` inicia ou retoma apenas quando explicitamente executado. O notebook não deve iniciar treinamento ao abrir.
 - A v2 usa `experimentos/fase3_4_finetune_v2.py` e `Notebooks/fase_3/rodar_fase3_4_v2_colab.ipynb`. O treino só começa ao executar manualmente a célula 8 ou o modo `auto`; não reutilizar `modelos/fase3_4_finetune_v1/`.
+- A Fase 3.5 usa `experimentos/fase3_5_dados.py`, `experimentos/fase3_5_finetune.py`
+  e `Notebooks/fase_3/rodar_fase3_5_colab.ipynb`. O piloto baixa shards
+  completos para `/content`, sem streaming; `prepare`, smoke e treino são
+  ações manuais distintas. Preservar os manifestos e resultados anteriores.
 
 
 ## Tratamento de erros
