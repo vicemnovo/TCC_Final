@@ -144,7 +144,10 @@ foram 3.594 treino, 719 seleção e 719 calibração; 1.947 exemplos do teste
 histórico OpenFake foram reservados e não avaliados. A conferência posterior
 listou todos os artefatos esperados, inclusive `training_complete.json`.
 Essas verificações são baseadas nas saídas fornecidas pelo usuário; o Drive
-não foi montado nesta sessão local. **Não há acurácia externa da Fase 3.5.**
+não foi montado nesta sessão local. A avaliação externa posterior no
+Mirage-Test obteve **60,45%** de acurácia; consulte
+`docs/BENCHMARK_EXTERNO_MIRAGE_2000.md`. Este resultado não altera as
+métricas internas registradas acima.
 Não repetir a célula 10 para prolongar o treino: qualquer variação de épocas
 ou outros parâmetros exige um experimento separado e comparação interna.
 

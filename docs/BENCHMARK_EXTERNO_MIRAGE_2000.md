@@ -1,4 +1,10 @@
-# Novo benchmark externo — Mirage-Test 2000 v1
+# Benchmark externo avaliado — Mirage-Test 2000 v1
+
+**Estado:** seleção congelada e avaliação única da Fase 3.5 concluída,
+conforme saída do Colab fornecida pelo autor. As instruções de execução
+abaixo documentam o procedimento histórico; para retomar o projeto, leia o
+resultado e preserve os arquivos existentes. Não repita a inferência para
+escolher outra configuração.
 
 ## Finalidade e fonte
 
@@ -64,7 +70,7 @@ Resultados antigos e checkpoints não são sobrescritos. Depois de observadas,
 essas 2.000 imagens não poderão ser o teste final independente de uma variante
 desenvolvida em resposta a seus erros.
 
-## Execução manual no Colab via VS Code
+## Procedimento de execução registrado (histórico)
 
 Abra `Notebooks/fase_3/avaliar_fase3_5_mirage_2000_colab.ipynb` e conecte a
 GPU do Colab. A branch remota precisa conter o novo script e notebook; as
@@ -91,5 +97,23 @@ alterações locais só chegam ao runtime após publicação autorizada.
 Nenhuma célula inicia treinamento. Se o piloto mostrar estrutura ou contagens
 incompatíveis com o código, **não execute `prepare`**: registre a saída para
 corrigir o leitor do índice sem alterar os critérios de seleção com base em
-predições. A avaliação remota, a coleta e o tamanho real ainda não foram
-executados nesta sessão local.
+predições. A coleta e a avaliação foram informadas posteriormente pelo
+usuário; veja o resultado abaixo.
+
+## Resultado informado pelo usuário após a avaliação no Colab
+
+O usuário informou cópia local completa de 2.000/2.000 imagens e execução
+da avaliação da 3.5. O Drive não foi inspecionado diretamente nesta sessão
+local. O resultado salvo em `resultados/benchmark_externo_mirage_2000_v1/fase3_5_cfsmall_v1/`
+foi: acurácia **60,45%** (1.209/2.000; IC Wilson 95% **58,29%–62,57%**),
+AUC **0,679972**, recall sintético **35,1%**, especificidade real **85,8%**,
+precisão **71,20%** e F1 **0,4702**. Matriz: TN=858, FP=142, FN=649, TP=351.
+Checkpoint, temperatura (0,4409470856) e limiar (0,445) foram os congelados;
+nenhuma imagem exigiu ampliação por lado curto abaixo de 224 px. O manifesto
+teve SHA-256 `4b3658f880e022957557933fd662c69485c19a5ed9a04e2e09c32ce485737190`.
+
+O benchmark já forneceu feedback. Não repetir a célula 12 para escolher
+limiar, checkpoint ou outra versão; a célula 13 continua leitura somente.
+Ele não serve de teste final independente para modelos alterados depois deste
+resultado. A ausência de sobreposição exata não elimina parentesco de
+imagens após redimensionamento ou recompressão.

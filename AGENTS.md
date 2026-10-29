@@ -44,27 +44,33 @@ Google Drive no Colab: /content/drive/MyDrive/TCC_Final
 - Não mover dados, checkpoints ou resultados para acompanhar mudanças de código.
 
 ## Prioridade atual
-A Fase 3.5 foi treinada internamente e teve diagnóstico na seleção.
-Preservar esse checkpoint e revisar os erros e vieses internos antes de
-decidir uma variante isolada. A 3.5 ainda não tem avaliação externa
-independente. Procedimento em `docs/README_fase3_5.md`.
+A Fase 3.5 foi treinada internamente, teve diagnóstico na seleção e já
+foi avaliada uma vez no Mirage-Test externo. Preservar esse checkpoint e
+usar apenas a auditoria interna anterior para definir outra variante.
+Procedimento em `docs/README_fase3_5.md`.
 
 A Fase 3.6 foi treinada internamente nas mesmas partições da 3.5,
 alterando somente a probabilidade de `RandomDownUp` de 0,15 para 0,50.
 Sua AUC de seleção foi 0,9472355, contra 0,9487973 da 3.5; não há
 evidência interna de melhora. Preservar ambos os checkpoints e não
 repetir o treino concluído. Ver `docs/README_fase3_6.md`. Nenhuma das
-duas versões foi avaliada em novo conjunto externo independente; a meta
-externa de 85% segue não demonstrada.
+duas versões atingiu a meta externa de 85%; a 3.6 ainda não passou por
+avaliação externa.
 
-O próximo teste externo candidato é Mirage-Test 2000 v1, com preparação
-manual em `Notebooks/fase_3/avaliar_fase3_5_mirage_2000_colab.ipynb` e
-protocolo em `docs/BENCHMARK_EXTERNO_MIRAGE_2000.md`. Ele ainda não foi
-baixado nem avaliado. Congelar a seleção antes de qualquer inferência;
-avaliar apenas a 3.5 com checkpoint, temperatura e limiar já registrados.
-Não adaptar treinamento ou calibração a suas predições. Conferir duplicatas
-exatas com dados conhecidos; interpretar ausência de duplicatas exatas com
-a limitação de possíveis imagens derivadas da mesma origem.
+O Mirage-Test 2000 v1 foi informado como congelado e avaliado uma vez com
+a Fase 3.5, conforme saída do Colab fornecida pelo usuário: 60,45% de
+acurácia, AUC 0,679972 e recall sintético 0,351. Procedimento e limitações
+em `docs/BENCHMARK_EXTERNO_MIRAGE_2000.md`. Esse conjunto agora é visto:
+não usar suas predições para treinar, calibrar, escolher pesos, dados ou
+hiperparâmetros da próxima variante, nem apresentá-lo como teste final
+independente dessa variante. Preservar o manifesto, checkpoint e resultados.
+A ausência de duplicatas exatas não exclui imagens derivadas da mesma origem.
+
+Na retomada, ler primeiro `ESTADO_PROJETO.md` e
+`docs/GUIA_METODOLOGIA_TCC.md`. Não alterar retroativamente o script de
+avaliação Mirage, o notebook de arquitetura da 3.3 ou os checkpoints da 3.5:
+seus hashes foram registrados no resultado. Para novas hipóteses, criar
+versão isolada, documentar as mudanças e preservar os artefatos anteriores.
 
 Antes de novos treinos, auditar distribuição, formatos, resoluções e
 duplicatas dos dados; avaliar generalização por gerador e fonte;

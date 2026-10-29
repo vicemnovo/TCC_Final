@@ -35,7 +35,10 @@ data/
 cache/
 modelos/
 dados_fase3_4/
+dados_fase3_5/
+dados_fase3_6/
 dados_externos/
+resultados/
 entradas/
 RAISE_1k.csv
 RAISE_2k.csv
@@ -47,6 +50,9 @@ teste_externo/
 validacao_fase3/
 **/huggingface/.cache/
 **/.cache/huggingface/
+*.parquet
+*.part
+*.incompleto/
 
 # Arquivos compactados
 *.zip

@@ -27,20 +27,21 @@ O detector calcula primeiro uma **probabilidade estimada de imagem sintética**.
 | `experimentos/diagnostico_interno_fase3_5.py` | Diagnóstico interno manual do checkpoint final da 3.5, sem testes externos |
 | `experimentos/auditar_erros_internos_fase3_5.py` | Auditoria dos erros já registrados na seleção interna da 3.5 |
 | `experimentos/fase3_6_escala.py`, `Notebooks/fase_3/rodar_fase3_6_colab.ipynb`, `docs/README_fase3_6.md` | Variante isolada de robustez a redimensionamento, treinada internamente no Colab |
-| `experimentos/benchmark_mirage_2000.py`, `Notebooks/fase_3/avaliar_fase3_5_mirage_2000_colab.ipynb` | Seleção e avaliação manuais de novo conjunto externo, ainda não executadas |
-| `docs/BENCHMARK_EXTERNO_MIRAGE_2000.md` | Fonte, protocolo congelado, limites e passos do próximo teste externo |
+| `experimentos/benchmark_mirage_2000.py`, `Notebooks/fase_3/avaliar_fase3_5_mirage_2000_colab.ipynb` | Seleção e avaliação manuais do Mirage-Test, concluídas para a Fase 3.5 conforme saída do Colab |
+| `docs/BENCHMARK_EXTERNO_MIRAGE_2000.md` | Fonte, protocolo congelado, avaliação da 3.5 e limites do Mirage-Test já observado |
+| `docs/GUIA_METODOLOGIA_TCC.md` | Arquitetura, probabilidade, partições, métricas e interpretação para apresentação do TCC |
 | `docs/PLANO_ACURACIA_85.md` | Sequência prioritária para melhorar e avaliar a acurácia externa |
 | `ESTADO_PROJETO.md` | Estado verificado e próximos passos |
-| `modelos/` | Checkpoints e resultados locais, fora do Git |
+| `modelos/` | Checkpoints locais legados, fora do Git; os checkpoints atuais ficam no Drive |
 | `minhas_imagens/`, `validacao_fase3/` | Material externo legado, separado do treino e da calibração; `teste_externo/` local foi retirado após conferir cópias idênticas |
 | `docs/historico/external_predictions_20_imagens.csv` | Predições legadas preservadas da pasta retirada |
 
 Os dados, checkpoints e resultados no Drive permanecem sob `/content/drive/MyDrive/TCC_Final` com os caminhos existentes. O código sincronizado do GitHub é extraído no runtime temporário em `/content/tcc_codigo/<sha>`; alterações locais só passam a valer no Colab depois de publicadas na branch `fase3-ajuste-fino` com autorização.
 
-As Fases 3.4 v1/v2 já têm resultados. As 20 imagens externas anteriores são históricas e não devem orientar treino, calibração ou seleção de hiperparâmetros. O benchmark RAISE/MNW de 1.000 reais e 1.000 sintéticas também foi avaliado nas sete fases anteriores; agora é diagnóstico histórico. Consulte [ESTADO_PROJETO.md](ESTADO_PROJETO.md) para a retomada exata.
+As Fases 3.4 v1/v2 já têm resultados. As 20 imagens externas anteriores são históricas e não devem orientar treino, calibração ou seleção de hiperparâmetros. O benchmark RAISE/MNW de 1.000 reais e 1.000 sintéticas também foi avaliado nas sete fases anteriores; agora é diagnóstico histórico. Consulte [ESTADO_PROJETO.md](ESTADO_PROJETO.md) para a retomada exata e o [guia de metodologia](docs/GUIA_METODOLOGIA_TCC.md) para entender a arquitetura, as probabilidades e os indicadores.
 
 A v2 tem [guia próprio](docs/README_fase3_4_v2.md) e [notebook próprio](Notebooks/fase_3/rodar_fase3_4_v2_colab.ipynb). Seu treino e sua [avaliação externa congelada](docs/AVALIACAO_EXTERNA_FASE3_4_V2.md) terminaram conforme saídas fornecidas pelo usuário; ela não substitui a v1. O resultado externo foi 11/20 acertos (55%), abaixo da meta de 85%. Não reutilizar estas 20 imagens para ajustar um novo modelo.
 
-As sete fases anteriores foram avaliadas no benchmark RAISE/MNW congelado de 2.000 imagens, conforme saídas do Colab; a melhor acurácia foi 62,1% (3.4 v2). A [Fase 3.5](docs/README_fase3_5.md) obteve AUC de seleção interna 0,9488; a [Fase 3.6](docs/README_fase3_6.md), com mais redimensionamento, obteve 0,9472 nas mesmas partições. A 3.5 permanece a candidata preferida pelos resultados internos, sem evidência de ganho da 3.6. Nenhuma das duas tem acurácia externa independente medida. O próximo passo é executar o piloto do [novo benchmark Mirage-Test](docs/BENCHMARK_EXTERNO_MIRAGE_2000.md), congelar suas imagens e só então avaliar a 3.5 manualmente.
+As sete fases anteriores foram avaliadas no benchmark RAISE/MNW congelado de 2.000 imagens, conforme saídas do Colab; a melhor acurácia foi 62,1% (3.4 v2). A [Fase 3.5](docs/README_fase3_5.md) obteve AUC de seleção interna 0,9488; a [Fase 3.6](docs/README_fase3_6.md), com mais redimensionamento, obteve 0,9472 nas mesmas partições. A 3.5 foi avaliada no [Mirage-Test 2000 v1](docs/BENCHMARK_EXTERNO_MIRAGE_2000.md) congelado e obteve **60,45% de acurácia externa**, conforme saída do Colab. A 3.6 ainda não tem avaliação externa. O Mirage-Test agora é diagnóstico visto e não deve selecionar a próxima variante ou servir de teste final independente dela.
 
 As Fases 1–3.3 são históricas: o notebook da Fase 1 está em [Notebooks/fase_1/](Notebooks/fase_1/README.md), e seu checkpoint local em `modelos/phase1_best_model.pt`. A futura API web ainda não existe no repositório e deve consumir um modelo congelado, sem acoplar treino à aplicação.
