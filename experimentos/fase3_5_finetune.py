@@ -140,7 +140,7 @@ def digests(rows, title, *, reject_internal=True):
             print(f'Hashes {title}: {index}/{len(rows)}', flush=True)
     return result
 
-hash_sets = [digests(rows, title) for title, rows in
+hash_sets = [digests(rows, title) for rows, title in
              ((tr_rows, 'treino'), (ves_rows, 'seleção'),
               (vcal_rows, 'calibração'))]
 # O teste histórico OpenFake contém três pares internos já auditados; não o
