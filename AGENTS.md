@@ -3,8 +3,9 @@
 
 ## Objetivo
 Concluir o projeto de detecção robusta de imagens reais e imagens
-sintéticas geradas ou alteradas por inteligência artificial, seguido
-pelo desenvolvimento de uma aplicação web com API.
+sintéticas geradas ou alteradas por inteligência artificial. A aplicação
+web com API fica para uma etapa futura; não direcionar o trabalho atual
+para ela enquanto a prioridade for melhorar a acurácia do detector.
 
 A detecção de vídeos está fora do escopo atual por prazo e custo;
 poderá ser considerada em trabalho futuro, sem direcionar os
@@ -14,6 +15,9 @@ Meta: alcançar pelo menos 85% de acurácia em um conjunto externo
 independente, com imagens não utilizadas no treinamento.
 
 A meta é um objetivo experimental, não um resultado já alcançado.
+Priorizar a acurácia final e a generalização em imagens externas
+independentes em todas as decisões atuais. Não adaptar treino, calibração
+ou hiperparâmetros aos resultados de benchmarks externos já observados.
 
 ## Tecnologias
 - Python e PyTorch
@@ -40,14 +44,32 @@ Google Drive no Colab: /content/drive/MyDrive/TCC_Final
 - Não mover dados, checkpoints ou resultados para acompanhar mudanças de código.
 
 ## Prioridade atual
-Preparar e validar a Fase 3.5, isolada das Fases 3.3/3.4, para melhorar a
-generalização com novos dados internos. Não iniciar treino antes do piloto,
-da seleção congelada e do smoke test. Procedimento em `docs/README_fase3_5.md`.
+A Fase 3.5 foi treinada internamente e teve diagnóstico na seleção.
+Preservar esse checkpoint e revisar os erros e vieses internos antes de
+decidir uma variante isolada. A 3.5 ainda não tem avaliação externa
+independente. Procedimento em `docs/README_fase3_5.md`.
+
+A Fase 3.6 foi treinada internamente nas mesmas partições da 3.5,
+alterando somente a probabilidade de `RandomDownUp` de 0,15 para 0,50.
+Sua AUC de seleção foi 0,9472355, contra 0,9487973 da 3.5; não há
+evidência interna de melhora. Preservar ambos os checkpoints e não
+repetir o treino concluído. Ver `docs/README_fase3_6.md`. Nenhuma das
+duas versões foi avaliada em novo conjunto externo independente; a meta
+externa de 85% segue não demonstrada.
+
+O próximo teste externo candidato é Mirage-Test 2000 v1, com preparação
+manual em `Notebooks/fase_3/avaliar_fase3_5_mirage_2000_colab.ipynb` e
+protocolo em `docs/BENCHMARK_EXTERNO_MIRAGE_2000.md`. Ele ainda não foi
+baixado nem avaliado. Congelar a seleção antes de qualquer inferência;
+avaliar apenas a 3.5 com checkpoint, temperatura e limiar já registrados.
+Não adaptar treinamento ou calibração a suas predições. Conferir duplicatas
+exatas com dados conhecidos; interpretar ausência de duplicatas exatas com
+a limitação de possíveis imagens derivadas da mesma origem.
 
 Antes de novos treinos, auditar distribuição, formatos, resoluções e
 duplicatas dos dados; avaliar generalização por gerador e fonte;
-planejar mudanças incrementais de robustez. Depois de estabilizar
-e avaliar o detector de imagens, desenvolver a aplicação web e a API.
+planejar mudanças incrementais de robustez. Adiar a aplicação web e a API
+para depois da etapa de melhoria e avaliação final do detector.
 
 Examinar os notebooks e checkpoints existentes antes de
 alterar a arquitetura ou iniciar novos experimentos.

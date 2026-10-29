@@ -11,8 +11,8 @@ da 3.5, nem chamado de teste final independente da 3.5.
 
 A 3.5 mantém a arquitetura ViT-Tiny + FFT + EfficientNet-B0, o treinador da
 Fase 3.3, a política de amostragem da 3.4 v2 e os mesmos aumentos moderados.
-O fator experimental principal é **adicionar dados internos com geradores e
-fontes reais documentados**. O checkpoint inicial continua o da Fase 3.3,
+O fator experimental principal é **adicionar dados internos com geradores
+identificados**; a fonte individual das fotos reais veio como `n/a`. O checkpoint inicial continua o da Fase 3.3,
 fixado antes da avaliação da 3.5. Não retreina nem altera as Fases 1–3.4.
 
 ## Fonte escolhida para o piloto
@@ -68,6 +68,21 @@ checkpoint; temperatura e limiar usam a calibração interna. O arquivo
 `internal_metrics.json` não representa acurácia externa. `last.pt` permite
 retomada após uma época fechada e `training_complete.json` impede repetição.
 
+### O que o detector devolve
+
+A rede produz dois *logits* por imagem. Em inferência, a média dos logits dos
+cinco recortes é dividida pela temperatura salva no checkpoint e passa por
+`softmax`: o valor da classe 1 é `p(sintética)` e o da classe 0 é
+`p(real) = 1 - p(sintética)`. Só depois o limiar decide o rótulo:
+`p(sintética) >= 0,445` significa "sintética" para o checkpoint atual.
+O diagnóstico salva essa probabilidade por imagem em `predictions.csv`.
+
+Na futura API web, a resposta deverá incluir **probabilidade sintética e real,
+rótulo, limiar e versão do checkpoint**. O rótulo é uma decisão operacional;
+a probabilidade é estimada para a distribuição usada na calibração interna,
+sem garantia de calibração em toda foto nova enviada por usuários. "Real"
+significa classe fotográfica do dataset, não veracidade da cena ou notícia.
+
 ## Passo a passo no Colab
 
 Antes: publique os arquivos novos na branch `fase3-ajuste-fino` **somente após
@@ -113,11 +128,66 @@ TCC_CODE_ROOT=/content/tcc_codigo/<sha> python -u /content/tcc_codigo/<sha>/expe
 Substitua `<sha>` pelo commit que a célula 4 imprimiu. `auto` inicia ou retoma;
 se `training_complete.json` existir, apenas informa que o treino terminou.
 
-## Estado verificado nesta sessão local
+## Estado informado pelas saídas do Colab
 
-O piloto foi executado no Colab e baixou os dois shards para `/content`
-(1.384.257.833 bytes no total). O aviso de acesso não autenticado ao HF Hub
-não impediu o download; o dataset é público e o token não é necessário para
-essa execução. **Nenhum manifesto remoto foi criado e nenhum treino 3.5 foi
-iniciado.** Ainda é preciso testar o preparo, o espaço no Drive e o smoke.
-Não há métricas da Fase 3.5.
+O piloto baixou os dois shards para `/content` (1.384.257.833 bytes no total).
+O aviso de acesso não autenticado ao HF Hub não impediu o download; o dataset
+é público e o token não foi necessário. O preparo congelou 3.000 imagens
+internas em `dados_fase3_5/fase3_5_novos_v1/`. O smoke conferiu hashes,
+carregou os pesos iniciais da Fase 3.3 e terminou com `Smoke OK`.
+
+O ajuste fino terminou as 12 épocas; o melhor checkpoint foi o da época 10
+(AUC de seleção **0,9487973**). A calibração interna retornou temperatura
+**0,4409471**, limiar **0,445** e acurácia balanceada **aparente** de
+**0,9212768** na própria partição usada para escolher o limiar. As partições
+foram 3.594 treino, 719 seleção e 719 calibração; 1.947 exemplos do teste
+histórico OpenFake foram reservados e não avaliados. A conferência posterior
+listou todos os artefatos esperados, inclusive `training_complete.json`.
+Essas verificações são baseadas nas saídas fornecidas pelo usuário; o Drive
+não foi montado nesta sessão local. **Não há acurácia externa da Fase 3.5.**
+Não repetir a célula 10 para prolongar o treino: qualquer variação de épocas
+ou outros parâmetros exige um experimento separado e comparação interna.
+
+O diagnóstico interno informado pelo usuário concluiu na GPU Tesla T4 com
+719 imagens da seleção: acurácia **0,9068**, acurácia balanceada **0,9080**,
+precisão **0,9314**, recall sintético **0,8959**, especificidade real **0,9200**
+e AUC **0,9696** em cinco recortes, com TN=299, FP=26, FN=41, TP=353.
+Resultado em `resultados/diagnostico_interno_fase3_5_v1/`, segundo a saída
+do Colab; não é teste independente. Calibração e conjuntos externos não foram
+inferidos nessa célula.
+
+## Diagnóstico interno após o treino
+
+`experimentos/diagnostico_interno_fase3_5.py` confere que o manifesto e as
+partições ainda correspondem à execução concluída, carrega somente o checkpoint
+final da 3.5 e faz inferência na partição interna de seleção.
+Usa cinco recortes e a temperatura e o limiar **congelados** no checkpoint; não
+ajusta nenhum parâmetro. Mostra progresso por bloco e salva `summary.json`,
+`per_group.csv` e `predictions.csv` em
+`resultados/diagnostico_interno_fase3_5_v1/`, sem alterar modelos anteriores.
+A calibração, o teste OpenFake reservado e RAISE/MNW não são inferidos. A AUC de
+seleção obtida com cinco recortes poderá diferir da AUC registrada durante o
+treino, que usou recorte central. A seleção já escolheu o checkpoint; seu
+diagnóstico é descritivo e não uma avaliação independente. Grupos pequenos
+devem ser lidos com cautela.
+
+Depois de publicar o script com autorização, no notebook da 3.5 execute as
+células 4 e 5 para atualizar o snapshot e a **célula 12** para o diagnóstico.
+Em sessão nova, execute 1–5 e 8 antes da 12. Não repita preparo ou treino.
+
+O diagnóstico foi concluído no Colab conforme saída fornecida pelo usuário.
+Para avançar sem novo treino especulativo, `experimentos/auditar_erros_internos_fase3_5.py`
+analisa as predições já salvas da seleção, lê apenas os metadados e dimensões
+dessas imagens e grava `errors.csv`, `segments.csv`, `selection_metadata.csv`
+e `summary.json` em `resultados/auditoria_erros_internos_fase3_5_v1/`.
+A **célula 13** do notebook executa essa auditoria manualmente após sincronizar
+o script publicado; em sessão nova execute 1–5 e 8 antes dela. Ela não infere
+novamente o modelo, não calibra e não usa conjuntos externos. Consulte
+`docs/PLANO_ACURACIA_85.md` para a decisão experimental seguinte.
+
+A auditoria foi concluída conforme saída do Colab: 44 erros entre 537 imagens
+Community Forensics e 23 entre 182 imagens OpenFake. A **célula 14** mostrou
+um cruzamento de classe, origem e tamanho e seis FP e seis FN internos de
+maior confiança. A variante isolada 3.6, que aumentou o redimensionamento,
+foi treinada depois; não demonstrou ganho na AUC de seleção interna. O próximo
+passo está em `docs/BENCHMARK_EXTERNO_MIRAGE_2000.md`.
