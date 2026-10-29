@@ -100,6 +100,25 @@ def priority(value):
 def select_rows(groups, per_class, per_group):
     selected = []
     for label in (0, 1):
+        # Neste shard, a fonte das fotos reais é registrada como "n/a".
+        # Não inventar fontes: permitir apenas divisão por imagem para a classe
+        # real, mantendo o mesmo grupo declarado em todas as partições.
+        if label == 0 and {group for lab, group in groups if lab == 0} == {'n/a'}:
+            candidates = sorted(groups[0, 'n/a'], key=lambda row: priority(
+                f"{row['shard']}:{row['index']}"))
+            if len(candidates) < per_class:
+                raise ValueError(f'Reais sem fonte individual: {len(candidates)}/{per_class}')
+            picks = candidates[:per_class]
+            n_train = round(per_class * 0.70)
+            n_selection = round(per_class * 0.15)
+            for index, row in enumerate(picks):
+                subset = ('train' if index < n_train else
+                          'validation_selection' if index < n_train + n_selection else
+                          'validation_calibration')
+                selected.append({**row, 'subset': subset,
+                                 'group_status': 'real_source_unavailable'})
+            print('Aviso: reais com fonte n/a; divisão por imagem, não por fonte.', flush=True)
+            continue
         eligible = {group: sorted(rows, key=lambda row: priority(
             f"{row['shard']}:{row['index']}"))[:per_group]
                     for (lab, group), rows in groups.items()

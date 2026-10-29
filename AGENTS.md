@@ -170,6 +170,12 @@ alterar a arquitetura ou iniciar novos experimentos.
   e `Notebooks/fase_3/rodar_fase3_5_colab.ipynb`. O piloto baixa shards
   completos para `/content`, sem streaming; `prepare`, smoke e treino são
   ações manuais distintas. Preservar os manifestos e resultados anteriores.
+- O piloto da 3.5 encontrou `real_source=n/a` para todas as fotos reais do
+  shard 117. Não inventar fontes para essas imagens nem afirmar que a validação
+  interna delas é separada por fonte. A divisão real é determinística por
+  imagem e essa limitação deve constar do plano e das análises; geradores
+  sintéticos continuam separados por grupo. Não usar RAISE/MNW para corrigir
+  essa limitação ou selecionar hiperparâmetros.
 
 
 ## Tratamento de erros

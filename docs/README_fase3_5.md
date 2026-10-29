@@ -19,14 +19,18 @@ fixado antes da avaliação da 3.5. Não retreina nem altera as Fases 1–3.4.
 
 [Community Forensics–Small](https://huggingface.co/datasets/OwensLab/CommunityForensics-Small)
 é publicada pelo grupo responsável pela pesquisa, contém rótulo, nome do
-gerador, fonte real e bytes da imagem. A licença informada é **CC-BY-NC-SA 4.0,
+gerador, campo de fonte real e bytes da imagem. **No shard real testado, o campo
+individual `real_source` veio como `n/a`; não tratá-lo como fonte conhecida.**
+A licença informada é **CC-BY-NC-SA 4.0,
 para pesquisa não comercial**. Seu uso no TCC experimental não concede
 automaticamente permissão para uma API comercial. O conjunto inteiro ocupa
 cerca de 260 GB e **não cabe** na quota gratuita; por isso, o piloto baixa
 somente arquivos Parquet explicitamente escolhidos, por inteiro, em `/content`.
 Não usa `streaming=True`, não baixa o acervo completo e não instala serviço pago.
-Os dois shards iniciais do notebook são uma hipótese de coleta, não uma seleção
-validada. O piloto deve confirmar classes e grupos antes de `prepare`.
+O piloto remoto dos dois shards iniciais informou 2.939 sintéticas em
+`HFCF_small_0.parquet` e 2.992 reais em `HFCF_small_117.parquet`; 77 grupos
+sintéticos têm pelo menos 20 imagens, mas as reais têm origem individual
+indisponível. Nenhuma seleção foi congelada ou treinada nesse piloto.
 
 O artigo [Community Forensics](https://arxiv.org/abs/2411.04125) fundamenta
 o foco em diversidade de geradores. O estudo
@@ -50,8 +54,11 @@ não comprova ausência de viés sem auditoria adicional.
 `prepare` fixa o commit do dataset, shards, seleção, divisões por grupo e hashes
 em `plan.json`/`manifest.json`. Rejeita duplicatas exatas e sobreposição exata
 com OpenFake, benchmark RAISE/MNW e imagens históricas localizadas no Drive.
-Não examina predições externas. As divisões novas reservam grupos inteiros de
-geradores/fontes para seleção e calibração. Uma eventual quase-duplicata não é
+Não examina predições externas. As sintéticas reservam geradores inteiros para
+seleção e calibração. As reais com fonte `n/a` são distribuídas
+deterministicamente por imagem (70/15/15) e recebem
+`group_status=real_source_unavailable`; **não** se deve apresentar essa
+validação como teste de fonte real inédita. Uma eventual quase-duplicata não é
 descartada automaticamente; a checagem perceptual continua uma limitação.
 
 O treino usa somente treino/seleção/calibração internos. O teste OpenFake
@@ -72,10 +79,12 @@ disco E:. Abra `Notebooks/fase_3/rodar_fase3_5_colab.ipynb` e conecte GPU.
    inicial de token. Confirme o commit sincronizado e espaço livre.
 2. Execute **6, PILOTO MANUAL**. Ele baixa os shards definidos em `SHARDS` para
    `/content` e informa contagens por classe e grupos elegíveis (20+ imagens).
-   **Pare aqui e confira a saída**: para preparar, cada classe precisa de ao
-   menos três grupos elegíveis e de amostras suficientes para a meta de 1.500
-   por classe. Se faltar classe/grupo, escolha outros shards com base em
-   metadados da fonte, não em resultados externos, e repita somente o piloto.
+   A saída recebida mostrou candidatos suficientes para 1.500 por classe,
+   mas não fonte individual para as reais. O código foi corrigido para
+   registrar essa limitação e fazer divisão por imagem somente para esse caso.
+   Antes de continuar, sincronize a versão publicada dessa correção. Se um
+   piloto futuro não fornecer candidatos suficientes, escolha outros shards
+   com metadados internos, nunca com resultados externos.
 3. Só com o piloto aprovado e espaço suficiente, execute **7, PREPARAÇÃO
    MANUAL**. Ela persiste uma seleção imutável e faz a verificação de hashes.
    Se cair, repita a mesma célula com a **mesma lista SHARDS**; não troque a
@@ -106,7 +115,9 @@ se `training_complete.json` existir, apenas informa que o treino terminou.
 
 ## Estado verificado nesta sessão local
 
-Código, notebook e testes locais foram preparados. **Nenhum shard foi baixado,
-nenhum manifesto remoto foi criado e nenhum treino 3.5 foi iniciado.** A
-composição real dos shards iniciais e a disponibilidade de espaço no Colab
-dependem do piloto remoto. Não há métricas da Fase 3.5.
+O piloto foi executado no Colab e baixou os dois shards para `/content`
+(1.384.257.833 bytes no total). O aviso de acesso não autenticado ao HF Hub
+não impediu o download; o dataset é público e o token não é necessário para
+essa execução. **Nenhum manifesto remoto foi criado e nenhum treino 3.5 foi
+iniciado.** Ainda é preciso testar o preparo, o espaço no Drive e o smoke.
+Não há métricas da Fase 3.5.

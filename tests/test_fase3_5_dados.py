@@ -52,6 +52,19 @@ class Fase35DataTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             data.select_rows(groups, 100, 25)
 
+    def test_fonte_real_nao_informada_fica_explicita(self):
+        groups = self.fixture_groups()
+        real = [row for (label, _), rows in groups.items() if label == 0 for row in rows]
+        groups = defaultdict(list, {key: rows for key, rows in groups.items() if key[0] == 1})
+        groups[0, 'n/a'] = [{**row, 'group': 'n/a'} for row in real]
+        rows = data.select_rows(groups, 150, 30)
+        selected_real = [row for row in rows if row['label'] == 0]
+        self.assertEqual(Counter(row['subset'] for row in selected_real),
+                         {'train': 105, 'validation_selection': 22,
+                          'validation_calibration': 23})
+        self.assertTrue(all(row['group_status'] == 'real_source_unavailable'
+                            for row in selected_real))
+
     def test_stage_confere_hash_e_preserva_manifesto(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
