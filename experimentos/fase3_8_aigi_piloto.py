@@ -45,7 +45,7 @@ def priority(uid):
 def pinned_files(local):
     from huggingface_hub import HfApi, hf_hub_download
 
-    info = HfApi(token=False).dataset_info(REPO)
+    info = HfApi(token=os.environ.get('HF_TOKEN') or False).dataset_info(REPO)
     if not info.sha or len(info.sha) != 40:
         raise RuntimeError('Commit do AIGI indisponível')
     files = {}
@@ -53,7 +53,8 @@ def pinned_files(local):
         print(f'Baixando arquivo completo: {name} | commit={info.sha}', flush=True)
         files[name] = Path(hf_hub_download(
             repo_id=REPO, repo_type='dataset', filename=name,
-            revision=info.sha, local_dir=local / 'source', token=False))
+            revision=info.sha, local_dir=local / 'source',
+            token=os.environ.get('HF_TOKEN') or False))
         print(f'Arquivo pronto: {name} | {files[name].stat().st_size / 1e6:.1f} MB', flush=True)
     return info.sha, files
 

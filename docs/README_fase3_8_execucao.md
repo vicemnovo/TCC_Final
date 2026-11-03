@@ -55,6 +55,13 @@ das células, não à posição incluindo Markdown.
    os logs mostram progresso e o notebook indica que o processo continua
    ativo. Se desconectar, execute novamente; a seleção já registrada é
    retomada. Pare e envie o erro se faltar quota, espaço, pares ou licença.
+   Quando `credenciais/huggingface.enc` existe no Drive, a célula pede a senha
+   de desbloqueio e passa o `HF_TOKEN` somente ao processo de preparo, sem
+   mostrá-lo. O Secret do navegador não chega automaticamente ao kernel do
+   VS Code. Se o arquivo cifrado ainda não existir, use uma vez
+   `Notebooks/configuracao/configurar_hf_colab.ipynb` no navegador do Colab.
+   O AIGI é público e permite preparo sem autenticação, sujeito aos limites
+   de acesso anônimo.
 2. Execute **`# 8. COPIA LOCAL`** em toda sessão nova. Copia e confere por hash
    os dados 3.5, 3.7 e 3.8 de Drive para `/content`.
 3. Execute **`# 9. SMOKE MANUAL`**. Confere divisões, hashes, GPU, arquitetura,

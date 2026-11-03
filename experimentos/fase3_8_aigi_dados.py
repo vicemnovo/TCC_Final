@@ -161,7 +161,8 @@ def load_plan(args):
         print(f'Baixando/verificando arquivo completo: {name}', flush=True)
         files[name] = Path(hf_hub_download(
             repo_id=REPO, repo_type='dataset', filename=name,
-            revision=revision, local_dir=args.cache, token=False))
+            revision=revision, local_dir=args.cache,
+            token=os.environ.get('HF_TOKEN') or False))
     if plan is None:
         real, _ = real_rows(files[REAL_CSV])
         candidates = candidate_rows({group: files[shard] for group, shard in SHARDS.items()}, real)
