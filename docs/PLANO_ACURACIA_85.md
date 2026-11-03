@@ -30,7 +30,9 @@
    e resolução e sintéticas fotográficas difíceis. Priorizar fonte real
    identificável e separação por origem; definir a seleção e os critérios
    internos antes de treinar. Baixar os arquivos escolhidos para `/content`,
-   persistir manifesto no Drive e verificar duplicatas e vazamento.
+   persistir manifesto no Drive e verificar duplicatas e vazamento. O primeiro
+   gate preparado é o [piloto Open Images da possível Fase 3.7](README_fase3_7_piloto.md):
+   ele ainda não foi executado e não autoriza seleção ou treino automático.
 3. **Reservar outro teste externo para a nova variante.** Definir origem,
    rótulos, quantidade, hashes e exclusões antes da inferência; congelar
    modelo, temperatura, limiar e protocolo. O Mirage-Test, RAISE/MNW e as

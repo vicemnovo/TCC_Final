@@ -27,6 +27,7 @@ O detector calcula primeiro uma **probabilidade estimada de imagem sintética**.
 | `experimentos/diagnostico_interno_fase3_5.py` | Diagnóstico interno manual do checkpoint final da 3.5, sem testes externos |
 | `experimentos/auditar_erros_internos_fase3_5.py` | Auditoria dos erros já registrados na seleção interna da 3.5 |
 | `experimentos/fase3_6_escala.py`, `Notebooks/fase_3/rodar_fase3_6_colab.ipynb`, `docs/README_fase3_6.md` | Variante isolada de robustez a redimensionamento, treinada internamente no Colab |
+| `experimentos/fase3_7_openimages_pilot.py`, `Notebooks/fase_3/piloto_fase3_7_openimages_colab.ipynb`, `docs/README_fase3_7_piloto.md` | Piloto manual de uma nova fonte real rastreável; sem treino ou seleção congelada |
 | `experimentos/benchmark_mirage_2000.py`, `Notebooks/fase_3/avaliar_fase3_5_mirage_2000_colab.ipynb` | Seleção e avaliação manuais do Mirage-Test, concluídas para a Fase 3.5 conforme saída do Colab |
 | `docs/BENCHMARK_EXTERNO_MIRAGE_2000.md` | Fonte, protocolo congelado, avaliação da 3.5 e limites do Mirage-Test já observado |
 | `docs/GUIA_METODOLOGIA_TCC.md` | Arquitetura, probabilidade, partições, métricas e interpretação para apresentação do TCC |

@@ -1,6 +1,16 @@
 # Estado do projeto — Fases 3.5 e 3.6 treinadas internamente
 
-## Retomada rápida — 29/10/2026
+## Retomada rápida — atualizada em 03/11/2026
+
+**Atualização de 03/11/2026:** a branch estava sincronizada e limpa no início
+da retomada. Foi preparado localmente um piloto da possível Fase 3.7 com
+Open Images, em `experimentos/fase3_7_openimages_pilot.py`,
+`Notebooks/fase_3/piloto_fase3_7_openimages_colab.ipynb` e
+`docs/README_fase3_7_piloto.md`. O piloto ainda **não foi executado no Colab**:
+não há contagem verificada de candidatos, imagens baixadas, partições novas,
+treino 3.7 ou métricas novas. A próxima ação manual é executar somente esse
+piloto e trazer seu resumo. As Fases 3.5 e 3.6 e o resultado Mirage permanecem
+como descritos abaixo; nenhum benchmark observado orienta a seleção do piloto.
 
 - **Branch:** `fase3-ajuste-fino`. Em outro computador, confira o commit atual
   com `git rev-parse HEAD` e a sincronização com `git status -sb` antes de

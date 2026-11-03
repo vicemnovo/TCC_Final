@@ -66,6 +66,15 @@ hiperparâmetros da próxima variante, nem apresentá-lo como teste final
 independente dessa variante. Preservar o manifesto, checkpoint e resultados.
 A ausência de duplicatas exatas não exclui imagens derivadas da mesma origem.
 
+Em 03/11/2026 foi preparado um piloto **não executado** da possível Fase 3.7
+com Open Images: `experimentos/fase3_7_openimages_pilot.py`,
+`Notebooks/fase_3/piloto_fase3_7_openimages_colab.ipynb` e
+`docs/README_fase3_7_piloto.md`. Ele verifica apenas metadados e três JPEGs
+de uma fonte real com autoria declarada; não cria divisões nem treina. Antes
+de incorporar a fonte, conferir a saída real do piloto, licença, espaço,
+proveniência e isolamento por autor. Autoria declarada não prova ausência de
+edição por IA. Não alterar a 3.5/3.6 por causa do piloto.
+
 Na retomada, ler primeiro `ESTADO_PROJETO.md` e
 `docs/GUIA_METODOLOGIA_TCC.md`. Não alterar retroativamente o script de
 avaliação Mirage, o notebook de arquitetura da 3.3 ou os checkpoints da 3.5:
