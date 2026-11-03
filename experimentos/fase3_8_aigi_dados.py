@@ -1,12 +1,13 @@
 """Prepara pares AIGI reais/sintéticos para a Fase 3.8, sem treinar.
 
-Baixa seis shards Parquet e o CSV inteiros em /content. A seleção, falhas de
+Baixa shards Parquet completos e o CSV em /content. A seleção, falhas de
 download, hashes e divisões são persistidos no Drive para retomada. Imagens
 externas só entram na conferência de hashes; predições externas nunca são lidas.
 """
 
 import argparse
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import io
 import json
@@ -34,6 +35,13 @@ SHARDS = {
     'SDXL_1.0': 'data/fake-00008-of-00015.parquet',
     'SD_2.1': 'data/fake-00010-of-00015.parquet',
     'SD_3': 'data/fake-00013-of-00015.parquet',
+}
+# Amplia apenas os tres grupos que ficaram sem candidatos suficientes no
+# primeiro plano. O plano original e as fotos aceitas continuam preservados.
+EXTRA_SHARDS = {
+    'SDXL_1.0': 'data/fake-00009-of-00015.parquet',
+    'SD_2.1': 'data/fake-00011-of-00015.parquet',
+    'SD_3': 'data/fake-00014-of-00015.parquet',
 }
 SUBSETS = {'PA_alpha': 'validation_selection',
            'SD_2.1': 'validation_calibration'}
@@ -108,15 +116,45 @@ def normalize(raw):
 
 
 def prior_hashes(root):
-    from fase3_7_dados import known_hashes
-
-    known = known_hashes(root)
+    known = set()
+    for relative in ('dados_externos/benchmark_externo_raise_mnw_2000_v1/manifest.json',
+                     'dados_fase3_5/fase3_5_novos_v1/manifest.json',
+                     'dados_externos/benchmark_externo_mirage_2000_v1/manifest.json'):
+        manifest = root / relative
+        if not manifest.is_file():
+            raise FileNotFoundError(manifest)
+        for row in json.loads(manifest.read_text(encoding='utf-8'))['rows']:
+            known.add(row['image_sha256'])
+            if row.get('original_sha256'):
+                known.add(row['original_sha256'])
     previous = root / 'dados_fase3_7/fase3_7_cfsmall_expansao_v1/manifest.json'
     if not previous.is_file():
         raise FileNotFoundError(previous)
     for row in json.loads(previous.read_text(encoding='utf-8'))['rows']:
         known.add(row['original_sha256'])
         known.add(row['image_sha256'])
+    old = root / 'dados_fase3_4/manifest.json'
+    if not old.is_file():
+        raise FileNotFoundError(old)
+    old_rows = json.loads(old.read_text(encoding='utf-8'))
+    paths = [Path(row['path']) for subset in ('train', 'test')
+             for row in old_rows[subset]]
+    if not all(path.is_file() for path in paths):
+        raise FileNotFoundError('Imagem OpenFake historica ausente')
+    # Drive tem latencia alta por arquivo. Quatro leituras concorrentes mantem
+    # a verificacao integral e reduzem o tempo das 3.979 imagens historicas.
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        for index, value in enumerate(pool.map(sha256, paths), 1):
+            known.add(value)
+            if index % 500 == 0 or index == len(paths):
+                print(f'Hashes OpenFake: {index}/{len(paths)}', flush=True)
+    for folder in (root / 'minhas_imagens', root / 'teste_externo',
+                   root / 'validacao_fase3/teste_externo'):
+        if folder.is_dir():
+            legacy_paths = [path for path in folder.rglob('*') if path.is_file()
+                            and path.suffix.lower() in ('.jpg', '.jpeg', '.png', '.webp')]
+            for path in legacy_paths:
+                known.add(sha256(path))
     return known
 
 
@@ -157,7 +195,7 @@ def load_plan(args):
         plan = None
     args.cache.mkdir(parents=True, exist_ok=True)
     files = {}
-    for name in (REAL_CSV, *SHARDS.values()):
+    for name in (REAL_CSV, *SHARDS.values(), *EXTRA_SHARDS.values()):
         print(f'Baixando/verificando arquivo completo: {name}', flush=True)
         files[name] = Path(hf_hub_download(
             repo_id=REPO, repo_type='dataset', filename=name,
@@ -177,16 +215,57 @@ def load_plan(args):
             json.dump(plan, stream, ensure_ascii=False, indent=2)
         print('Plano de candidatos fixado:', plan_path, flush=True)
     for name, path in files.items():
-        if sha256(path) != plan['source_sha256'][name]:
+        if name in plan['source_sha256'] and sha256(path) != plan['source_sha256'][name]:
             raise ValueError(f'Arquivo da fonte mudou: {name}')
-    return work, plan, files
+
+    # Um complemento imutavel permite retomar o plano original incompleto,
+    # mantendo suas 315 fotografias aceitas e o historico de falhas.
+    extension_path = work / 'plan_extension_1.json'
+    if extension_path.is_file():
+        extension = json.loads(extension_path.read_text(encoding='utf-8'))
+        if (extension.get('revision') != REVISION or
+                extension.get('shards') != EXTRA_SHARDS or
+                extension.get('per_generator') != PER_GENERATOR or
+                extension.get('side') != SIDE or
+                set(extension.get('source_sha256', {})) != set(EXTRA_SHARDS.values()) or
+                set(extension.get('candidates', {})) != set(EXTRA_SHARDS)):
+            raise ValueError('Complemento do plano AIGI nao corresponde ao codigo')
+        print('Retomando complemento do plano:', extension_path, flush=True)
+    else:
+        real, _ = real_rows(files[REAL_CSV])
+        extra_candidates = candidate_rows(
+            {group: files[shard] for group, shard in EXTRA_SHARDS.items()}, real)
+        extension = {'revision': REVISION, 'shards': EXTRA_SHARDS,
+                     'per_generator': PER_GENERATOR, 'side': SIDE,
+                     'source_sha256': {name: sha256(files[name])
+                                       for name in EXTRA_SHARDS.values()},
+                     'candidates': extra_candidates,
+                     'reason': 'Faltaram cinco pares SDXL no primeiro shard; '
+                               'ampliacao interna antes de qualquer treino.'}
+        with extension_path.open('x', encoding='utf-8') as stream:
+            json.dump(extension, stream, ensure_ascii=False, indent=2)
+        print('Complemento do plano fixado:', extension_path, flush=True)
+    for name, expected in extension['source_sha256'].items():
+        if name not in EXTRA_SHARDS.values() or sha256(files[name]) != expected:
+            raise ValueError(f'Shard adicional mudou: {name}')
+    merged = {}
+    for group in SHARDS:
+        original = plan['candidates'][group]
+        extra = extension['candidates'].get(group, [])
+        combined = original + extra
+        if len({row['uid'] for row in combined}) != len(combined):
+            raise ValueError(f'UID repetido entre shards do grupo {group}')
+        merged[group] = combined
+    runtime_plan = {**plan, 'candidates': merged,
+                    'extension_sha256': sha256(extension_path)}
+    return work, runtime_plan, files
 
 
 def prepare(args):
     if not args.root.is_dir():
         raise FileNotFoundError('Monte o Google Drive antes do preparo')
     if shutil.disk_usage(args.cache.parent).free < 5_000_000_000:
-        raise RuntimeError('/content com menos de 5 GB livres para os seis shards')
+        raise RuntimeError('/content com menos de 5 GB livres para os nove shards')
     if shutil.disk_usage(args.root).free < 1_000_000_000:
         raise RuntimeError('Drive com menos de 1 GB livre; não preparar')
     work, plan, files = load_plan(args)
@@ -255,7 +334,7 @@ def prepare(args):
     if len(selected) != len(SHARDS)*PER_GENERATOR:
         raise ValueError('Seleção sintética incompleta')
     rows = []
-    for generator, shard in SHARDS.items():
+    for generator, shard in (*SHARDS.items(), *EXTRA_SHARDS.items()):
         import pyarrow.parquet as pq
 
         parquet = pq.ParquetFile(files[shard])
@@ -313,6 +392,7 @@ def prepare(args):
                                               if row['label'] == 0)), flush=True)
     manifest = {'name': NAME, 'source': REPO, 'revision': plan['revision'],
                 'plan_sha256': sha256(work / 'plan.json'),
+                'plan_extension_sha256': plan['extension_sha256'],
                 'preprocessing': 'RGB; lado curto 256 LANCZOS sem ampliar; JPEG qualidade 90',
                 'rows': sorted(rows, key=lambda row: (row['subset'], row['uid'], row['label']))}
     with (work / 'manifest.json').open('x', encoding='utf-8') as stream:

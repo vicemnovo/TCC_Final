@@ -25,8 +25,11 @@ das imagens; o resultado de 16 URLs não garante disponibilidade das demais.
 
 ## Plano fixado antes do treino
 
-- Seis shards Parquet completos, índices 0, 3, 5, 8, 10 e 13, mais o CSV real;
-  aproximadamente 3 GB de downloads em `/content`, sem streaming de exemplos.
+- Seis shards Parquet iniciais, índices 0, 3, 5, 8, 10 e 13, mais o CSV real.
+  Como a primeira tentativa terminou com apenas 75/80 pares `SDXL_1.0`,
+  um complemento imutável acrescenta os shards completos 9, 11 e 14 para
+  `SDXL_1.0`, `SD_2.1` e `SD_3`. São nove shards no total, cerca de 4,5 GB
+  de downloads em `/content`, sem streaming de exemplos.
 - Até 80 pares completos de cada gerador. Quatro geradores entram no treino;
   `PA_alpha` fica só na seleção de checkpoint e `SD_2.1` só na calibração.
   O programa exige 80 em cada grupo e interrompe sem treinar se faltarem
@@ -37,7 +40,10 @@ das imagens; o resultado de 16 URLs não garante disponibilidade das demais.
   hash igual não prova independência visual.
 - Seleção e estado incompleto persistem em
   `/content/drive/MyDrive/TCC_Final/dados_fase3_8/aigi_pares_256_v1.incompleto/`;
-  após concluir, os dados ficam em `dados_fase3_8/aigi_pares_256_v1/`.
+  `plan.json` e `state.json` da primeira tentativa são preservados, e
+  `plan_extension_1.json` registra os três shards adicionais antes da
+  seleção dos novos pares. Os 315 pares reais já aceitos são reaproveitados.
+  Após concluir, os dados ficam em `dados_fase3_8/aigi_pares_256_v1/`.
   Checkpoints e métricas novos ficam em `modelos/fase3_8_aigi_pares256_v1/`.
   Não sobrescrever diretórios anteriores.
 
@@ -50,7 +56,7 @@ repositório e função de progresso. A célula **6** apenas registra que o pilo
 já foi analisado. A numeração abaixo refere-se aos comentários `# N.` dentro
 das células, não à posição incluindo Markdown.
 
-1. Execute **`# 7. PREPARO MANUAL`**. Baixa os seis shards completos, testa
+1. Execute **`# 7. PREPARO MANUAL`**. Baixa os nove shards completos, testa
    fotos reais, fixa os pares e produz o manifesto no Drive. Pode levar tempo;
    os logs mostram progresso e o notebook indica que o processo continua
    ativo. Se desconectar, execute novamente; a seleção já registrada é
