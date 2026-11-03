@@ -261,6 +261,72 @@ def load_plan(args):
     return work, runtime_plan, files
 
 
+def materialize_selected(work, files, accepted, forbidden):
+    """Confere os bytes das sintéticas e produz linhas só para pares válidos."""
+    import pyarrow.parquet as pq
+
+    selected = {(item['shard'], item['index']): item
+                for rows in accepted.values() for item in rows}
+    if len(selected) != sum(len(rows) for rows in accepted.values()):
+        raise ValueError('Seleção sintética contém shard/índice repetido')
+    rows, invalid = [], []
+    seen_images, seen_originals = set(), set()
+    for generator, shard in (*SHARDS.items(), *EXTRA_SHARDS.items()):
+        parquet = pq.ParquetFile(files[shard])
+        index = 0
+        for batch in parquet.iter_batches(columns=['image'], batch_size=16):
+            for source in batch.to_pylist():
+                item = selected.get((Path(shard).name, index))
+                index += 1
+                if item is None:
+                    continue
+                writing = False
+                try:
+                    value = source['image']
+                    raw = value.get('bytes') if isinstance(value, dict) else value
+                    if not isinstance(raw, bytes):
+                        raise ValueError('Imagem sintética sem bytes')
+                    original_sha = hashlib.sha256(raw).hexdigest()
+                    if original_sha in forbidden or original_sha in seen_originals:
+                        raise ValueError('Sintética original duplicada ou reservada')
+                    jpeg, original, processed = normalize(raw)
+                    fake_sha = hashlib.sha256(jpeg).hexdigest()
+                    real_sha = item['real_image_sha256']
+                    if (fake_sha in forbidden or fake_sha in seen_images or
+                            fake_sha == real_sha or real_sha in seen_images):
+                        raise ValueError('Imagem processada duplicada ou reservada')
+                    fake_rel = f"images/1/{item['uid']}.jpg"
+                    writing = True
+                    if safe_write(work, fake_rel, jpeg) != fake_sha:
+                        raise ValueError('Falha ao gravar sintética')
+                    for label, rel, image_sha, original_hash, image_format, original_size, size in (
+                            (0, item['real_image'], real_sha,
+                             item['real_original_sha256'], item['real_original_format'],
+                             item['real_original_size'], item['processed_size']),
+                            (1, fake_rel, fake_sha, original_sha,
+                             original['format'], original['size'], processed)):
+                        rows.append({'uid': item['uid'], 'label': label,
+                                     'subset': item['subset'], 'group': generator,
+                                     'real_source': item['real_source'], 'image': rel,
+                                     'image_sha256': image_sha,
+                                     'original_sha256': original_hash,
+                                     'original_format': image_format,
+                                     'original_size': original_size,
+                                     'processed_size': size})
+                    seen_images.update((real_sha, fake_sha))
+                    seen_originals.update((item['real_original_sha256'], original_sha))
+                    if len(rows) % 200 == 0:
+                        print(f'Pares processados: {len(rows)//2}/{len(selected)}',
+                              flush=True)
+                except (OSError, ValueError) as error:
+                    if writing:
+                        raise  # Falha de gravação não é um defeito da imagem.
+                    invalid.append((generator, item['uid'], type(error).__name__))
+    if len(rows)//2 + len(invalid) != len(selected):
+        raise ValueError('Seleção contém imagem sintética não localizada nos shards')
+    return rows, invalid
+
+
 def prepare(args):
     if not args.root.is_dir():
         raise FileNotFoundError('Monte o Google Drive antes do preparo')
@@ -286,96 +352,69 @@ def prepare(args):
             accepted_hashes.update((item['real_original_sha256'], item['real_image_sha256']))
     real_cache = args.real_cache
     real_cache.mkdir(parents=True, exist_ok=True)
-    for generator, candidates in plan['candidates'].items():
-        chosen = accepted.setdefault(generator, [])
-        for item in candidates:
-            if len(chosen) >= PER_GENERATOR:
-                break
-            uid = item['uid']
-            key = f'{generator}:{uid}'
-            if uid in used_uids or key in failed:
-                continue
-            row = {'uid': uid, 'source_dataset': item['real_source'],
-                   'image_path': item['real_url']}
-            try:
-                probe = download_probe(row, real_cache)
-                if min(probe['size']) < SIDE:
-                    raise ValueError('Foto real abaixo do lado mínimo')
-                original_path = real_cache / 'real_probe' / (uid + '.img')
-                raw = original_path.read_bytes()
-                if probe['sha256'] in forbidden or probe['sha256'] in accepted_hashes:
-                    raise ValueError('Sobreposição exata com dados anteriores/reservados')
-                jpeg, original, processed = normalize(raw)
-                rel = f'images/0/{uid}.jpg'
-                value = safe_write(work, rel, jpeg)
-                if value in forbidden or value in accepted_hashes:
-                    raise ValueError('Sobreposição processada com dados anteriores/reservados')
-                chosen.append({**item, 'subset': SUBSETS.get(generator, 'train'),
-                               'real_image': rel, 'real_original_sha256': probe['sha256'],
-                               'real_image_sha256': value,
-                               'real_original_format': original['format'],
-                               'real_original_size': original['size'],
-                               'processed_size': processed})
-                used_uids.add(uid)
-                accepted_hashes.update((probe['sha256'], value))
-            except (OSError, ValueError) as error:
-                failed[key] = type(error).__name__
-            atomic_json(state_path, state)
-            attempts = sum(len(rows) for rows in accepted.values()) + len(failed)
-            if attempts % 25 == 0:
-                print(f'Pares reais aceitos={sum(len(rows) for rows in accepted.values())}/'
-                      f'{len(SHARDS)*PER_GENERATOR} | tentativas={attempts}', flush=True)
-        if len(chosen) < PER_GENERATOR:
-            raise RuntimeError(f'{generator}: apenas {len(chosen)}/{PER_GENERATOR} reais '
-                               'obtidas; plano preservado para diagnóstico/retomada')
-        print(f'{generator}: {len(chosen)} fotografias reais verificadas', flush=True)
-    selected = {(item['shard'], item['index']): item
-                for rows in accepted.values() for item in rows}
-    if len(selected) != len(SHARDS)*PER_GENERATOR:
-        raise ValueError('Seleção sintética incompleta')
-    rows = []
-    for generator, shard in (*SHARDS.items(), *EXTRA_SHARDS.items()):
-        import pyarrow.parquet as pq
-
-        parquet = pq.ParquetFile(files[shard])
-        index = 0
-        for batch in parquet.iter_batches(columns=['image'], batch_size=16):
-            for source in batch.to_pylist():
-                item = selected.get((Path(shard).name, index))
-                index += 1
-                if item is None:
+    while True:
+        for generator, candidates in plan['candidates'].items():
+            chosen = accepted.setdefault(generator, [])
+            for item in candidates:
+                if len(chosen) >= PER_GENERATOR:
+                    break
+                uid = item['uid']
+                key = f'{generator}:{uid}'
+                if uid in used_uids or key in failed:
                     continue
-                value = source['image']
-                raw = value.get('bytes') if isinstance(value, dict) else value
-                if not isinstance(raw, bytes):
-                    raise ValueError('Imagem sintética sem bytes')
-                original_sha = hashlib.sha256(raw).hexdigest()
-                if original_sha in forbidden:
-                    raise ValueError('Sintética sobrepõe dados anteriores/reservados')
-                jpeg, original, processed = normalize(raw)
-                fake_rel = f"images/1/{item['uid']}.jpg"
-                fake_sha = safe_write(work, fake_rel, jpeg)
-                if fake_sha in forbidden or fake_sha == item['real_image_sha256']:
-                    raise ValueError('Sintética processada duplicada')
-                for label, rel, image_sha, original_hash, image_format, original_size, size in (
-                        (0, item['real_image'], item['real_image_sha256'],
-                         item['real_original_sha256'], item['real_original_format'],
-                         item['real_original_size'], item['processed_size']),
-                        (1, fake_rel, fake_sha, original_sha,
-                         original['format'], original['size'], processed)):
-                    rows.append({'uid': item['uid'], 'label': label,
-                                 'subset': item['subset'], 'group': generator,
-                                 'real_source': item['real_source'], 'image': rel,
-                                 'image_sha256': image_sha,
-                                 'original_sha256': original_hash,
-                                 'original_format': image_format,
-                                 'original_size': original_size,
-                                 'processed_size': size})
-                if len(rows) % 200 == 0:
-                    print(f'Pares processados: {len(rows)//2}/{len(SHARDS)*PER_GENERATOR}',
-                          flush=True)
-    if len(rows) != 2*len(SHARDS)*PER_GENERATOR:
-        raise ValueError('Quantidade final de pares incompleta')
+                row = {'uid': uid, 'source_dataset': item['real_source'],
+                       'image_path': item['real_url']}
+                try:
+                    probe = download_probe(row, real_cache)
+                    if min(probe['size']) < SIDE:
+                        raise ValueError('Foto real abaixo do lado mínimo')
+                    original_path = real_cache / 'real_probe' / (uid + '.img')
+                    raw = original_path.read_bytes()
+                    if probe['sha256'] in forbidden or probe['sha256'] in accepted_hashes:
+                        raise ValueError('Sobreposição exata com dados anteriores/reservados')
+                    jpeg, original, processed = normalize(raw)
+                    rel = f'images/0/{uid}.jpg'
+                    value = safe_write(work, rel, jpeg)
+                    if value in forbidden or value in accepted_hashes:
+                        raise ValueError('Sobreposição processada com dados anteriores/reservados')
+                    chosen.append({**item, 'subset': SUBSETS.get(generator, 'train'),
+                                   'real_image': rel, 'real_original_sha256': probe['sha256'],
+                                   'real_image_sha256': value,
+                                   'real_original_format': original['format'],
+                                   'real_original_size': original['size'],
+                                   'processed_size': processed})
+                    used_uids.add(uid)
+                    accepted_hashes.update((probe['sha256'], value))
+                except (OSError, ValueError) as error:
+                    failed[key] = type(error).__name__
+                atomic_json(state_path, state)
+                attempts = sum(len(rows) for rows in accepted.values()) + len(failed)
+                if attempts % 25 == 0:
+                    print(f'Pares reais aceitos={sum(len(rows) for rows in accepted.values())}/'
+                          f'{len(SHARDS)*PER_GENERATOR} | tentativas={attempts}', flush=True)
+            if len(chosen) < PER_GENERATOR:
+                raise RuntimeError(f'{generator}: apenas {len(chosen)}/{PER_GENERATOR} reais '
+                                   'obtidas; plano preservado para diagnóstico/retomada')
+            print(f'{generator}: {len(chosen)} fotografias reais verificadas', flush=True)
+        rows, invalid = materialize_selected(work, files, accepted, forbidden)
+        if not invalid:
+            break
+        for generator, uid, reason in invalid:
+            matches = [item for item in accepted[generator] if item['uid'] == uid]
+            if len(matches) != 1:
+                raise ValueError('Par rejeitado nao corresponde ao estado persistido')
+            item = matches[0]
+            accepted[generator].remove(item)
+            failed[f'{generator}:{uid}'] = f'FakeImage:{reason}'
+            state.setdefault('rejected_fake', []).append(
+                {'generator': generator, 'uid': uid, 'reason': reason})
+            used_uids.remove(uid)
+            accepted_hashes.discard(item['real_original_sha256'])
+            accepted_hashes.discard(item['real_image_sha256'])
+        atomic_json(state_path, state)
+        print(f'{len(invalid)} par(es) sinteticos rejeitados; buscando reposicao '
+              'nos mesmos geradores. Estado anterior preservado no registro.',
+              flush=True)
     seen = set()
     for row in rows:
         value = row['image_sha256']

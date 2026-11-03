@@ -44,6 +44,11 @@ das imagens; o resultado de 16 URLs não garante disponibilidade das demais.
   `plan_extension_1.json` registra os três shards adicionais antes da
   seleção dos novos pares. Os 315 pares reais já aceitos são reaproveitados.
   Após concluir, os dados ficam em `dados_fase3_8/aigi_pares_256_v1/`.
+  A primeira materialização encontrou uma sintética menor que 256 px apesar
+  dos metadados. O preparo agora verifica os bytes de cada sintética antes de
+  congelar o manifesto; registra rejeições em `state.json` e procura outro par
+  do mesmo gerador, sem ampliar imagens pequenas. Arquivos incompletos já
+  gravados não são apagados ou incluídos no manifesto final.
   Checkpoints e métricas novos ficam em `modelos/fase3_8_aigi_pares256_v1/`.
   Não sobrescrever diretórios anteriores.
 
