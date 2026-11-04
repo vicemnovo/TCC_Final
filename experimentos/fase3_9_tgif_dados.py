@@ -131,11 +131,22 @@ def validate_plan(plan, metadata):
 
 
 def selected_members(plan, kind):
-    field = 'original_member' if kind == 'original' else 'fake_member'
-    result = {row[field]: row for row in plan['rows']}
+    result = {source_key(row, kind): row for row in plan['rows']}
     if len(result) != COUNT:
         raise ValueError('Membros TGIF repetidos no plano')
     return result
+
+
+def source_key(row, kind):
+    """Usa categoria e nome; o mesmo ID pode ter recortes distintos."""
+    category = row['category']
+    if (not category or category in ('.', '..') or '/' in category or
+            '\\' in category):
+        raise ValueError('Categoria TGIF invalida no plano')
+    name = row['original_member' if kind == 'original' else 'fake_member']
+    if Path(name).name != name or '/' in name or '\\' in name:
+        raise ValueError('Nome TGIF invalido no plano')
+    return f'training/{category}/{name}'
 
 
 def read_selected(archive_path, plan, kind):
@@ -148,7 +159,9 @@ def read_selected(archive_path, plan, kind):
                 continue
             if not member.isfile() or member.name.startswith('/') or '..' in Path(member.name).parts:
                 raise ValueError('Membro inseguro no arquivo TGIF')
-            name = Path(member.name).name
+            # O tar preserva categorias (training/truck/..., training/cat/...).
+            # Comparar somente o basename mistura recortes do mesmo ID.
+            name = member.name
             if name not in target:
                 continue
             if member.size > MAX_MEMBER_BYTES or member.size <= 0:
@@ -159,14 +172,8 @@ def read_selected(archive_path, plan, kind):
             raw = stream.read(MAX_MEMBER_BYTES + 1)
             if len(raw) != member.size:
                 raise ValueError(f'Membro TGIF truncado: {name}')
-            # O CSV training associa alguns COCO IDs a varias categorias.
-            # Um tar pode repetir o mesmo nome; so aceitamos a repeticao se
-            # os bytes tambem forem identicos. Conteudo divergente invalida
-            # a correspondencia por ID e interrompe o preparo.
             if name in found:
-                if found[name] != raw:
-                    raise ValueError(f'Membro TGIF repetido com conteudo divergente: {name}')
-                continue
+                raise ValueError(f'Membro TGIF repetido: {name}')
             found[name] = raw
             if len(found) % 100 == 0:
                 print(f'{kind}: {len(found)}/{len(target)} imagens selecionadas lidas',
@@ -251,8 +258,10 @@ def prepare(args):
     rows = []
     for index, item in enumerate(plan['rows'], 1):
         for label, kind, member, raw in (
-                (0, 'original', item['original_member'], raw_real[item['original_member']]),
-                (1, 'sd2-fr', item['fake_member'], raw_fake[item['fake_member']])):
+                (0, 'original', source_key(item, 'original'),
+                 raw_real[source_key(item, 'original')]),
+                (1, 'sd2-fr', source_key(item, 'fake'),
+                 raw_fake[source_key(item, 'fake')])):
             original_sha = hashlib.sha256(raw).hexdigest()
             jpeg, original, size = normalize(raw)
             processed_sha = hashlib.sha256(jpeg).hexdigest()

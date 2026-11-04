@@ -17,6 +17,13 @@ mesmo ID ficam na mesma divisão. A origem das duas classes é processada
 para JPEG com lado curto de 256 pixels, reduzindo atalhos de formato e
 resolução. Este controle não elimina todos os possíveis vieses.
 
+O primeiro preparo encontrou no tar imagens com o mesmo ID e basename em
+categorias diferentes, mas com recortes distintos. A leitura agora usa o
+caminho completo `training/<categoria>/<nome>` de cada lado do par. O plano
+de IDs já salvo no Drive continua válido e os dois arquivos de treino já
+baixados em `/content` são reutilizados na mesma sessão; nenhuma imagem
+parcial ou checkpoint anterior é substituído.
+
 ## Procedimento no Colab
 
 Abra `Notebooks/fase_3/rodar_fase3_9_tgif_colab.ipynb` e execute:

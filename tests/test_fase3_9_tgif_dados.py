@@ -16,9 +16,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'experimentos'))
 import fase3_9_tgif_dados as dados
 
 
-def png():
+def png(color=(25, 50, 75)):
     buffer = io.BytesIO()
-    Image.new('RGB', (512, 512), (25, 50, 75)).save(buffer, format='PNG')
+    Image.new('RGB', (512, 512), color).save(buffer, format='PNG')
     return buffer.getvalue()
 
 
@@ -61,16 +61,20 @@ class TgifDataTests(unittest.TestCase):
             archive_path = root / 'original.tar.gz'
             content = png()
             with tarfile.open(archive_path, 'w:gz') as archive:
-                for name in ('orig/12_orig_512.png', 'other/12_orig_512.png',
-                             'orig/13_orig_512.png'):
+                for name in ('training/truck/12_orig_512.png',
+                             'training/cat/12_orig_512.png',
+                             'training/truck/13_orig_512.png'):
+                    raw = png((90, 20, 10)) if '/cat/' in name else content
                     member = tarfile.TarInfo(name)
-                    member.size = len(content)
-                    archive.addfile(member, io.BytesIO(content))
-            plan = {'rows': [{'original_member': '12_orig_512.png'}]}
+                    member.size = len(raw)
+                    archive.addfile(member, io.BytesIO(raw))
+            plan = {'rows': [{'category': 'truck',
+                              'original_member': '12_orig_512.png'}]}
             with patch.object(dados, 'COUNT', 1):
                 selected = dados.read_selected(archive_path, plan, 'original')
-            self.assertEqual(list(selected), ['12_orig_512.png'])
-            self.assertFalse((root / 'orig').exists())
+            self.assertEqual(list(selected), ['training/truck/12_orig_512.png'])
+            self.assertEqual(selected['training/truck/12_orig_512.png'], content)
+            self.assertFalse((root / 'training').exists())
 
 
 if __name__ == '__main__':

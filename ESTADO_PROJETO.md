@@ -9,6 +9,13 @@ em código isolado; ainda não houve preparo completo dos 768 pares, smoke,
 treino ou avaliação da 3.9. Procedimento em
 [`docs/README_fase3_9_execucao.md`](docs/README_fase3_9_execucao.md).
 
+**Preparo 3.9 em andamento:** o Colab baixou os arquivos completos TGIF
+`orig_training` (5,65 GB) e `sd2-fr_training` (5,91 GB), mas parou antes de
+congelar os pares: um mesmo basename apareceu em categorias diferentes com
+bytes distintos. O leitor foi corrigido para usar o caminho completo com
+categoria, mantendo o plano salvo em `.incompleto/plan.json`. Ainda não há
+`manifest.json` final da 3.9, smoke ou treino confirmado.
+
 Atualizado em 04/11/2026 com as saídas revisadas dos notebooks e os resultados
 informados pelo grupo. O Drive não foi montado nesta revisão; a existência
 remota dos artefatos foi verificada pelas saídas do Colab, não por leitura
