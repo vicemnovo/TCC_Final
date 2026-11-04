@@ -1,20 +1,29 @@
-# Estado do projeto — Fase 3.8 avaliada; Fase 3.9 TGIF preparada para execução
+# Estado do projeto — Fase 3.9 treinada internamente; avaliação Mirage pendente
+
+**Guia de retomada:** [`docs/GUIA_RETOMADA_FASE3_9.md`](docs/GUIA_RETOMADA_FASE3_9.md).
+Ele registra as células exatas, o estado da demo independente e alternativas
+para a próxima fase.
 
 **Atualização após o piloto TGIF:** a saída do Colab informou 341 IDs
 originais/sintéticos compartilhados em `validation`, sem treino, calibração
 ou avaliação externa. O piloto verificou os dois arquivos completos, oito
 amostras PNG de cada e nenhum membro desconhecido. O TGIF2 teve apenas os
 tamanhos dos arquivos de treino consultados. A 3.9 TGIF SD2-fr foi preparada
-em código isolado; ainda não houve preparo completo dos 768 pares, smoke,
-treino ou avaliação da 3.9. Procedimento em
+em código isolado. O preparo, smoke e treino interno foram concluídos no
+notebook; a avaliação Mirage da 3.9 ainda não foi executada. Procedimento em
 [`docs/README_fase3_9_execucao.md`](docs/README_fase3_9_execucao.md).
 
-**Preparo 3.9 em andamento:** o Colab baixou os arquivos completos TGIF
-`orig_training` (5,65 GB) e `sd2-fr_training` (5,91 GB), mas parou antes de
-congelar os pares: um mesmo basename apareceu em categorias diferentes com
-bytes distintos. O leitor foi corrigido para usar o caminho completo com
-categoria, mantendo o plano salvo em `.incompleto/plan.json`. Ainda não há
-`manifest.json` final da 3.9, smoke ou treino confirmado.
+**Treino interno 3.9 concluído:** o Colab congelou 768 pares TGIF e confirmou
+7.176 imagens de treino, 1.676 de seleção e 1.676 de calibração; o teste
+OpenFake de 1.947 imagens foi apenas conferido por hash. O smoke passou com
+GPU Tesla T4 e checkpoint inicial da 3.3. Foram executadas 12 épocas;
+a melhor foi a 10, com AUC de seleção **0,8988236**. A calibração interna
+registrou acurácia balanceada aparente **0,8557320**, temperatura **0,9187889**
+e limiar **0,47**. O notebook confirmou `phase3_final.pt`, `best.pt`,
+`internal_metrics.json` e `training_complete.json` no Drive. Nenhuma
+inferência externa da 3.9 foi registrada. Para terminar a comparação,
+executar as células de código marcadas **#11 a #14** do notebook da 3.9,
+sem refazer preparo ou treino.
 
 Atualizado em 04/11/2026 com as saídas revisadas dos notebooks e os resultados
 informados pelo grupo. O Drive não foi montado nesta revisão; a existência
@@ -37,10 +46,10 @@ reais utilizáveis nas cinco primeiras provas por grupo. A prova ampliada teve
 O grupo decidiu verificar TGIF/TGIF2 no lugar de ampliar AIGI. O piloto de
 acesso e pareamento TGIF foi executado em
 `Notebooks/fase_3/piloto_fase3_9_tgif_colab.ipynb`.
-Ver `docs/README_fase3_9_execucao.md`. Não existe ainda treino, checkpoint ou
-avaliação 3.9.
+Ver `docs/README_fase3_9_execucao.md`. O treino interno já foi concluído;
+a avaliação comparativa Mirage da 3.9 permanece pendente.
 
-## Onde paramos
+## Histórico da Fase 3.8 e contexto da 3.9
 
 - **Branch:** `fase3-ajuste-fino`, acompanhando `origin/fase3-ajuste-fino` no
   início desta revisão. Em outro computador, confirme o commit com
@@ -48,7 +57,7 @@ avaliação 3.9.
 - **Objetivo:** detector de imagens reais e sintéticas com pelo menos 85% de
   acurácia em teste externo independente ainda não observado. Essa meta não
   foi demonstrada. Vídeos e aplicação web/API permanecem para etapa futura.
-- **Fase atual:** 3.8, ajuste fino com pares AIGI. O preparo foi concluído:
+- **Fase 3.8 (histórica):** ajuste fino com pares AIGI. O preparo foi concluído:
   **480 pares/960 imagens**, 80 pares por gerador, com 640 imagens adicionais
   no treino, 160 na seleção e 160 na calibração. Os dados estão em
   `/content/drive/MyDrive/TCC_Final/dados_fase3_8/aigi_pares_256_v1/`.
@@ -100,18 +109,19 @@ erros da seleção por fonte, gerador, resolução e formato; não abre imagens 
 calibração/teste nem predições Mirage. As quatro alternativas originais para 3.9 estão em
 [`docs/AUDITORIA_E_OPCOES_FASE3_9.md`](docs/AUDITORIA_E_OPCOES_FASE3_9.md).
 A hipótese de novos pares AIGI foi interrompida após a baixa disponibilidade
-de fotos reais. Execute o piloto TGIF em
-`Notebooks/fase_3/piloto_fase3_9_tgif_colab.ipynb` antes de fixar
-quantidades. Fazer preparo versionado antes de novo treino; o piloto verifica viabilidade da
-fonte, o preparo fixa divisões e hashes, e o smoke verifica carregamento e
-forward, sem medir generalização. Só após treino, seleção e calibração internos
-congelados avaliar no mesmo Mirage para comparação descritiva. Retomar treino
-incompleto por `last.pt`; não retomar uma execução já marcada completa.
+de fotos reais. O piloto TGIF, o preparo versionado, o smoke, o treino, a
+seleção e a calibração internos da 3.9 já terminaram. Não repetir essas
+etapas. Executar as células de código **#11 a #14** em
+`Notebooks/fase_3/rodar_fase3_9_tgif_colab.ipynb` para copiar o Mirage,
+congelar os parâmetros e registrar a avaliação comparativa. O Mirage já
+foi observado; suas respostas não podem orientar outro ajuste.
 
-Os checkpoints novos ficam somente em
+Os checkpoints da 3.8 ficam em
 `/content/drive/MyDrive/TCC_Final/modelos/fase3_8_aigi_pares256_v1/`;
 resultados comparativos em
 `/content/drive/MyDrive/TCC_Final/resultados/benchmark_externo_mirage_2000_v1/fase3_8_aigi_pares256_v1/`.
+O checkpoint final da 3.9 está em
+`/content/drive/MyDrive/TCC_Final/modelos/fase3_9_tgif_sd2fr_v1/phase3_final.pt`.
 Os modelos 3.3–3.7 continuam em diretórios próprios. Nunca substituir seus
 checkpoints, métricas ou manifestos.
 

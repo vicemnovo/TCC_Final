@@ -55,6 +55,12 @@ Abra `Notebooks/fase_3/rodar_fase3_9_tgif_colab.ipynb` e execute:
 Os dados preparados ficam em `dados_fase3_9/tgif_sd2fr_768_v1/` no Drive.
 Checkpoints e resultados anteriores continuam em seus diretórios próprios.
 A 3.9 mantém arquitetura, checkpoint inicial, transformações e parâmetros
-da 3.8; a mudança planejada é acrescentar estes pares TGIF internos. A
-preparação completa, o smoke, o treino e a avaliação externa da 3.9 ainda
-não foram executados. Não há acurácia 3.9 a relatar.
+da 3.8; a mudança planejada é acrescentar estes pares TGIF internos.
+
+**Estado verificado no notebook em 04/11/2026:** preparo, cópia local,
+smoke e treino interno terminaram. Melhor época 10/12, AUC de seleção
+0,8988236, temperatura interna 0,9187889 e limiar interno 0,47. Os
+arquivos `phase3_final.pt` e `training_complete.json` estão presentes
+conforme saída do Colab. A avaliação Mirage da 3.9 ainda não foi executada;
+para concluí-la, use somente as células de código **#11 a #14**. A acurácia
+externa da 3.9 ainda é desconhecida.

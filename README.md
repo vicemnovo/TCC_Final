@@ -24,9 +24,12 @@ Os pilotos combinados de Open Images e pares AIGI, ainda sem treino, estão em
 [`docs/README_fase3_9.md`](docs/README_fase3_9.md).
 As provas AIGI ampliadas tiveram baixa disponibilidade de fotos reais. O
 [piloto TGIF](docs/README_fase3_9_tgif.md) confirmou 341 IDs pareados em
-`validation`. A próxima ação é o
-[preparo da Fase 3.9](docs/README_fase3_9_execucao.md), seguido de cópia
-local, smoke e treino manual; nenhuma dessas etapas foi executada ainda.
+`validation`. A Fase 3.9 já concluiu preparo, smoke e treino interno conforme
+saídas do Colab. A próxima ação é a
+[avaliação comparativa Mirage da 3.9](docs/README_fase3_9_execucao.md)
+com pesos e limiar congelados; ainda não há acurácia externa da 3.9.
+Para retomar em outra sessão, siga o
+[guia de retomada da Fase 3.9](docs/GUIA_RETOMADA_FASE3_9.md).
 
 O smoke test verifica dados, checkpoint e uma passagem pelo modelo; não mede
 acurácia. O treino escolhe a melhor época na seleção interna e ajusta

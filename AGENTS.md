@@ -68,10 +68,17 @@ alteradas para a 3.9. O piloto em
 pareados no TGIF `validation`, amostras PNG legíveis e nenhum treino iniciado.
 A variante 3.9 usa apenas os arquivos `training` TGIF originais/SD2-fr;
 TGIF2 teve somente os tamanhos remotos conferidos e fica fora desta versão.
-O preparo, smoke, treino e avaliação da 3.9 ainda não foram executados.
+O preparo, smoke e treino interno da 3.9 foram concluídos conforme saídas
+salvas no notebook: melhor época 10 de 12, AUC de seleção 0,8988236,
+temperatura 0,9187889, limiar 0,47. Os artefatos `phase3_final.pt` e
+`training_complete.json` foram confirmados pela célula de leitura. A
+avaliação comparativa Mirage da 3.9 ainda não foi executada.
 Ver `docs/README_fase3_9_execucao.md`. Não ajustar dados ou parâmetros às predições do
 Mirage. Detalhes do resultado 3.8 em `ESTADO_PROJETO.md` e
 `docs/README_fase3_8_execucao.md`.
+Na retomada, priorizar `docs/GUIA_RETOMADA_FASE3_9.md`: executar as células
+#1–#5 de configuração em novo runtime e depois as células de código #11–#14
+para a avaliação comparativa da 3.9. Não repetir preparo ou treino concluídos.
 
 O smoke conferiu 6.152 imagens de treino, 1.420 de seleção, 1.420 de
 calibração e 1.947 do teste OpenFake apenas por hash. Os pesos iniciais da
