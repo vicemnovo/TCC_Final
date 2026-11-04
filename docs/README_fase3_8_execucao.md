@@ -95,3 +95,9 @@ descritiva com checkpoints e limiares congelados, nunca fonte para treinar,
 calibrar ou escolher hiperparâmetros. A 3.7 obteve 62,3% nele conforme saída
 do usuário; a 3.8 ainda não foi treinada nem avaliada. Para demonstrar 85% em
 teste final independente será necessário um conjunto novo, não observado.
+
+Se `# 10` informar que `run_live` ou outra variável está ausente, o kernel
+perdeu o estado ou as células iniciais não foram executadas nesta sessão.
+Execute novamente `# 1` a `# 5`, depois `# 8` para restaurar os dados locais,
+e só então `# 10`. Esse erro acontece antes de o treino começar; não repita
+o preparo dos pares da célula `# 7`.
