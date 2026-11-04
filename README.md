@@ -22,8 +22,11 @@ O procedimento histórico da 3.8 está em
 [`docs/README_fase3_8_execucao.md`](docs/README_fase3_8_execucao.md).
 Os pilotos combinados de Open Images e pares AIGI, ainda sem treino, estão em
 [`docs/README_fase3_9.md`](docs/README_fase3_9.md).
-As provas AIGI ampliadas tiveram baixa disponibilidade de fotos reais. A
-próxima ação é o [piloto TGIF/TGIF2](docs/README_fase3_9_tgif.md), sem treino.
+As provas AIGI ampliadas tiveram baixa disponibilidade de fotos reais. O
+[piloto TGIF](docs/README_fase3_9_tgif.md) confirmou 341 IDs pareados em
+`validation`. A próxima ação é o
+[preparo da Fase 3.9](docs/README_fase3_9_execucao.md), seguido de cópia
+local, smoke e treino manual; nenhuma dessas etapas foi executada ainda.
 
 O smoke test verifica dados, checkpoint e uma passagem pelo modelo; não mede
 acurácia. O treino escolhe a melhor época na seleção interna e ajusta

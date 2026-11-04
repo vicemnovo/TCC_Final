@@ -1,5 +1,10 @@
 # Fase 3.9 — avaliação de viabilidade TGIF/TGIF2
 
+> Registro histórico do piloto, já concluído conforme saída do Colab:
+> 341 IDs pareados no TGIF `validation`, sem treino iniciado. Para continuar,
+> use o [roteiro atual da 3.9](README_fase3_9_execucao.md). As instruções
+> de execução do piloto abaixo permanecem apenas para documentação.
+
 ## Decisão técnica
 
 O grupo pediu uma fonte de pares que dispense o AIGI. O TGIF/TGIF2 dos

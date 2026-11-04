@@ -1,4 +1,13 @@
-# Estado do projeto — Fase 3.8 avaliada; piloto TGIF preparado para a 3.9
+# Estado do projeto — Fase 3.8 avaliada; Fase 3.9 TGIF preparada para execução
+
+**Atualização após o piloto TGIF:** a saída do Colab informou 341 IDs
+originais/sintéticos compartilhados em `validation`, sem treino, calibração
+ou avaliação externa. O piloto verificou os dois arquivos completos, oito
+amostras PNG de cada e nenhum membro desconhecido. O TGIF2 teve apenas os
+tamanhos dos arquivos de treino consultados. A 3.9 TGIF SD2-fr foi preparada
+em código isolado; ainda não houve preparo completo dos 768 pares, smoke,
+treino ou avaliação da 3.9. Procedimento em
+[`docs/README_fase3_9_execucao.md`](docs/README_fase3_9_execucao.md).
 
 Atualizado em 04/11/2026 com as saídas revisadas dos notebooks e os resultados
 informados pelo grupo. O Drive não foi montado nesta revisão; a existência
@@ -19,9 +28,9 @@ novos pareáveis em FLUX.1_dev, PA_alpha e SD_2.1, mas somente 0, 0 e 2 fotos
 reais utilizáveis nas cinco primeiras provas por grupo. A prova ampliada teve
 0/20 fotos utilizáveis em FLUX.1_dev, 0/20 em PA_alpha e 5/20 em SD_2.1.
 O grupo decidiu verificar TGIF/TGIF2 no lugar de ampliar AIGI. O piloto de
-acesso e pareamento TGIF foi preparado em
-`Notebooks/fase_3/piloto_fase3_9_tgif_colab.ipynb`, mas não foi executado.
-Ver `docs/README_fase3_9_tgif.md`. Não existe ainda treino, checkpoint ou
+acesso e pareamento TGIF foi executado em
+`Notebooks/fase_3/piloto_fase3_9_tgif_colab.ipynb`.
+Ver `docs/README_fase3_9_execucao.md`. Não existe ainda treino, checkpoint ou
 avaliação 3.9.
 
 ## Onde paramos

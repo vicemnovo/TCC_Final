@@ -1,0 +1,53 @@
+# Fase 3.9: execução TGIF SD2-fr
+
+## O que o piloto comprovou
+
+O piloto TGIF informou 341 IDs compartilhados entre fotografias originais
+e versões SD2 totalmente regeneradas na divisão `validation` dos autores.
+Os dois arquivos foram baixados integralmente e oito amostras PNG de cada
+um foram decodificadas. Nenhum treino ou teste externo foi iniciado. Os
+arquivos TGIF2/FLUX tiveram somente o tamanho remoto verificado e não
+entram nesta variante.
+
+O CSV oficial `training` contém 2.440 linhas originais, mas apenas 1.558
+IDs únicos, pois algumas fotos pertencem a várias categorias. A seleção
+da 3.9 é por ID: 768 pares únicos distribuídos em 512 para treino, 128
+para seleção da melhor época e 128 para calibração. Real e sintética do
+mesmo ID ficam na mesma divisão. A origem das duas classes é processada
+para JPEG com lado curto de 256 pixels, reduzindo atalhos de formato e
+resolução. Este controle não elimina todos os possíveis vieses.
+
+## Procedimento no Colab
+
+Abra `Notebooks/fase_3/rodar_fase3_9_tgif_colab.ipynb` e execute:
+
+1. **Células 1–5:** conectam GPU e Drive, desbloqueiam a credencial GitHub
+   existente e sincronizam o código da branch publicada. A senha não fica
+   no projeto. Nenhum treino começa nessas células.
+2. **Célula 6, preparo/congelamento:** baixa os dois arquivos `training`
+   completos do TGIF para `/content` (11,56 GB comprimidos), fixa o plano
+   e persiste os 768 pares normalizados e seus hashes no Drive. Se cair,
+   execute novamente: o download `.part` e o plano podem ser retomados.
+   Ela não usa os arquivos `validation`/`testing` do TGIF como treino.
+3. **Célula 7, cópia local:** copia dados internos persistidos da 3.5, 3.7,
+   3.8 e 3.9 para `/content` com verificação. Repita a cada nova sessão.
+4. **Célula 8, smoke test:** confere divisões, duplicatas exatas, GPU,
+   arquitetura, checkpoint inicial da 3.3, passagem forward e escrita.
+   Não ajusta pesos. Avance somente se aparecer `Smoke OK`.
+5. **Célula 9, treino manual:** inicia ou retoma o ajuste fino a partir de
+   `last.pt`, em `modelos/fase3_9_tgif_sd2fr_v1/`. Execute explicitamente;
+   abrir o notebook não inicia treinamento. A seleção interna escolhe a
+   época e a calibração interna fixa temperatura e limiar.
+6. **Célula 10:** lê arquivos e métricas internas. Treino interno concluído
+   não equivale a avaliação externa concluída.
+7. **Células 11–14:** copiam as mesmas 2.000 imagens Mirage congeladas,
+   registram checkpoint/temperatura/limiar antes de inferir, executam a
+   avaliação comparativa e leem o resultado. O Mirage já foi observado:
+   não usar suas respostas para selecionar pesos, dados ou parâmetros.
+
+Os dados preparados ficam em `dados_fase3_9/tgif_sd2fr_768_v1/` no Drive.
+Checkpoints e resultados anteriores continuam em seus diretórios próprios.
+A 3.9 mantém arquitetura, checkpoint inicial, transformações e parâmetros
+da 3.8; a mudança planejada é acrescentar estes pares TGIF internos. A
+preparação completa, o smoke, o treino e a avaliação externa da 3.9 ainda
+não foram executados. Não há acurácia 3.9 a relatar.
