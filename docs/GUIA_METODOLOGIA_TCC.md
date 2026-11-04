@@ -28,6 +28,13 @@ globais), **FFT** (representação em frequência) e **EfficientNet-B0** (padrõ
 locais de convolução). A saída dos ramos é combinada por uma fusão com *gate*,
 que aprende pesos para a decisão conjunta. Isso descreve a intenção de cada
 ramo; as métricas disponíveis não isolam quanto cada ramo contribuiu.
+O ramo FFT calcula `log1p(abs(fftshift(fft2(x))))` em cada recorte de 224 px.
+Isso oferece um sinal de frequência, mas não comprova que o modelo identifica
+um artefato específico. ViT e CNN também não constituem, por si, verificadores
+de coerência física. A Fase 3.7 em diante tratará ruído/pixel, consistência
+de cor/pigmentação, relações globais e frequências como hipóteses verificáveis
+em dados internos, uma mudança por vez. O detector continua recebendo pixels,
+sem exigir metadados de origem de quem envia a imagem.
 Os scripts das Fases 3.5 e 3.6 remontam essa arquitetura a partir de
 [`fase3.3_compressao.ipynb`](../Notebooks/fase_3/fase3.3_compressao.ipynb),
 carregam estritamente o checkpoint inicial da 3.3 e treinam uma nova cópia.

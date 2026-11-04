@@ -33,7 +33,7 @@ Google Drive no Colab: /content/drive/MyDrive/TCC_Final
 ## Organização do repositório
 - `Notebooks/fase_1/`: notebook original e documentação histórica da Fase 1.
 - `Notebooks/fase_2/`: treinamento e teste histórico da Fase 2.
-- `Notebooks/fase_3/`: Fases 3.1, 3.2, 3.3 e interface Colab da 3.4.
+- `Notebooks/fase_3/`: Fases 3.1–3.3 e interfaces Colab das fases atuais.
 - `Notebooks/configuracao/`: configuração inicial de credenciais no Colab.
 - `experimentos/`: código Python principal dos experimentos; a Fase 3.4 depende
   de `Notebooks/fase_3/fase3.3_compressao.ipynb` no snapshot do GitHub.
@@ -44,6 +44,23 @@ Google Drive no Colab: /content/drive/MyDrive/TCC_Final
 - Não mover dados, checkpoints ou resultados para acompanhar mudanças de código.
 
 ## Prioridade atual
+A Fase 3.7 foi treinada e avaliada no Mirage: acurácia 0,623 e AUC
+0,6908315, conforme saída informada pelo usuário. A Fase 3.8 incorporou
+480 pares AIGI internos, com 80 pares por gerador. Preparo, cópia local e
+smoke test da 3.8 foram concluídos no Colab; o notebook local não registra
+execução da célula de treino `# 10`. A próxima ação é iniciar ou retomar
+manualmente esse treino e, após conclusão interna, congelar o checkpoint,
+temperatura e limiar para a comparação Mirage. Detalhes em
+`ESTADO_PROJETO.md` e `docs/README_fase3_8_execucao.md`.
+
+O smoke conferiu 6.152 imagens de treino, 1.420 de seleção, 1.420 de
+calibração e 1.947 do teste OpenFake apenas por hash. Os pesos iniciais da
+Fase 3.3 foram carregados. A auditoria mostrou que os pares AIGI novos
+têm o mesmo formato e faixa de tamanho nas duas classes, mas a associação
+classe × resolução continua forte no Community Forensics histórico. Tratar
+essa associação como limitação a investigar internamente, sem ajustar a 3.8
+pelos resultados externos.
+
 A Fase 3.5 foi treinada internamente, teve diagnóstico na seleção e já
 foi avaliada uma vez no Mirage-Test externo. Preservar esse checkpoint e
 usar apenas a auditoria interna anterior para definir outra variante.
@@ -53,9 +70,20 @@ A Fase 3.6 foi treinada internamente nas mesmas partições da 3.5,
 alterando somente a probabilidade de `RandomDownUp` de 0,15 para 0,50.
 Sua AUC de seleção foi 0,9472355, contra 0,9487973 da 3.5; não há
 evidência interna de melhora. Preservar ambos os checkpoints e não
-repetir o treino concluído. Ver `docs/README_fase3_6.md`. Nenhuma das
-duas versões atingiu a meta externa de 85%; a 3.6 ainda não passou por
-avaliação externa.
+repetir o treino concluído. Ver `docs/README_fase3_6.md`. Na comparação
+externa Mirage informada pelo usuário, a 3.6 obteve acurácia 0,572 e AUC
+0,6303885, abaixo da 3.5 (0,6045 e 0,679972). Ambas permanecem abaixo
+da meta de 85%; preservar checkpoints e resultados.
+
+A avaliação comparativa da 3.6 no Mirage-Test 2000 v1 foi informada como
+concluída. A partir desta fase, cada versão treinada deve ter teste externo
+final nas mesmas 1.000
+fotos reais e 1.000 sintéticas congeladas do Mirage, com checkpoint,
+temperatura e limiar definidos internamente antes de inferir. Registrar
+resultados por fase em diretórios separados; nunca substituir resultados
+anteriores. Esse protocolo serve para comparação entre fases. Como o Mirage
+já foi observado, não chamá-lo de teste cego independente de novas fases,
+nem usar suas predições para treinar, calibrar ou escolher parâmetros.
 
 O Mirage-Test 2000 v1 foi informado como congelado e avaliado uma vez com
 a Fase 3.5, conforme saída do Colab fornecida pelo usuário: 60,45% de
@@ -66,14 +94,29 @@ hiperparâmetros da próxima variante, nem apresentá-lo como teste final
 independente dessa variante. Preservar o manifesto, checkpoint e resultados.
 A ausência de duplicatas exatas não exclui imagens derivadas da mesma origem.
 
-Em 03/11/2026 foi preparado um piloto **não executado** da possível Fase 3.7
-com Open Images: `experimentos/fase3_7_openimages_pilot.py`,
+Foi preparado um piloto opcional **não executado** de Open Images antes da
+escolha dos dados da 3.7: `experimentos/fase3_7_openimages_pilot.py`,
 `Notebooks/fase_3/piloto_fase3_7_openimages_colab.ipynb` e
 `docs/README_fase3_7_piloto.md`. Ele verifica apenas metadados e três JPEGs
 de uma fonte real com autoria declarada; não cria divisões nem treina. Antes
 de incorporar a fonte, conferir a saída real do piloto, licença, espaço,
 proveniência e isolamento por autor. Autoria declarada não prova ausência de
-edição por IA. Não alterar a 3.5/3.6 por causa do piloto.
+edição por IA. Esse piloto é opcional e não define o objetivo da 3.7:
+o detector deve funcionar sem metadados de origem de imagens enviadas por
+usuários. Priorizar diversidade de conteúdo real e sintético, qualidade de
+rótulos, ausência de duplicatas e redução de atalhos de resolução/formato.
+Na Fase 3.7 em diante, tratar ruído e sinais locais de pixel, consistência
+de cor/pigmentação, coerência global da cena e sinais de frequência como
+hipóteses visuais a testar em dados internos. A expressão "copigmentação"
+usada pelo autor será operacionalizada como consistência de cor/pigmentação
+até haver definição mais específica. A FFT já calcula o espectro de
+magnitude; ViT e CNN não comprovam, por si, raciocínio físico ou explicação
+de um artefato. Não declarar que uma pista foi detectada sem uma avaliação
+específica. Priorizar dados visualmente diversos e um fator experimental
+por versão antes de acrescentar ramos ou complexidade de GPU.
+Metadados de origem servem apenas para auditar rótulos e separar divisões
+quando disponíveis; não podem ser entrada obrigatória do modelo nem condição
+para inferência. Não alterar a 3.5/3.6 por causa do piloto.
 
 Na retomada, ler primeiro `ESTADO_PROJETO.md` e
 `docs/GUIA_METODOLOGIA_TCC.md`. Não alterar retroativamente o script de
@@ -99,6 +142,12 @@ alterar a arquitetura ou iniciar novos experimentos.
 - Não declarar sucesso sem executar ou verificar.
 - Manter código organizado, objetivo e com comentários naturais.
 - Responder em português brasileiro.
+- Ao explicar um plano ou resultado experimental, definir em linguagem simples
+  o papel de cada etapa citada (piloto, preparo/congelamento, smoke test,
+  treino, seleção interna, calibração, avaliação externa e retomada). Dizer
+  o que cada etapa verifica ou produz, o que ainda não comprova e qual é o
+  critério para avançar. Distinguir claramente "treino interno concluído"
+  de "avaliação externa concluída"; não chamar piloto de treinamento.
 
 ## Treinamento
 - Priorizar ajuste fino sobre treinamento do zero.

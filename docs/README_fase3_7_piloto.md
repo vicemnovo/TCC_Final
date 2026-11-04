@@ -1,12 +1,18 @@
-# Fase 3.7 — piloto de fotografias com origem rastreável
+# Piloto opcional de Open Images para a Fase 3.7
+
+**Estado histórico:** a 3.7 já foi treinada e avaliada usando mais imagens do
+Community Forensics–Small, sem incorporar Open Images. Este piloto opcional
+de Open Images não tem execução registrada nos arquivos disponíveis e não
+inicia treino. Para o trabalho atual, veja `ESTADO_PROJETO.md` na raiz.
 
 ## Por que testar esta fonte
 
-Na seleção **interna** da Fase 3.5, todas as fotos reais do recorte Community
-Forensics–Small tinham `real_source=n/a`. Também houve associação entre classe
-e resolução processada. Esses fatos motivam testar uma fonte adicional de
-fotografias reais com autoria declarada, antes de definir qualquer novo treino.
-O resultado do Mirage-Test não seleciona imagens nem parâmetros desta etapa.
+Na seleção **interna** da Fase 3.5 houve associação entre classe e resolução
+processada e erros em imagens sintéticas fotográficas. Uma fonte nova de fotos
+reais pode ampliar a variedade do treino, mas autoria rastreável não é um
+objetivo do detector. Imagens enviadas por usuários poderão não ter origem
+conhecida; a inferência deve depender somente dos pixels. O resultado do
+Mirage-Test não seleciona imagens nem parâmetros desta etapa.
 
 O [Open Images V7 oficial](https://storage.googleapis.com/openimages/web/download_v7.html)
 publica metadados com ID, URL de origem, página da imagem, licença e perfil
@@ -53,13 +59,16 @@ durante treino ou avaliação, conforme a [política de dados](POLITICA_DADOS_FU
    distintos, dimensões/tamanhos dos três JPEGs e espaço livre de `/content`
    e Drive. Não é necessário enviar as imagens.
 
-## Gate antes do experimento completo
+## Quando este piloto seria aproveitado
 
-Com o piloto aprovado, definir previamente quantidade, teto de bytes e
+Se esse dataset for escolhido por critérios internos de diversidade e
+qualidade, definir previamente quantidade, teto de bytes e
 distribuição das fotos reais; dividir por **autor**, sem o mesmo autor em
 treino, seleção e calibração; conferir hashes contra todas as divisões
 internas e benchmarks conhecidos; normalizar formatos das duas classes;
 persistir manifesto e cópia no Drive; testar cópia local e retomada.
-Somente então criar uma versão de ajuste fino isolada. Reservar outro teste
-externo ainda não visto para a nova versão. A ausência de duplicata exata
+Somente então criar uma versão de ajuste fino isolada. O protocolo do projeto
+prevê comparação externa dessa versão no mesmo Mirage-Test congelado; para
+alegar teste cego independente após observar o Mirage, será necessário outro
+conjunto reservado. A ausência de duplicata exata
 não exclui imagens derivadas da mesma fonte.

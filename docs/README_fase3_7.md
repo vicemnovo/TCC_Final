@@ -1,5 +1,10 @@
 # Fase 3.7 — expansão dos dados internos
 
+**Estado:** treino interno e avaliação comparativa no Mirage concluídos
+conforme saídas do Colab informadas pelo grupo: acurácia de 62,3% e AUC de
+0,6908315. O protocolo abaixo registra a hipótese e as instruções originais;
+não é o próximo treino a executar. Veja `ESTADO_PROJETO.md` para a 3.8.
+
 ## Hipótese e limite
 
 A 3.7 acrescenta uma seleção de `HFCF_small_1.parquet` e

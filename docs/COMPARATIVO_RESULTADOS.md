@@ -1,10 +1,11 @@
 # Resultados verificados e decisão após a Fase 3.4 v2
 
-Esta tabela reúne **testes históricos em conjuntos diferentes**. O novo
-benchmark congelado RAISE + MNW, planejado com 1.000 imagens por classe, está
-descrito em `docs/BENCHMARK_EXTERNO_2000.md` e ainda não produziu métricas.
-Quando executado, seus resultados terão tabela própria; não substituirão
-os números antigos.
+**Documento histórico até a Fase 3.4 v2.** A tabela reúne testes em conjuntos
+diferentes. O benchmark RAISE/MNW com 1.000 imagens por classe **já foi
+executado** nas Fases 1–3.4 v2; a melhor acurácia informada foi 62,1% na 3.4
+v2. Veja `BENCHMARK_EXTERNO_2000.md` para o protocolo e `ESTADO_PROJETO.md` na
+raiz para a fase atual. Os números abaixo pertencem aos testes anteriores e
+não são substituídos por métricas de outros conjuntos.
 
 Os valores abaixo vêm de `modelos/*/final_metrics.json` (Fases 2–3.3),
 da saída salva de `Notebooks/fase_1/fase1_vit.ipynb` (Fase 1) e das saídas

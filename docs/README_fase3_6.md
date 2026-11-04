@@ -76,5 +76,46 @@ foi obtida na mesma partição usada para ajustar o limiar e é aparente.
 Esses números não medem generalização externa. Manter a 3.5 como candidata
 interna preferida, preservar a 3.6 e não repetir a célula 8 para buscar
 mais épocas: `training_complete.json` marca a execução como concluída.
-Definir e congelar um novo conjunto externo independente antes de qualquer
-inferência; os benchmarks já observados não servem para escolher a versão.
+Por decisão do projeto, a avaliação externa comparativa desta fase usará o
+**mesmo Mirage-Test 2000 v1** já congelado e avaliado na 3.5. Isso permite
+comparação pareada nas mesmas 1.000 fotos reais e 1.000 sintéticas, com
+temperatura e limiar próprios de cada checkpoint. Como o conjunto já foi
+observado, o resultado da 3.6 **não é um novo teste cego independente** e
+não deve orientar treino, escolha de pesos ou hiperparâmetros da 3.7.
+
+## Avaliação externa comparativa da 3.6: concluída conforme saída do Colab
+
+O usuário informou **1.144/2.000 acertos (57,2%)**, AUC **0,6303885**,
+recall sintético **28,8%** e especificidade real **85,6%**. Na mesma seleção
+congelada, a 3.5 obteve **1.209/2.000 (60,45%)** e AUC **0,679972**.
+A comparação pareada registrou 1.123 imagens acertadas por ambas,
+86 somente pela 3.5, 21 somente pela 3.6 e 770 erradas por ambas.
+O Drive não foi montado nesta revisão local; estes números vêm da saída
+enviada pelo usuário. Não usar esses casos para ajustar a Fase 3.7.
+
+### Procedimento já executado, preservado para reprodutibilidade
+
+Abra `Notebooks/fase_3/avaliar_fase3_6_mirage_2000_colab.ipynb` no Colab
+com GPU e execute, em ordem:
+
+1. Células **1–5**: dependências, montagem do Drive, desbloqueio da
+   credencial GitHub, código da branch e função de progresso. O snapshot
+   deve incluir `experimentos/avaliar_fase3_6_mirage.py`.
+2. Célula **6**: copia as 2.000 imagens do Drive para `/content` e verifica
+   seus hashes; não refaz o download das fontes nem o plano congelado.
+3. Célula **7**: congela, antes da inferência, o hash do manifesto, o
+   checkpoint 3.6, temperatura **0,4662258029**, limiar **0,495**, código
+   de avaliação e resultado anterior da 3.5. Não altera esses arquivos.
+4. Célula **8**: inicia manualmente a inferência externa. Usa cinco recortes
+   de 224 px e salva em `resultados/benchmark_externo_mirage_2000_v1/
+   fase3_6_escala_p05_v1/` os arquivos `metrics.json`, `predictions.csv`
+   e `per_group.json`. A comparação pareada registra casos corrigidos e
+   piorados em relação à 3.5. Um resultado existente não é sobrescrito.
+5. Célula **9**: lê as métricas das duas fases, sem nova inferência.
+
+Não execute piloto, preparação ou treino novamente. Se a sessão cair antes
+da célula 8, repita as células 1–6; a célula 7 reconhece um bloqueio
+idêntico já salvo. Se cair durante a gravação dos resultados, uma pasta
+`.incompleto.*` pode permanecer no Drive; o diretório final só aparece
+depois que os três arquivos estiverem escritos. O resultado informado pelo
+usuário já foi obtido; não repetir a célula 8 para selecionar versões.

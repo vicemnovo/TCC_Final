@@ -1,5 +1,10 @@
 # Fase 3.8 — AIGI pareado
 
+**Estado em 03/11/2026:** preparo, cópia local e smoke test concluídos conforme
+saídas salvas no notebook. A célula `# 10. TREINO MANUAL` ainda não tem saída
+local registrada. Em sessão já preparada, ela é a próxima ação; em sessão nova,
+execute `# 1` a `# 5`, depois `# 8` e `# 10`. Não repita o preparo concluído.
+
 ## Para que serve
 
 A 3.7 acrescentou exemplos, mas a auditoria dos novos dados mostrou uma

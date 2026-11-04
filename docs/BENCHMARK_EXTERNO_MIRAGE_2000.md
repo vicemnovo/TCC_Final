@@ -1,10 +1,10 @@
 # Benchmark externo avaliado — Mirage-Test 2000 v1
 
-**Estado:** seleção congelada e avaliação única da Fase 3.5 concluída,
-conforme saída do Colab fornecida pelo autor. As instruções de execução
-abaixo documentam o procedimento histórico; para retomar o projeto, leia o
-resultado e preserve os arquivos existentes. Não repita a inferência para
-escolher outra configuração.
+**Estado:** seleção congelada e avaliações comparativas das Fases 3.5, 3.6 e
+3.7 informadas pelo grupo. Este documento registra o protocolo e o resultado
+da primeira avaliação, na 3.5; as métricas das fases seguintes constam em
+`ESTADO_PROJETO.md` na raiz. As instruções abaixo são históricas. Não repita
+uma avaliação para escolher outra configuração.
 
 ## Finalidade e fonte
 

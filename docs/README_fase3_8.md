@@ -1,5 +1,10 @@
 # Fase 3.8 — piloto de dados AIGI pareados
 
+**Estado histórico do piloto:** o preparo posterior congelou 480 pares AIGI,
+a cópia local foi conferida e o smoke test passou no Colab. Para continuar o
+experimento, use `README_fase3_8_execucao.md` e `ESTADO_PROJETO.md` na raiz;
+as instruções de piloto abaixo documentam a etapa anterior.
+
 ## Função experimental da versão
 
 A auditoria interna da 3.7 encontrou, em seus **3.000 novos exemplos**, reais
