@@ -17,7 +17,29 @@ dados. Arquitetura, checkpoint inicial, protocolo de recortes e demais
 parâmetros serão comparados com os scripts existentes antes de criar o
 treinador. **Ainda não há seleção congelada, treino, smoke ou resultado 3.9.**
 
-## Execute agora: pilotos, sem treino
+## Primeiro piloto concluído; próximo passo sem treino
+
+Saída informada pelo grupo: Open Images teve **1.739.728 imagens elegíveis nos
+metadados**, **76.961 autores declarados** e 10/10 JPEGs legíveis no piloto.
+Isso confirma acesso e quantidade de candidatos, não a qualidade do rótulo
+das imagens ainda não examinadas. No AIGI, havia 129 UIDs novos pareáveis em
+`FLUX.1_dev`, 129 em `PA_alpha` e 311 em `SD_2.1`; de cinco fotografias reais
+testadas em cada grupo, ficaram utilizáveis **0, 0 e 2**, respectivamente.
+As falhas incluíram URLs inacessíveis, imagens ilegíveis e lado curto abaixo
+de 256 px. Quinze provas são insuficientes para fixar o tamanho ou descartar
+o AIGI. Os relatórios existentes permanecem preservados.
+
+**Execute agora** `Notebooks/fase_3/piloto_ampliado_fase3_9_colab.ipynb`:
+células 1–5 para montar o ambiente e sincronizar o código; célula 6 para
+verificar **20** fotos reais por grupo nos três grupos anteriores, mantendo
+o relatório original; célula 7 para mostrar o resumo. GPU não é necessária.
+O novo arquivo local é
+`/content/fase3_9_aigi_piloto/pilot_expanded_20_summary.json`.
+Envie a saída da célula 7 e eventual erro da 6. Se a sessão anterior do
+Colab ainda existir, o cache de CSV, shards e fotos já baixadas será
+reutilizado; em sessão nova, os arquivos completos serão baixados novamente.
+
+## Procedimento do primeiro piloto (histórico)
 
 Abra `Notebooks/fase_3/pilotos_fase3_9_colab.ipynb` no runtime do Colab.
 GPU não é necessária neste passo. Execute as células em ordem:

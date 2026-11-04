@@ -1,4 +1,4 @@
-# Estado do projeto — Fase 3.8 avaliada; pilotos da 3.9 preparados
+# Estado do projeto — Fase 3.8 avaliada; piloto inicial 3.9 executado
 
 Atualizado em 04/11/2026 com as saídas revisadas dos notebooks e os resultados
 informados pelo grupo. O Drive não foi montado nesta revisão; a existência
@@ -12,7 +12,13 @@ direta nesta máquina. O registro detalhado anterior está em
 `de4a11cbb733ad9088860d5f254cbb2a900f181cc1ccb28b2fd894cf4a37706a`.
 Os pilotos combinados Open Images + novos pares AIGI estão preparados em
 `Notebooks/fase_3/pilotos_fase3_9_colab.ipynb` e
-`experimentos/fase3_9_piloto_aigi.py`; **não foram executados**. Ver
+`experimentos/fase3_9_piloto_aigi.py` e foram executados pelo grupo. O
+Open Images mostrou 1.739.728 candidatos elegíveis nos metadados, 76.961
+autores declarados e dez JPEGs legíveis. O AIGI mostrou 129, 129 e 311 UIDs
+novos pareáveis em FLUX.1_dev, PA_alpha e SD_2.1, mas somente 0, 0 e 2 fotos
+reais utilizáveis nas cinco primeiras provas por grupo. A próxima ação é a
+prova ampliada de 20 por grupo em
+`Notebooks/fase_3/piloto_ampliado_fase3_9_colab.ipynb`; ver
 `docs/README_fase3_9.md`. Não existe ainda treino, checkpoint ou avaliação 3.9.
 
 ## Onde paramos
@@ -75,8 +81,9 @@ erros da seleção por fonte, gerador, resolução e formato; não abre imagens 
 calibração/teste nem predições Mirage. As quatro alternativas originais para 3.9 estão em
 [`docs/AUDITORIA_E_OPCOES_FASE3_9.md`](docs/AUDITORIA_E_OPCOES_FASE3_9.md).
 A hipótese 3.9 escolhida pelo grupo combina Open Images V7 e novos pares AIGI.
-Execute os dois pilotos de `Notebooks/fase_3/pilotos_fase3_9_colab.ipynb` antes
-de fixar quantidades. Fazer preparo versionado antes de novo treino; o piloto verifica viabilidade da
+O primeiro piloto já foi executado. Execute apenas a prova ampliada AIGI
+de `Notebooks/fase_3/piloto_ampliado_fase3_9_colab.ipynb` antes de fixar
+quantidades. Fazer preparo versionado antes de novo treino; o piloto verifica viabilidade da
 fonte, o preparo fixa divisões e hashes, e o smoke verifica carregamento e
 forward, sem medir generalização. Só após treino, seleção e calibração internos
 congelados avaliar no mesmo Mirage para comparação descritiva. Retomar treino

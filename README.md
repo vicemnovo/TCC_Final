@@ -22,6 +22,8 @@ O procedimento histórico da 3.8 está em
 [`docs/README_fase3_8_execucao.md`](docs/README_fase3_8_execucao.md).
 Os pilotos combinados de Open Images e pares AIGI, ainda sem treino, estão em
 [`docs/README_fase3_9.md`](docs/README_fase3_9.md).
+O primeiro piloto foi executado; a próxima ação é a prova ampliada AIGI
+descrita nesse guia, sem repetir a coleta Open Images.
 
 O smoke test verifica dados, checkpoint e uma passagem pelo modelo; não mede
 acurácia. O treino escolhe a melhor época na seleção interna e ajusta

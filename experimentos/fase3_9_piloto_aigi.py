@@ -121,7 +121,7 @@ def pilot(args):
             'probes_attempted': min(args.probes, len(candidates[group])),
             'probes_usable': success, 'probe_size': dict(sizes),
             'probe_sources': dict(sources), 'probe_failures': dict(failures)}
-    output = args.local / 'pilot_summary.json'
+    output = args.local / args.report_name
     if output.is_file():
         if json.loads(output.read_text(encoding='utf-8')) != report:
             raise ValueError('Relatório anterior difere; preserve-o antes de outro piloto')
@@ -138,9 +138,13 @@ def main():
     parser.add_argument('--local', type=Path, default=LOCAL)
     parser.add_argument('--groups', nargs='+', default=list(DEFAULT_GROUPS))
     parser.add_argument('--probes', type=int, default=5)
+    parser.add_argument('--report-name', default='pilot_summary.json',
+                        help='Nome de arquivo novo para preservar relatórios anteriores')
     args = parser.parse_args()
     if not 1 <= args.probes <= 20:
         raise ValueError('Escolha 1 a 20 provas por gerador')
+    if not re.fullmatch(r'[a-zA-Z0-9_\-]+\.json', args.report_name):
+        raise ValueError('Nome simples .json necessário para o relatório')
     pilot(args)
 
 

@@ -57,9 +57,13 @@ AUC 0,641268, abaixo da 3.7; recall sintético 0,557 e especificidade real
 inferiu calibração, OpenFake reservado ou Mirage. A seleção escolheu o
 checkpoint, portanto esses números não provam generalização. O grupo escolheu
 uma hipótese de dados combinando fotografias reais Open Images V7 e pares
-novos AIGI na Fase 3.9. Os pilotos estão preparados, mas ainda não executados,
-em `Notebooks/fase_3/pilotos_fase3_9_colab.ipynb`. Eles não treinam. Conferir
-saídas e viabilidade antes de fixar tamanho, divisões ou treinador; ver
+novos AIGI na Fase 3.9. O primeiro piloto foi executado pelo grupo: 10 JPEGs
+Open Images legíveis entre 1.739.728 candidatos nos metadados; no AIGI,
+somente 2/15 fotografias reais testadas foram utilizáveis, apesar de haver
+UIDs novos. Um piloto ampliado de 20 provas por grupo está em
+`Notebooks/fase_3/piloto_ampliado_fase3_9_colab.ipynb`. Ele não treina e
+preserva o primeiro relatório. Conferir suas saídas antes de fixar tamanho,
+divisões ou treinador; ver
 `docs/README_fase3_9.md`. Não ajustar dados ou parâmetros às predições do
 Mirage. Detalhes do resultado 3.8 em `ESTADO_PROJETO.md` e
 `docs/README_fase3_8_execucao.md`.
