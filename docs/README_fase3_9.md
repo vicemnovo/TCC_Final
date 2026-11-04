@@ -1,5 +1,11 @@
 # Fase 3.9 — piloto combinado Open Images + AIGI
 
+> **Histórico:** a prova ampliada AIGI terminou com 0/20, 0/20 e 5/20 fotos
+> reais utilizáveis nos três grupos. O grupo decidiu verificar TGIF/TGIF2
+> como fonte de novos pares. O procedimento atual está em
+> [`README_fase3_9_tgif.md`](README_fase3_9_tgif.md); não repetir os pilotos
+> AIGI abaixo para decidir esta versão.
+
 ## Hipótese e estado
 
 A auditoria interna da 3.8, informada pelo grupo, registrou 74 falsos

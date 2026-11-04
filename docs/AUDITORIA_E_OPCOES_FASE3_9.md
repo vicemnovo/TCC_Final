@@ -1,5 +1,10 @@
 # Auditoria interna da 3.8 e alternativas para a Fase 3.9
 
+> **Atualização:** o piloto ampliado de novos pares AIGI teve apenas 5/60
+> fotografias reais utilizáveis. O grupo decidiu verificar TGIF/TGIF2 como
+> fonte de pares originais/alterados. A seleção A+C descrita abaixo é
+> histórica; veja [`README_fase3_9_tgif.md`](README_fase3_9_tgif.md).
+
 **Estado em 04/11/2026:** a Fase 3.8 concluiu treino e comparação Mirage.
 Seu checkpoint final, o manifesto, a calibração e o resultado externo ficam
 preservados nos diretórios originais do Drive. A auditoria por imagem descrita

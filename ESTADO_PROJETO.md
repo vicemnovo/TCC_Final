@@ -1,4 +1,4 @@
-# Estado do projeto — Fase 3.8 avaliada; piloto inicial 3.9 executado
+# Estado do projeto — Fase 3.8 avaliada; piloto TGIF preparado para a 3.9
 
 Atualizado em 04/11/2026 com as saídas revisadas dos notebooks e os resultados
 informados pelo grupo. O Drive não foi montado nesta revisão; a existência
@@ -16,10 +16,13 @@ Os pilotos combinados Open Images + novos pares AIGI estão preparados em
 Open Images mostrou 1.739.728 candidatos elegíveis nos metadados, 76.961
 autores declarados e dez JPEGs legíveis. O AIGI mostrou 129, 129 e 311 UIDs
 novos pareáveis em FLUX.1_dev, PA_alpha e SD_2.1, mas somente 0, 0 e 2 fotos
-reais utilizáveis nas cinco primeiras provas por grupo. A próxima ação é a
-prova ampliada de 20 por grupo em
-`Notebooks/fase_3/piloto_ampliado_fase3_9_colab.ipynb`; ver
-`docs/README_fase3_9.md`. Não existe ainda treino, checkpoint ou avaliação 3.9.
+reais utilizáveis nas cinco primeiras provas por grupo. A prova ampliada teve
+0/20 fotos utilizáveis em FLUX.1_dev, 0/20 em PA_alpha e 5/20 em SD_2.1.
+O grupo decidiu verificar TGIF/TGIF2 no lugar de ampliar AIGI. O piloto de
+acesso e pareamento TGIF foi preparado em
+`Notebooks/fase_3/piloto_fase3_9_tgif_colab.ipynb`, mas não foi executado.
+Ver `docs/README_fase3_9_tgif.md`. Não existe ainda treino, checkpoint ou
+avaliação 3.9.
 
 ## Onde paramos
 
@@ -80,9 +83,9 @@ e resultado resumido informado nesta conversa. Ela inspeciona dados de treino/se
 erros da seleção por fonte, gerador, resolução e formato; não abre imagens de
 calibração/teste nem predições Mirage. As quatro alternativas originais para 3.9 estão em
 [`docs/AUDITORIA_E_OPCOES_FASE3_9.md`](docs/AUDITORIA_E_OPCOES_FASE3_9.md).
-A hipótese 3.9 escolhida pelo grupo combina Open Images V7 e novos pares AIGI.
-O primeiro piloto já foi executado. Execute apenas a prova ampliada AIGI
-de `Notebooks/fase_3/piloto_ampliado_fase3_9_colab.ipynb` antes de fixar
+A hipótese de novos pares AIGI foi interrompida após a baixa disponibilidade
+de fotos reais. Execute o piloto TGIF em
+`Notebooks/fase_3/piloto_fase3_9_tgif_colab.ipynb` antes de fixar
 quantidades. Fazer preparo versionado antes de novo treino; o piloto verifica viabilidade da
 fonte, o preparo fixa divisões e hashes, e o smoke verifica carregamento e
 forward, sem medir generalização. Só após treino, seleção e calibração internos

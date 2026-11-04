@@ -60,11 +60,13 @@ uma hipótese de dados combinando fotografias reais Open Images V7 e pares
 novos AIGI na Fase 3.9. O primeiro piloto foi executado pelo grupo: 10 JPEGs
 Open Images legíveis entre 1.739.728 candidatos nos metadados; no AIGI,
 somente 2/15 fotografias reais testadas foram utilizáveis, apesar de haver
-UIDs novos. Um piloto ampliado de 20 provas por grupo está em
-`Notebooks/fase_3/piloto_ampliado_fase3_9_colab.ipynb`. Ele não treina e
-preserva o primeiro relatório. Conferir suas saídas antes de fixar tamanho,
-divisões ou treinador; ver
-`docs/README_fase3_9.md`. Não ajustar dados ou parâmetros às predições do
+UIDs novos. O piloto ampliado teve 0/20 fotografias utilizáveis em FLUX.1_dev,
+0/20 em PA_alpha e 5/20 em SD_2.1. Não ampliar pares AIGI novos pelo método
+atual. O grupo escolheu verificar TGIF/TGIF2 como fonte de originais e imagens
+alteradas para a 3.9. O piloto preparado em
+`Notebooks/fase_3/piloto_fase3_9_tgif_colab.ipynb` não cria treino e deve ser
+executado antes de fixar dados, divisões ou treinador; ver
+`docs/README_fase3_9_tgif.md`. Não ajustar dados ou parâmetros às predições do
 Mirage. Detalhes do resultado 3.8 em `ESTADO_PROJETO.md` e
 `docs/README_fase3_8_execucao.md`.
 

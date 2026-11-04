@@ -22,8 +22,8 @@ O procedimento histórico da 3.8 está em
 [`docs/README_fase3_8_execucao.md`](docs/README_fase3_8_execucao.md).
 Os pilotos combinados de Open Images e pares AIGI, ainda sem treino, estão em
 [`docs/README_fase3_9.md`](docs/README_fase3_9.md).
-O primeiro piloto foi executado; a próxima ação é a prova ampliada AIGI
-descrita nesse guia, sem repetir a coleta Open Images.
+As provas AIGI ampliadas tiveram baixa disponibilidade de fotos reais. A
+próxima ação é o [piloto TGIF/TGIF2](docs/README_fase3_9_tgif.md), sem treino.
 
 O smoke test verifica dados, checkpoint e uma passagem pelo modelo; não mede
 acurácia. O treino escolhe a melhor época na seleção interna e ajusta
@@ -76,7 +76,9 @@ Os resultados da antiga avaliação de 20 imagens continuam históricos.
 - [Auditoria interna e opções 3.9](docs/AUDITORIA_E_OPCOES_FASE3_9.md):
   resultado interno da 3.8, proteção das divisões e alternativas de dados.
 - [Pilotos combinados da 3.9](docs/README_fase3_9.md): passos manuais antes de
-  congelar novos dados ou iniciar treino.
+  congelar novos dados ou iniciar treino; histórico Open Images/AIGI.
+- [Piloto TGIF/TGIF2 da 3.9](docs/README_fase3_9_tgif.md): validação de
+  acesso, tamanhos e vínculo entre originais e imagens alteradas.
 - [Avaliações históricas](docs/COMPARATIVO_RESULTADOS.md): Fases 1–3.4;
   [Mirage](docs/BENCHMARK_EXTERNO_MIRAGE_2000.md): protocolo das fases atuais.
 
