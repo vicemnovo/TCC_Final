@@ -66,9 +66,11 @@ diretório final não aparece; se falhar durante a gravação, uma pasta parcial
 | **C. Mais pares AIGI com UIDs novos** | Ampliar pares reais/sintéticos de geradores e cenas já documentados, mantendo o mesmo UID em uma só divisão e processamento equivalente nas duas classes. | Dá exemplos de conteúdo semelhante com rótulos opostos, útil para testar se a rede aprende sinais da geração em vez do tema da cena. | Fotos reais são buscadas nas fontes e podem faltar; mais pares da mesma família não garantem diversidade. Os termos das fontes reais precisam de conferência. | Auditoria interna mostrar benefício por grupo AIGI e erros concentrados em grupos com poucos pares; piloto confirmar URLs, hashes e quota antes de congelar. |
 | **D. Controle de escala com os dados existentes** | Criar versão isolada com amostragem ou transformações que aproximem a distribuição de resolução entre classes, mantendo fontes e divisão fixas. | Custo de download baixo; testa diretamente a hipótese de atalho de tamanho. | Pode perder artefatos finos e já houve aumento de `RandomDownUp` na 3.6 sem melhora interna. | Auditoria interna evidenciar associação forte e erros ligados à faixa de tamanho; definir uma única transformação antes do treino. |
 
-As opções são **hipóteses**, sem promessa de atingir 85%. A ordem provisória
-prioriza diversidade útil de dados; a escolha e os critérios quantitativos
-devem ser fechados com a auditoria interna, **sem olhar predições Mirage**.
+As opções são **hipóteses**, sem promessa de atingir 85%. Após a auditoria
+interna da 3.8, o grupo escolheu combinar **A + C** como hipótese de dados da
+3.9. Os pilotos estão em `Notebooks/fase_3/pilotos_fase3_9_colab.ipynb` e o
+procedimento em `docs/README_fase3_9.md`. Quantidades e divisões ainda
+dependem do piloto; não usar predições Mirage para defini-las.
 A [página oficial do Open Images V7](https://storage.googleapis.com/openimages/web/download_v7.html)
 oferece metadados e download por seleção; o
 [cartão do Community Forensics–Small](https://huggingface.co/datasets/OwensLab/CommunityForensics-Small)

@@ -1,10 +1,19 @@
-# Estado do projeto — Fase 3.8 avaliada; próxima hipótese interna pendente
+# Estado do projeto — Fase 3.8 avaliada; pilotos da 3.9 preparados
 
 Atualizado em 04/11/2026 com as saídas revisadas dos notebooks e os resultados
 informados pelo grupo. O Drive não foi montado nesta revisão; a existência
 remota dos artefatos foi verificada pelas saídas do Colab, não por leitura
 direta nesta máquina. O registro detalhado anterior está em
 [`docs/historico/ESTADO_PROJETO_ate_3_6.md`](docs/historico/ESTADO_PROJETO_ate_3_6.md).
+
+**Atualização 3.9:** o grupo executou a auditoria interna da 3.8 e informou
+1.420 imagens de seleção, acurácia descritiva 0,9176056, AUC 0,9749367,
+74 falsos positivos e 43 falsos negativos. O checkpoint manteve SHA-256
+`de4a11cbb733ad9088860d5f254cbb2a900f181cc1ccb28b2fd894cf4a37706a`.
+Os pilotos combinados Open Images + novos pares AIGI estão preparados em
+`Notebooks/fase_3/pilotos_fase3_9_colab.ipynb` e
+`experimentos/fase3_9_piloto_aigi.py`; **não foram executados**. Ver
+`docs/README_fase3_9.md`. Não existe ainda treino, checkpoint ou avaliação 3.9.
 
 ## Onde paramos
 
@@ -59,16 +68,15 @@ O experimento 3.8 está concluído; não repetir `# 7` (preparo), `# 9` (smoke),
 e leia as células `# 11` e `# 15` já executadas. Em novo runtime, os resultados
 persistidos estão no Drive nos caminhos abaixo; `/content` é temporário.
 
-Próxima ação de desenvolvimento: executar a auditoria **interna** preparada em
+Auditoria **interna** executada pelo grupo com
 [`Notebooks/fase_3/auditar_interno_fase3_8_colab.ipynb`](Notebooks/fase_3/auditar_interno_fase3_8_colab.ipynb)
-após publicar o código na branch. Ela inspeciona dados de treino/seleção e
+e resultado resumido informado nesta conversa. Ela inspeciona dados de treino/seleção e
 erros da seleção por fonte, gerador, resolução e formato; não abre imagens de
-calibração/teste nem predições Mirage. Os resultados por imagem ainda não foram
-obtidos no Colab. As quatro alternativas provisórias para 3.9 estão em
+calibração/teste nem predições Mirage. As quatro alternativas originais para 3.9 estão em
 [`docs/AUDITORIA_E_OPCOES_FASE3_9.md`](docs/AUDITORIA_E_OPCOES_FASE3_9.md).
-Usar a auditoria para definir uma única hipótese de dados para uma versão
-3.9 isolada. Fazer piloto
-e preparo versionado antes de novo treino; o piloto verifica viabilidade da
+A hipótese 3.9 escolhida pelo grupo combina Open Images V7 e novos pares AIGI.
+Execute os dois pilotos de `Notebooks/fase_3/pilotos_fase3_9_colab.ipynb` antes
+de fixar quantidades. Fazer preparo versionado antes de novo treino; o piloto verifica viabilidade da
 fonte, o preparo fixa divisões e hashes, e o smoke verifica carregamento e
 forward, sem medir generalização. Só após treino, seleção e calibração internos
 congelados avaliar no mesmo Mirage para comparação descritiva. Retomar treino

@@ -51,16 +51,18 @@ interno de 12 épocas e avaliação comparativa Mirage da 3.8 foram concluídos
 conforme saídas salvas no notebook: melhor época 12, AUC de seleção 0,9603094,
 temperatura 0,5229031 e limiar 0,31. No Mirage, a 3.8 teve acurácia 0,599 e
 AUC 0,641268, abaixo da 3.7; recall sintético 0,557 e especificidade real
-0,641. Preservar ambos os checkpoints e resultados. A próxima ação é auditar
-erros e distribuições **internas** para definir uma hipótese de dados em
-versão isolada, sem ajustar a 3.8 pelas respostas do Mirage. Detalhes em
-`ESTADO_PROJETO.md` e `docs/README_fase3_8_execucao.md`. A auditoria interna
-da 3.8 foi preparada em `experimentos/auditoria_interna_fase3_8.py` e
-`Notebooks/fase_3/auditar_interno_fase3_8_colab.ipynb`; ainda não foi
-executada no Colab. Ela deve inferir somente a seleção interna, preservar
-calibração/testes e registrar saída nova. Quatro opções para a 3.9 estão em
-`docs/AUDITORIA_E_OPCOES_FASE3_9.md`; nenhuma foi escolhida pelos resultados
-externos.
+0,641. Preservar ambos os checkpoints e resultados. A auditoria interna da
+3.8 foi executada pelo grupo: seleção com 1.420 imagens, 74 falsos positivos,
+43 falsos negativos, acurácia descritiva 0,9176056 e AUC 0,9749367. Não
+inferiu calibração, OpenFake reservado ou Mirage. A seleção escolheu o
+checkpoint, portanto esses números não provam generalização. O grupo escolheu
+uma hipótese de dados combinando fotografias reais Open Images V7 e pares
+novos AIGI na Fase 3.9. Os pilotos estão preparados, mas ainda não executados,
+em `Notebooks/fase_3/pilotos_fase3_9_colab.ipynb`. Eles não treinam. Conferir
+saídas e viabilidade antes de fixar tamanho, divisões ou treinador; ver
+`docs/README_fase3_9.md`. Não ajustar dados ou parâmetros às predições do
+Mirage. Detalhes do resultado 3.8 em `ESTADO_PROJETO.md` e
+`docs/README_fase3_8_execucao.md`.
 
 O smoke conferiu 6.152 imagens de treino, 1.420 de seleção, 1.420 de
 calibração e 1.947 do teste OpenFake apenas por hash. Os pesos iniciais da
