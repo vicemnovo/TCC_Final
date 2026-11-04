@@ -1,6 +1,6 @@
-# Estado do projeto — Fase 3.8 pronta para treino
+# Estado do projeto — Fase 3.8 avaliada; próxima hipótese interna pendente
 
-Atualizado em 03/11/2026 com as saídas revisadas dos notebooks e os resultados
+Atualizado em 04/11/2026 com as saídas revisadas dos notebooks e os resultados
 informados pelo grupo. O Drive não foi montado nesta revisão; a existência
 remota dos artefatos foi verificada pelas saídas do Colab, não por leitura
 direta nesta máquina. O registro detalhado anterior está em
@@ -24,9 +24,16 @@ direta nesta máquina. O registro detalhado anterior está em
   checkpoint inicial da **Fase 3.3**, forward e gravação. Conferiu por hash
   6.152 imagens de treino, 1.420 de seleção, 1.420 de calibração e 1.947 do
   teste OpenFake reservado. O teste reservado não foi inferido.
-- **Treino 3.8:** a célula `# 10` ainda não tem saída no notebook versionado.
-  Nenhuma época, métrica interna ou resultado Mirage da 3.8 está verificado
-  aqui. Não apresentar o smoke como treino concluído.
+- **Treino 3.8:** a célula `# 10` concluiu 12 épocas no Colab. A melhor foi a
+  época 12, com AUC de seleção **0,9603094**. A calibração interna registrou
+  acurácia balanceada aparente **0,9113623**, temperatura **0,5229031** e
+  limiar **0,31**. As células `# 11` e `# 15` confirmam os artefatos e o
+  resultado salvo. O teste OpenFake reservado não foi inferido.
+- **Avaliação Mirage 3.8:** 1.198/2.000 acertos (**59,9%**), AUC **0,641268**,
+  recall sintético **55,7%** e especificidade real **64,1%**; TN=641, FP=359,
+  FN=443, TP=557. O checkpoint congelado tem SHA-256
+  `de4a11cbb733ad9088860d5f254cbb2a900f181cc1ccb28b2fd894cf4a37706a`.
+  Resultado comparativo no Drive, sem ajuste por imagens externas.
 
 ## Resultados anteriores comparáveis
 
@@ -35,7 +42,7 @@ direta nesta máquina. O registro detalhado anterior está em
 | Fase 3.5 | 60,45% | 0,679972 | Treino e avaliação concluídos |
 | Fase 3.6 | 57,20% | 0,6303885 | Treino e avaliação concluídos |
 | Fase 3.7 | 62,30% | 0,6908315 | Treino e avaliação concluídos |
-| Fase 3.8 | — | — | Preparo e smoke concluídos; treino pendente |
+| Fase 3.8 | 59,90% | 0,641268 | Treino e avaliação concluídos |
 
 As métricas acima vieram das saídas do Colab enviadas pelo grupo. O Mirage
 contém 1.000 imagens reais e 1.000 sintéticas fixas, mas já foi observado.
@@ -44,25 +51,28 @@ calibrar ou escolher pesos, dados ou hiperparâmetros. A avaliação independent
 final exigirá outro conjunto reservado antes de ser visto. O benchmark
 RAISE/MNW e as 20 imagens externas antigas também são históricos.
 
-## Como continuar a 3.8
+## Como continuar o projeto
 
-Abra [`Notebooks/fase_3/rodar_fase3_8_colab.ipynb`](Notebooks/fase_3/rodar_fase3_8_colab.ipynb)
-no VS Code com GPU do Colab. A numeração abaixo é a que aparece nos comentários
-`# N.` das células de código; a primeira célula Markdown não entra na conta.
+O experimento 3.8 está concluído; não repetir `# 7` (preparo), `# 9` (smoke),
+`# 10` (treino) nem `# 14` (avaliação). Para consultar as saídas, abra
+[`Notebooks/fase_3/rodar_fase3_8_colab.ipynb`](Notebooks/fase_3/rodar_fase3_8_colab.ipynb)
+e leia as células `# 11` e `# 15` já executadas. Em novo runtime, os resultados
+persistidos estão no Drive nos caminhos abaixo; `/content` é temporário.
 
-1. **Sessão já conectada, com `# 8` e `# 9` concluídas:** execute manualmente
-   **`# 10. TREINO MANUAL`**. O modo `auto` inicia ou retoma de `last.pt`.
-2. **Nova sessão:** execute **`# 1` a `# 5`** para GPU, dependências, Drive,
-   credencial GitHub e snapshot do código. Execute **`# 8. COPIA LOCAL`** para
-   refazer `/content` e depois **`# 10`**. O preparo `# 7` já concluiu; não
-   refaça a seleção. O smoke `# 9` já foi salvo e não precisa ser repetido.
-3. Ao terminar, execute **`# 11. LEITURA INTERNA`** e confira
-   `training_complete.json`, `internal_metrics.json`, melhor época, AUC de
-   seleção, temperatura e limiar. Treino concluído ainda não significa
-   avaliação externa concluída.
-4. Execute **`# 12` a `# 15`** em ordem: cópia local do Mirage, congelamento
-   de checkpoint/temperatura/limiar, avaliação comparativa e leitura do
-   resultado. Envie as saídas de `# 11` e `# 15` para registrar a 3.8.
+Próxima ação de desenvolvimento: executar a auditoria **interna** preparada em
+[`Notebooks/fase_3/auditar_interno_fase3_8_colab.ipynb`](Notebooks/fase_3/auditar_interno_fase3_8_colab.ipynb)
+após publicar o código na branch. Ela inspeciona dados de treino/seleção e
+erros da seleção por fonte, gerador, resolução e formato; não abre imagens de
+calibração/teste nem predições Mirage. Os resultados por imagem ainda não foram
+obtidos no Colab. As quatro alternativas provisórias para 3.9 estão em
+[`docs/AUDITORIA_E_OPCOES_FASE3_9.md`](docs/AUDITORIA_E_OPCOES_FASE3_9.md).
+Usar a auditoria para definir uma única hipótese de dados para uma versão
+3.9 isolada. Fazer piloto
+e preparo versionado antes de novo treino; o piloto verifica viabilidade da
+fonte, o preparo fixa divisões e hashes, e o smoke verifica carregamento e
+forward, sem medir generalização. Só após treino, seleção e calibração internos
+congelados avaliar no mesmo Mirage para comparação descritiva. Retomar treino
+incompleto por `last.pt`; não retomar uma execução já marcada completa.
 
 Os checkpoints novos ficam somente em
 `/content/drive/MyDrive/TCC_Final/modelos/fase3_8_aigi_pares256_v1/`;
@@ -82,10 +92,18 @@ checkpoints, métricas ou manifestos.
   documentada do plano com três shards e substituição de sintéticas cujos
   bytes contradiziam os metadados de tamanho. Plano, extensão, estado e hashes
   foram preservados no Drive.
-- Após a avaliação 3.8, escolher a próxima hipótese **apenas com dados
-  internos**: diversidade de novos datasets, qualidade dos rótulos e controle
-  de atalhos de tamanho/formato têm prioridade. O teste Mirage relata
-  generalização observada e não determina ajustes da próxima versão.
+- Comparada à 3.7 nas mesmas imagens Mirage, a 3.8 acertou **48 imagens a
+  menos**: 180 acertos exclusivos da 3.7 e 132 exclusivos da 3.8. O recall
+  sintético subiu de 44,0% para 55,7%, enquanto a especificidade real caiu de
+  80,6% para 64,1%. Esse resultado não autoriza ajustar o limiar no Mirage.
+- O log do treino imprime `Partições 3.7` por uma mensagem herdada. O código
+  da 3.8 acrescenta os pares AIGI, e a auditoria do treino mostra 320 reais
+  e 320 sintéticas AIGI. Preservar o script usado nesta execução e seu hash;
+  corrigir a mensagem em uma versão futura, sem reescrever a proveniência.
+- Escolher a próxima hipótese **apenas com dados internos**: diversidade de
+  novos datasets, qualidade dos rótulos e controle de atalhos de tamanho e
+  formato têm prioridade. O teste Mirage relata generalização observada e
+  não determina ajustes da próxima versão.
 
 Para entender a arquitetura e as métricas, leia
 [`docs/GUIA_METODOLOGIA_TCC.md`](docs/GUIA_METODOLOGIA_TCC.md). Para detalhes

@@ -46,12 +46,21 @@ Google Drive no Colab: /content/drive/MyDrive/TCC_Final
 ## Prioridade atual
 A Fase 3.7 foi treinada e avaliada no Mirage: acurácia 0,623 e AUC
 0,6908315, conforme saída informada pelo usuário. A Fase 3.8 incorporou
-480 pares AIGI internos, com 80 pares por gerador. Preparo, cópia local e
-smoke test da 3.8 foram concluídos no Colab; o notebook versionado não registra
-execução da célula de treino `# 10`. A próxima ação é iniciar ou retomar
-manualmente esse treino e, após conclusão interna, congelar o checkpoint,
-temperatura e limiar para a comparação Mirage. Detalhes em
-`ESTADO_PROJETO.md` e `docs/README_fase3_8_execucao.md`.
+480 pares AIGI internos, com 80 pares por gerador. Preparo, smoke, treino
+interno de 12 épocas e avaliação comparativa Mirage da 3.8 foram concluídos
+conforme saídas salvas no notebook: melhor época 12, AUC de seleção 0,9603094,
+temperatura 0,5229031 e limiar 0,31. No Mirage, a 3.8 teve acurácia 0,599 e
+AUC 0,641268, abaixo da 3.7; recall sintético 0,557 e especificidade real
+0,641. Preservar ambos os checkpoints e resultados. A próxima ação é auditar
+erros e distribuições **internas** para definir uma hipótese de dados em
+versão isolada, sem ajustar a 3.8 pelas respostas do Mirage. Detalhes em
+`ESTADO_PROJETO.md` e `docs/README_fase3_8_execucao.md`. A auditoria interna
+da 3.8 foi preparada em `experimentos/auditoria_interna_fase3_8.py` e
+`Notebooks/fase_3/auditar_interno_fase3_8_colab.ipynb`; ainda não foi
+executada no Colab. Ela deve inferir somente a seleção interna, preservar
+calibração/testes e registrar saída nova. Quatro opções para a 3.9 estão em
+`docs/AUDITORIA_E_OPCOES_FASE3_9.md`; nenhuma foi escolhida pelos resultados
+externos.
 
 O smoke conferiu 6.152 imagens de treino, 1.420 de seleção, 1.420 de
 calibração e 1.947 do teste OpenFake apenas por hash. Os pesos iniciais da
@@ -60,6 +69,11 @@ têm o mesmo formato e faixa de tamanho nas duas classes, mas a associação
 classe × resolução continua forte no Community Forensics histórico. Tratar
 essa associação como limitação a investigar internamente, sem ajustar a 3.8
 pelos resultados externos.
+
+O script de treino 3.8 imprime `Partições 3.7` por mensagem herdada. As
+partições efetivas incluem 320 reais e 320 sintéticas AIGI no treino; o
+checkpoint e a configuração guardam o hash do script executado. Não alterar
+retroativamente esse script apenas para corrigir o texto do log.
 
 A Fase 3.5 foi treinada internamente, teve diagnóstico na seleção e já
 foi avaliada uma vez no Mirage-Test externo. Preservar esse checkpoint e

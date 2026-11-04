@@ -13,11 +13,12 @@ a generalização do detector de imagens.
 
 ## Ponto de partida
 
-**Fase 3.8:** 480 pares AIGI foram preparados, copiados e passaram pelo smoke
-test no Colab. O notebook versionado ainda não registra treino 3.8. Consulte
+**Fase 3.8:** 480 pares AIGI foram preparados; o treino interno e a avaliação
+comparativa Mirage foram concluídos conforme saídas do Colab. A acurácia foi
+59,9%, abaixo dos 62,3% da 3.7 nas mesmas imagens. Consulte
 [`ESTADO_PROJETO.md`](ESTADO_PROJETO.md) antes de continuar; ele contém as
-células exatas de retomada e distingue o que foi executado do que está
-pendente. O procedimento completo está em
+células executadas, os limites dos resultados e a próxima auditoria interna.
+O procedimento histórico da 3.8 está em
 [`docs/README_fase3_8_execucao.md`](docs/README_fase3_8_execucao.md).
 
 O smoke test verifica dados, checkpoint e uma passagem pelo modelo; não mede
@@ -50,8 +51,7 @@ contêm a implementação principal.
 | Conjunto | Modelos já avaliados | Melhor acurácia informada |
 | --- | --- | ---: |
 | RAISE/MNW 2000 | Fases 1–3.4 v2 | 62,1% (3.4 v2) |
-| Mirage 2000 | Fases 3.5–3.7 | 62,3% (3.7) |
-| Mirage 2000 | Fase 3.8 | Avaliação pendente |
+| Mirage 2000 | Fases 3.5–3.8 | 62,3% (3.7); 3.8: 59,9% |
 
 Os dois conjuntos têm imagens e protocolos diferentes; não comparar suas
 porcentagens como uma única série de desempenho. O Mirage já foi observado
@@ -69,6 +69,8 @@ Os resultados da antiga avaliação de 20 imagens continuam históricos.
 - [Metodologia](docs/GUIA_METODOLOGIA_TCC.md): arquitetura, probabilidade,
   divisões e significado das métricas.
 - [Plano de acurácia](docs/PLANO_ACURACIA_85.md): prioridades após a 3.8.
+- [Auditoria interna e opções 3.9](docs/AUDITORIA_E_OPCOES_FASE3_9.md):
+  execução manual, proteção das divisões e alternativas de novos dados.
 - [Avaliações históricas](docs/COMPARATIVO_RESULTADOS.md): Fases 1–3.4;
   [Mirage](docs/BENCHMARK_EXTERNO_MIRAGE_2000.md): protocolo das fases atuais.
 

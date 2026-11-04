@@ -1,41 +1,39 @@
 # Plano atual — meta de 85% de acurácia externa
 
-**Estado verificado em 03/11/2026:** a 3.7 concluiu treino e avaliação
-comparativa; obteve 62,3% no Mirage 2000 conforme saída do Colab. A 3.8
-concluiu preparo, cópia e smoke test com 480 pares AIGI. Seu treino e sua
-avaliação ainda não aparecem no notebook versionado. A meta de 85% continua
-aberta. Consulte [`ESTADO_PROJETO.md`](../ESTADO_PROJETO.md) para a retomada.
+**Estado em 04/11/2026:** a 3.7 obteve 62,3% e a 3.8 obteve 59,9% nas mesmas
+2.000 imagens Mirage, conforme saídas do Colab. A 3.8 concluiu treino interno
+com 480 pares AIGI adicionais e avaliação comparativa; a meta de 85% em
+conjunto independente continua aberta. Consulte
+[`ESTADO_PROJETO.md`](../ESTADO_PROJETO.md) para a situação atual.
 
-## Próxima entrega: concluir a Fase 3.8
+## Fase 3.8 concluída: registro das etapas
 
-1. **Treino interno:** executar manualmente a célula `# 10` de
-   `Notebooks/fase_3/rodar_fase3_8_colab.ipynb`. O treino parte dos pesos
-   da 3.3 e usa OpenFake, Community Forensics e os novos pares AIGI. Salva
-   `last.pt` para retomada e `best.pt` para a melhor época. Conferir perdas,
-   AUC de seleção e o arquivo `training_complete.json`.
-2. **Seleção e calibração:** a época é escolhida pela partição interna de
-   seleção. Temperatura e limiar são ajustados na partição interna de
-   calibração. Registrar as métricas com a célula `# 11`. Esses números não
-   demonstram desempenho em imagens externas.
-3. **Avaliação comparativa:** executar as células `# 12` a `# 15`. Elas
-   copiam o Mirage para `/content`, congelam checkpoint, temperatura e
-   limiar e calculam acurácia, AUC, recall sintético, especificidade real,
-   F1 e matriz de confusão nas mesmas 2.000 imagens usadas nas fases 3.5–3.7.
-   Salvar o resultado em diretório próprio da 3.8. O Mirage já foi observado:
-   relatar o resultado sem usá-lo para alterar a 3.8 ou planejar parâmetros
-   da próxima versão.
-4. **Registro:** atualizar `ESTADO_PROJETO.md` com melhor época, métricas
-   internas, checkpoint, hashes e resultado externo **somente após receber
-   as saídas reais**. Preservar os dados e resultados das fases anteriores.
+1. **Treino e seleção internos:** o ajuste fino partiu da 3.3 e usou
+   OpenFake, Community Forensics e pares AIGI. A melhor época foi a 12,
+   com AUC de seleção 0,9603094. Os arquivos `last.pt`, `best.pt` e
+   `training_complete.json` foram informados como presentes.
+2. **Calibração interna:** temperatura 0,5229031 e limiar 0,31 foram
+   definidos sem imagens externas. A acurácia balanceada aparente 0,9113623
+   não estima desempenho em fontes novas.
+3. **Avaliação comparativa Mirage:** checkpoint e calibração foram congelados
+   antes da inferência. Acurácia 59,9%, AUC 0,641268, recall sintético 55,7%
+   e especificidade real 64,1%. A 3.7 teve 62,3% e AUC 0,6908315 nas mesmas
+   imagens. Preservar os dois resultados; não reajustar a 3.8 por esse teste.
+4. **Próxima entrega:** análise de erros e distribuição **internas** antes
+   de fixar uma única hipótese para a 3.9. O script e notebook estão
+   preparados, mas a auditoria ainda não foi executada no Colab. Ver
+   [`AUDITORIA_E_OPCOES_FASE3_9.md`](AUDITORIA_E_OPCOES_FASE3_9.md).
+   Não repetir o treino concluído.
 
 ## Próxima hipótese após a 3.8
 
 Priorizar **novos dados internos úteis para generalização**, conforme a visão
-do grupo. A auditoria do smoke da 3.8 encontrou uma associação importante:
+do grupo. A auditoria de cabeçalhos da 3.8 encontrou uma associação importante:
 1.936 reais Community Forensics tinham lado curto de 256–511 px, enquanto
 1.744 sintéticas tinham 512 px ou mais. Os 320 pares AIGI usados no treino
 estão equilibrados em formato e faixa de tamanho, mas não eliminam essa
-associação do conjunto combinado. Antes de qualquer Fase 3.9:
+associação do conjunto combinado. O resultado Mirage não prova que o modelo
+usou esse atalho. Antes de qualquer Fase 3.9:
 
 1. Analisar erros e desempenho **na seleção interna**, por fonte,
    gerador, formato, resolução e tipo de cena. A análise indica hipóteses;

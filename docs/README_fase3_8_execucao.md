@@ -1,9 +1,10 @@
 # Fase 3.8 — AIGI pareado
 
-**Estado em 03/11/2026:** preparo, cópia local e smoke test concluídos conforme
-saídas salvas no notebook. A célula `# 10. TREINO MANUAL` ainda não tem saída
-local registrada. Em sessão já preparada, ela é a próxima ação; em sessão nova,
-execute `# 1` a `# 5`, depois `# 8` e `# 10`. Não repita o preparo concluído.
+**Estado em 04/11/2026:** preparo, cópia local, smoke, treino interno e
+avaliação comparativa Mirage concluídos conforme saídas salvas no notebook.
+A 3.8 obteve 59,9% de acurácia e AUC 0,641268 no Mirage. As instruções de
+execução abaixo ficam como registro histórico; não repita as células de treino
+ou avaliação para tentar outro resultado. Veja `ESTADO_PROJETO.md` na raiz.
 
 ## Para que serve
 
@@ -93,8 +94,8 @@ das células, não à posição incluindo Markdown.
 O Mirage de 2.000 imagens já foi observado. Seu uso nesta fase é comparação
 descritiva com checkpoints e limiares congelados, nunca fonte para treinar,
 calibrar ou escolher hiperparâmetros. A 3.7 obteve 62,3% nele conforme saída
-do usuário; a 3.8 ainda não foi treinada nem avaliada. Para demonstrar 85% em
-teste final independente será necessário um conjunto novo, não observado.
+do usuário; a 3.8 obteve 59,9% conforme saída do Colab. Para demonstrar 85%
+em teste final independente será necessário um conjunto novo, não observado.
 
 Se `# 10` informar que `run_live` ou outra variável está ausente, o kernel
 perdeu o estado ou as células iniciais não foram executadas nesta sessão.
