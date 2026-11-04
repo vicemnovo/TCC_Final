@@ -77,10 +77,11 @@ sem revisar, pois ele também tenta incluir arquivos novos indesejados.
 
 ## Notebooks e Colab
 
-- Salve as saídas necessárias no Drive ou em uma cópia local. Antes de
-  publicar um notebook, limpe as saídas e contadores de execução da **versão
-  que será incluída no commit**. Saídas locais do Colab não são código e
-  aumentam o diff; algumas podem conter caminhos ou informações sensíveis.
+- Salve as saídas necessárias no Drive ou em uma cópia local. Em geral, limpe
+  saídas e contadores de execução antes de publicar um notebook. Uma saída
+  curta que documente uma etapa executada pode ser versionada após revisão
+  explícita de credenciais, dados pessoais, imagens e tamanho do arquivo.
+  Saídas do Colab não são mudanças no código, mesmo quando entram no Git.
 - Alterar um arquivo no VS Code não muda o snapshot já carregado no Colab.
   Depois do push, execute novamente as células de desbloqueio GitHub,
   sincronização do snapshot e definição dos comandos do notebook. Confira o

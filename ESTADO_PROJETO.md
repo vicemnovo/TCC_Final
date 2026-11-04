@@ -1,6 +1,6 @@
 # Estado do projeto — Fase 3.8 pronta para treino
 
-Atualizado em 03/11/2026 com as saídas salvas no notebook local e os resultados
+Atualizado em 03/11/2026 com as saídas revisadas dos notebooks e os resultados
 informados pelo grupo. O Drive não foi montado nesta revisão; a existência
 remota dos artefatos foi verificada pelas saídas do Colab, não por leitura
 direta nesta máquina. O registro detalhado anterior está em
@@ -24,7 +24,7 @@ direta nesta máquina. O registro detalhado anterior está em
   checkpoint inicial da **Fase 3.3**, forward e gravação. Conferiu por hash
   6.152 imagens de treino, 1.420 de seleção, 1.420 de calibração e 1.947 do
   teste OpenFake reservado. O teste reservado não foi inferido.
-- **Treino 3.8:** a célula `# 10` ainda não tem saída no notebook local.
+- **Treino 3.8:** a célula `# 10` ainda não tem saída no notebook versionado.
   Nenhuma época, métrica interna ou resultado Mirage da 3.8 está verificado
   aqui. Não apresentar o smoke como treino concluído.
 

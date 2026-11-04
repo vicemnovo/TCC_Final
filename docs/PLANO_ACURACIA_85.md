@@ -3,7 +3,7 @@
 **Estado verificado em 03/11/2026:** a 3.7 concluiu treino e avaliação
 comparativa; obteve 62,3% no Mirage 2000 conforme saída do Colab. A 3.8
 concluiu preparo, cópia e smoke test com 480 pares AIGI. Seu treino e sua
-avaliação ainda não aparecem no notebook local. A meta de 85% continua
+avaliação ainda não aparecem no notebook versionado. A meta de 85% continua
 aberta. Consulte [`ESTADO_PROJETO.md`](../ESTADO_PROJETO.md) para a retomada.
 
 ## Próxima entrega: concluir a Fase 3.8

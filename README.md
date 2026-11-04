@@ -14,7 +14,7 @@ a generalização do detector de imagens.
 ## Ponto de partida
 
 **Fase 3.8:** 480 pares AIGI foram preparados, copiados e passaram pelo smoke
-test no Colab. O notebook local ainda não registra treino 3.8. Consulte
+test no Colab. O notebook versionado ainda não registra treino 3.8. Consulte
 [`ESTADO_PROJETO.md`](ESTADO_PROJETO.md) antes de continuar; ele contém as
 células exatas de retomada e distingue o que foi executado do que está
 pendente. O procedimento completo está em

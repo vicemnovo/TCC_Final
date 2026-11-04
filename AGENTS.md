@@ -47,7 +47,7 @@ Google Drive no Colab: /content/drive/MyDrive/TCC_Final
 A Fase 3.7 foi treinada e avaliada no Mirage: acurácia 0,623 e AUC
 0,6908315, conforme saída informada pelo usuário. A Fase 3.8 incorporou
 480 pares AIGI internos, com 80 pares por gerador. Preparo, cópia local e
-smoke test da 3.8 foram concluídos no Colab; o notebook local não registra
+smoke test da 3.8 foram concluídos no Colab; o notebook versionado não registra
 execução da célula de treino `# 10`. A próxima ação é iniciar ou retomar
 manualmente esse treino e, após conclusão interna, congelar o checkpoint,
 temperatura e limiar para a comparação Mirage. Detalhes em
