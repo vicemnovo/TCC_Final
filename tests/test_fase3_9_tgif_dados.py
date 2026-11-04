@@ -61,7 +61,8 @@ class TgifDataTests(unittest.TestCase):
             archive_path = root / 'original.tar.gz'
             content = png()
             with tarfile.open(archive_path, 'w:gz') as archive:
-                for name in ('orig/12_orig_512.png', 'orig/13_orig_512.png'):
+                for name in ('orig/12_orig_512.png', 'other/12_orig_512.png',
+                             'orig/13_orig_512.png'):
                     member = tarfile.TarInfo(name)
                     member.size = len(content)
                     archive.addfile(member, io.BytesIO(content))

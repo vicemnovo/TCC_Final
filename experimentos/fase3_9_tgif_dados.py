@@ -151,14 +151,22 @@ def read_selected(archive_path, plan, kind):
             name = Path(member.name).name
             if name not in target:
                 continue
-            if name in found or member.size > MAX_MEMBER_BYTES or member.size <= 0:
-                raise ValueError(f'Membro TGIF repetido ou invalido: {name}')
+            if member.size > MAX_MEMBER_BYTES or member.size <= 0:
+                raise ValueError(f'Membro TGIF invalido: {name}')
             stream = archive.extractfile(member)
             if stream is None:
                 raise ValueError(f'Membro TGIF nao extraivel: {name}')
             raw = stream.read(MAX_MEMBER_BYTES + 1)
             if len(raw) != member.size:
                 raise ValueError(f'Membro TGIF truncado: {name}')
+            # O CSV training associa alguns COCO IDs a varias categorias.
+            # Um tar pode repetir o mesmo nome; so aceitamos a repeticao se
+            # os bytes tambem forem identicos. Conteudo divergente invalida
+            # a correspondencia por ID e interrompe o preparo.
+            if name in found:
+                if found[name] != raw:
+                    raise ValueError(f'Membro TGIF repetido com conteudo divergente: {name}')
+                continue
             found[name] = raw
             if len(found) % 100 == 0:
                 print(f'{kind}: {len(found)}/{len(target)} imagens selecionadas lidas',
