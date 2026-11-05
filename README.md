@@ -24,12 +24,15 @@ Os pilotos combinados de Open Images e pares AIGI, ainda sem treino, estão em
 [`docs/README_fase3_9.md`](docs/README_fase3_9.md).
 As provas AIGI ampliadas tiveram baixa disponibilidade de fotos reais. O
 [piloto TGIF](docs/README_fase3_9_tgif.md) confirmou 341 IDs pareados em
-`validation`. A Fase 3.9 já concluiu preparo, smoke e treino interno conforme
-saídas do Colab. A próxima ação é a
-[avaliação comparativa Mirage da 3.9](docs/README_fase3_9_execucao.md)
-com pesos e limiar congelados; ainda não há acurácia externa da 3.9.
-Para retomar em outra sessão, siga o
-[guia de retomada da Fase 3.9](docs/GUIA_RETOMADA_FASE3_9.md).
+`validation`. A Fase 3.9 concluiu preparo, smoke, treino interno e
+[avaliação comparativa Mirage](docs/README_fase3_9_execucao.md) com pesos e
+limiar congelados: acurácia **58,75%** e AUC **0,6328**. A auditoria interna
+da 3.9 foi concluída; a próxima tarefa é definir uma alteração controlada
+para a **3.9.1**. Consulte o
+[guia de retomada](docs/GUIA_RETOMADA_FASE3_9.md).
+O [notebook de auditoria interna da 3.9](Notebooks/fase_3/auditar_interno_fase3_9_colab.ipynb)
+e seu [relatório de resultados e limites](docs/AUDITORIA_INTERNA_FASE3_9.md)
+documentam 59 FP e 182 FN nas 1.676 imagens da seleção interna.
 
 O smoke test verifica dados, checkpoint e uma passagem pelo modelo; não mede
 acurácia. O treino escolhe a melhor época na seleção interna e ajusta
@@ -61,7 +64,7 @@ contêm a implementação principal.
 | Conjunto | Modelos já avaliados | Melhor acurácia informada |
 | --- | --- | ---: |
 | RAISE/MNW 2000 | Fases 1–3.4 v2 | 62,1% (3.4 v2) |
-| Mirage 2000 | Fases 3.5–3.8 | 62,3% (3.7); 3.8: 59,9% |
+| Mirage 2000 | Fases 3.5–3.9 | 62,3% (3.7); 3.8: 59,9%; 3.9: 58,75% |
 
 Os dois conjuntos têm imagens e protocolos diferentes; não comparar suas
 porcentagens como uma única série de desempenho. O Mirage já foi observado

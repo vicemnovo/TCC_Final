@@ -1,6 +1,6 @@
 # Retomada do TCC: Fase 3.9 e próximo experimento
 
-Atualizado em 04/11/2026. Este guia usa as saídas salvas no notebook Colab e
+Atualizado em 05/11/2026. Este guia usa as saídas salvas no notebook Colab e
 os arquivos do repositório. O Drive remoto não foi montado nesta revisão.
 
 ## Ponto exato da pausa
@@ -24,14 +24,65 @@ confirmou `phase3_final.pt`, `best.pt`, `last.pt`, `internal_metrics.json`,
 usou 7.176 imagens, a seleção 1.676 e a calibração 1.676. As 1.947 imagens
 do teste OpenFake foram apenas conferidas por hash, sem inferência.
 
-**Ainda não há avaliação externa da 3.9.** A tentativa de executar a cópia
-Mirage parou em `NameError: CODE_ROOT` antes de copiar ou inferir imagens,
-porque as células de preparação não haviam sido executadas no novo kernel.
-Não há acurácia Mirage 3.9 registrada nesta pausa. A AUC de seleção acima
-não é uma estimativa de acurácia externa; a seleção da 3.9 também difere da
-3.8 e seus valores não devem ser comparados como se fossem o mesmo teste.
+**Avaliação Mirage concluída:** o grupo executou as células #11 a #14 após
+configurar um novo runtime. O checkpoint, a temperatura e o limiar foram
+congelados antes da inferência. Nas 2.000 imagens, a 3.9 obteve acurácia
+**0,5875**, AUC **0,6328105**, recall sintético **0,431** e especificidade
+real **0,744**; TN=744, FP=256, FN=569 e TP=431. A comparação pareada com a
+3.8 registrou 1.063 acertos conjuntos, 135 exclusivos da 3.8, 112 da 3.9
+e 690 erros conjuntos. O resultado está em
+`/content/drive/MyDrive/TCC_Final/resultados/benchmark_externo_mirage_2000_v1/fase3_9_tgif_sd2fr_v1/`.
+A AUC de seleção acima não é estimativa de acurácia externa; a seleção da
+3.9 também difere da 3.8. O Mirage já foi observado e não comprova a meta
+em um teste cego independente.
 
-## Primeira ação ao voltar: concluir a comparação Mirage
+## Primeira ação ao voltar: definir a Fase 3.9.1
+
+Não repita preparo, smoke, treino ou avaliação da 3.9 (células #6 a #14 do
+notebook de execução), nem a auditoria interna já concluída. Preserve
+`phase3_final.pt`, o lock da avaliação, `metrics.json` e o relatório de
+auditoria. O [notebook de auditoria](../Notebooks/fase_3/auditar_interno_fase3_9_colab.ipynb)
+teve suas células #7–#11 executadas pelo grupo; a #10 mostra apenas erros
+visuais extremos e a #11 conta todos os erros. O
+[relatório completo](AUDITORIA_INTERNA_FASE3_9.md) registra os resultados.
+
+Na seleção interna da 3.9 houve **59 falsos positivos (FP) e 182 falsos
+negativos (FN)** em 1.676 imagens: 1.435 acertos (**85,62%**). As sintéticas
+TGIF contribuíram com 115 FN em 128 imagens; os FP se distribuíram entre
+Community Forensics (18), OpenFake (16), TGIF (14) e AIGI (11). Essa seleção
+escolheu o checkpoint e não comprova desempenho externo. O Mirage comparativo
+já observado ficou em 58,75%; não usar seus erros para definir a 3.9.1.
+
+Ao retomar em outro computador ou sessão:
+
+1. Abra o repositório na branch `fase3-ajuste-fino` e execute
+   `git status -sb` e `git pull --ff-only origin fase3-ajuste-fino` se a cópia
+   local estiver limpa. Leia este guia, `ESTADO_PROJETO.md` e a auditoria.
+2. Defina **uma hipótese controlada** para a 3.9.1. A primeira candidata é
+   corrigir a baixa massa de amostragem das sintéticas TGIF (1,740% contra
+   7,835% para TGIF real), mantendo dados, divisões, arquitetura, checkpoint
+   inicial e demais parâmetros. Essa desigualdade foi medida, mas sua causa
+   nos erros ainda precisa de experimento. Não há notebook 3.9.1 criado.
+3. Implemente a variante em arquivos e diretório novos. Antes de usar GPU,
+   teste a massa esperada do sampler, os rótulos e a separação de pares. O
+   **smoke test** verificará dados, arquitetura, checkpoint, forward e gravação;
+   ele não mede acurácia nem inicia o treino completo.
+4. Inicie o **treino** manualmente apenas após o smoke. Selecione o checkpoint
+   pela seleção interna e ajuste temperatura/limiar apenas na calibração
+   interna. Compare nas mesmas imagens internas acurácia total, FP, FN,
+   recall sintético, especificidade real, acurácia balanceada e AUC; não
+   aceite ganho de FN que custe mais FP e reduza o total de acertos.
+5. Com checkpoint, temperatura e limiar congelados, faça a avaliação Mirage
+   comparativa em resultado novo, preservando os anteriores. Como o Mirage
+   já foi visto, uma alegação final de 85% exigirá outro conjunto externo
+   independente definido antes de observar suas predições.
+
+Em avaliações **por imagem**, informe probabilidades estimadas de real e
+sintética, classe pelo limiar interno congelado e frase pronta usando
+`experimentos/linguagem_predicao.py`. As faixas da frase não mudam a decisão
+nem representam certeza de origem. Resultados históricos não são regravados.
+
+## Como a avaliação Mirage foi executada
 
 Abra `Notebooks/fase_3/rodar_fase3_9_tgif_colab.ipynb` no VS Code e conecte
 o runtime Colab com GPU. Se for **um runtime novo**, execute as células de
@@ -40,7 +91,7 @@ desbloqueio da credencial GitHub, snapshot da branch e definição de
 `run_live`. Confirme as mensagens `Código sincronizado` e `Código:`. A
 credencial é solicitada novamente em cada sessão; não fica no notebook.
 
-Depois execute somente:
+Na sessão já concluída, o grupo executou:
 
 1. **#11 — cópia Mirage:** traz as 2.000 imagens congeladas do Drive para
    `/content` e confere hashes. É a cópia local para inferência, não treino.
@@ -52,14 +103,11 @@ Depois execute somente:
 4. **#14 — leitura:** mostra o resultado salvo, sem recalibrar.
 
 As células acima aparecem após um título Markdown no notebook; procure os
-comentários `# 11` a `# 14` no início do código. Se a avaliação já existir
-quando voltar, leia **#14**; o script não deve substituir o resultado.
-Se a sessão cair antes de terminar, reconecte, execute **#1 a #5** e retome
-pela primeira dessas quatro etapas ainda pendente. Não repita preparo
-TGIF, smoke ou treino (`#6` a `#10`); o treino está marcado como completo.
+comentários `# 11` a `# 14` no início do código. Para consultar o resultado
+em outro runtime, execute **#1 a #5** e depois apenas **#14**.
 
 O Mirage tem 1.000 fotos reais e 1.000 sintéticas fixas. Ele já foi visto
-nas fases 3.5–3.8: sua avaliação da 3.9 será **comparativa**, não um teste
+nas fases 3.5–3.8: sua avaliação da 3.9 é **comparativa**, não um teste
 cego independente. Não usar suas predições para treinar, calibrar, escolher
 pesos, dados ou hiperparâmetros. A meta de 85% em conjunto externo
 independente ainda não foi demonstrada.
@@ -109,9 +157,10 @@ Em qualquer opção, auditar o atalho de resolução observado nos dados
 Community Forensics históricos: muitas reais têm lado curto 256–511 px,
 enquanto muitas sintéticas têm 512 px ou mais. Os pares TGIF novos foram
 normalizados em ambas as classes, mas não eliminam o viés dos dados antigos.
-O próximo experimento só deve ser fixado depois da auditoria interna e do
-piloto da fonte escolhida. A avaliação Mirage deve ser registrada para
-comparação, sem orientar mudanças posteriores.
+Para uma nova fonte, faça piloto antes do preparo e do treino. Para a hipótese
+do sampler, teste primeiro a mudança isolada com os dados internos já
+congelados. A avaliação Mirage deve ser registrada para comparação, sem
+orientar mudanças posteriores.
 
 ## Conferência do Git ao voltar
 

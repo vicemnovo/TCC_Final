@@ -57,10 +57,13 @@ Checkpoints e resultados anteriores continuam em seus diretórios próprios.
 A 3.9 mantém arquitetura, checkpoint inicial, transformações e parâmetros
 da 3.8; a mudança planejada é acrescentar estes pares TGIF internos.
 
-**Estado verificado no notebook em 04/11/2026:** preparo, cópia local,
-smoke e treino interno terminaram. Melhor época 10/12, AUC de seleção
+**Estado verificado no notebook em 05/11/2026:** preparo, cópia local,
+smoke, treino interno e avaliação Mirage terminaram. Melhor época 10/12, AUC de seleção
 0,8988236, temperatura interna 0,9187889 e limiar interno 0,47. Os
 arquivos `phase3_final.pt` e `training_complete.json` estão presentes
-conforme saída do Colab. A avaliação Mirage da 3.9 ainda não foi executada;
-para concluí-la, use somente as células de código **#11 a #14**. A acurácia
-externa da 3.9 ainda é desconhecida.
+conforme saída do Colab. As células de código #11 a #14 congelaram os
+parâmetros e avaliaram as 2.000 imagens Mirage: acurácia **0,5875**,
+AUC **0,6328105**, recall sintético **0,431** e especificidade real **0,744**.
+O resultado está em `resultados/benchmark_externo_mirage_2000_v1/fase3_9_tgif_sd2fr_v1/`
+no Drive. Não repetir a avaliação nem usar o Mirage para escolher dados,
+pesos, limiar ou hiperparâmetros da próxima versão.

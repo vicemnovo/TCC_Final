@@ -21,6 +21,27 @@ está comprovadamente calibrada para toda imagem futura enviada por usuários.
 Uma foto real de uma montagem física continua sendo real quanto ao processo de
 captura; uma imagem gerada que retrata fato plausível continua sintética.
 
+### Frase apresentada por imagem
+
+Toda nova avaliação individual informa `p_real`, `p_sintetica` e a classe
+operacional pelo **limiar interno congelado**, junto a uma frase pré-definida.
+A implementação compartilhada está em
+[`linguagem_predicao.py`](../experimentos/linguagem_predicao.py). As faixas
+de texto são: abaixo de 20% sintética, chance estimada alta de real; de 20%
+a menos de 40%, mais chance estimada de real; de 40% a menos de 60%, chances
+próximas; de 60% a menos de 80%, mais chance estimada de sintética; a partir
+de 80%, chance estimada alta de sintética. Essas faixas servem **somente para
+redigir a mensagem**. Não são limiares de treinamento ou calibração.
+
+A frase pode indicar chances próximas e, ainda assim, a classe operacional
+ser sintética. Por exemplo, `p_sintetica=40%` e limiar congelado de `31%`
+produzem `p_real=60%`, texto de chances próximas e classe operacional
+**sintética**. Mostrar os três valores evita que a mensagem esconda essa
+diferença. Mesmo após calibração interna, 80% é uma estimativa do modelo,
+não 80% de certeza sobre a origem real da imagem. Benchmarks grandes mantêm
+as métricas agregadas e os CSVs numéricos; a frase pode ser acrescentada
+como uma coluna por imagem, sem mudar resultados históricos.
+
 ## Arquitetura e processamento
 
 A arquitetura histórica combina três ramos: **ViT-Tiny** (padrões visuais

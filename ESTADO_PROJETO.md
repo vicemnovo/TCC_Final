@@ -1,8 +1,28 @@
-# Estado do projeto — Fase 3.9 treinada internamente; avaliação Mirage pendente
+# Estado do projeto — Fase 3.9 treinada e avaliada no Mirage
 
 **Guia de retomada:** [`docs/GUIA_RETOMADA_FASE3_9.md`](docs/GUIA_RETOMADA_FASE3_9.md).
 Ele registra as células exatas, o estado da demo independente e alternativas
 para a próxima fase.
+**Auditoria interna concluída:** o notebook
+[`Notebooks/fase_3/auditar_interno_fase3_9_colab.ipynb`](Notebooks/fase_3/auditar_interno_fase3_9_colab.ipynb)
+compara 3.8/3.9 apenas na seleção interna. Instruções em
+[`docs/AUDITORIA_INTERNA_FASE3_9.md`](docs/AUDITORIA_INTERNA_FASE3_9.md).
+A auditoria foi executada no Colab conforme resumo fornecido pelo grupo:
+o sampler destinou 7,835% dos sorteios a reais TGIF e 1,740% a sintéticas
+TGIF; na seleção TGIF, a 3.9 acertou 13/128 sintéticas e 114/128 reais.
+Nas 1.420 imagens internas comuns, a acurácia ficou em 0,9211 para a 3.9 e
+0,9176 para a 3.8. O próximo experimento isolado, se aprovado, terá o nome
+**Fase 3.9.1**; futuras variantes seguem 3.9.2, 3.9.3 etc., preservando a
+3.9 e seus resultados. O próximo passo é definir uma única alteração interna
+para a 3.9.1 e medir seu efeito em FP, FN e acurácia total, preservando o
+Mirage comparativo já observado.
+Como a célula #10 mostra apenas erros extremos, a célula **#11** foi adicionada
+ao mesmo notebook para contar todos os 59 FP e 182 FN por fonte/classe, grupo,
+formato e resolução, usando somente o CSV interno já salvo. O grupo executou
+a célula e informou a contagem completa: 115/128 sintéticas TGIF foram FN;
+os FP vieram de Community Forensics (18), OpenFake (16), TGIF (14) e AIGI
+(11). Isso soma 241 erros/1.676 imagens na seleção que escolheu o checkpoint;
+não comprova acurácia externa. A célula não treina nem abre o Mirage.
 
 **Atualização após o piloto TGIF:** a saída do Colab informou 341 IDs
 originais/sintéticos compartilhados em `validation`, sem treino, calibração
@@ -10,7 +30,7 @@ ou avaliação externa. O piloto verificou os dois arquivos completos, oito
 amostras PNG de cada e nenhum membro desconhecido. O TGIF2 teve apenas os
 tamanhos dos arquivos de treino consultados. A 3.9 TGIF SD2-fr foi preparada
 em código isolado. O preparo, smoke e treino interno foram concluídos no
-notebook; a avaliação Mirage da 3.9 ainda não foi executada. Procedimento em
+notebook; a avaliação comparativa Mirage da 3.9 também foi concluída. Procedimento em
 [`docs/README_fase3_9_execucao.md`](docs/README_fase3_9_execucao.md).
 
 **Treino interno 3.9 concluído:** o Colab congelou 768 pares TGIF e confirmou
@@ -21,11 +41,21 @@ a melhor foi a 10, com AUC de seleção **0,8988236**. A calibração interna
 registrou acurácia balanceada aparente **0,8557320**, temperatura **0,9187889**
 e limiar **0,47**. O notebook confirmou `phase3_final.pt`, `best.pt`,
 `internal_metrics.json` e `training_complete.json` no Drive. Nenhuma
-inferência externa da 3.9 foi registrada. Para terminar a comparação,
-executar as células de código marcadas **#11 a #14** do notebook da 3.9,
-sem refazer preparo ou treino.
+inferência no teste OpenFake reservado foi registrada. As células #11 a #14
+do notebook da 3.9 foram concluídas; não repetir preparo, treino ou avaliação.
 
-Atualizado em 04/11/2026 com as saídas revisadas dos notebooks e os resultados
+**Comparação Mirage 3.9 concluída em 05/11/2026:** a saída salva no notebook
+registra 2.000 imagens, acurácia **0,5875**, AUC **0,6328105**, recall
+sintético **0,431**, especificidade real **0,744** e F1 **0,5109662**;
+TN=744, FP=256, FN=569 e TP=431. O checkpoint, a temperatura 0,9187889
+e o limiar 0,47 foram congelados antes da inferência. Na comparação pareada
+com a 3.8, houve 1.063 acertos conjuntos, 135 acertos exclusivos da 3.8,
+112 da 3.9 e 690 erros conjuntos. O resultado foi salvo no Drive em
+`resultados/benchmark_externo_mirage_2000_v1/fase3_9_tgif_sd2fr_v1/`.
+O Mirage já era conhecido: esta é uma comparação descritiva, não um teste
+cego independente nem base para retreinar ou ajustar o limiar.
+
+Atualizado em 05/11/2026 com as saídas revisadas dos notebooks e os resultados
 informados pelo grupo. O Drive não foi montado nesta revisão; a existência
 remota dos artefatos foi verificada pelas saídas do Colab, não por leitura
 direta nesta máquina. O registro detalhado anterior está em
@@ -47,7 +77,7 @@ O grupo decidiu verificar TGIF/TGIF2 no lugar de ampliar AIGI. O piloto de
 acesso e pareamento TGIF foi executado em
 `Notebooks/fase_3/piloto_fase3_9_tgif_colab.ipynb`.
 Ver `docs/README_fase3_9_execucao.md`. O treino interno já foi concluído;
-a avaliação comparativa Mirage da 3.9 permanece pendente.
+a avaliação comparativa Mirage da 3.9 está concluída.
 
 ## Histórico da Fase 3.8 e contexto da 3.9
 
@@ -110,11 +140,11 @@ calibração/teste nem predições Mirage. As quatro alternativas originais para
 [`docs/AUDITORIA_E_OPCOES_FASE3_9.md`](docs/AUDITORIA_E_OPCOES_FASE3_9.md).
 A hipótese de novos pares AIGI foi interrompida após a baixa disponibilidade
 de fotos reais. O piloto TGIF, o preparo versionado, o smoke, o treino, a
-seleção e a calibração internos da 3.9 já terminaram. Não repetir essas
-etapas. Executar as células de código **#11 a #14** em
-`Notebooks/fase_3/rodar_fase3_9_tgif_colab.ipynb` para copiar o Mirage,
-congelar os parâmetros e registrar a avaliação comparativa. O Mirage já
-foi observado; suas respostas não podem orientar outro ajuste.
+seleção, calibração e avaliação Mirage da 3.9 já terminaram. Não repetir
+essas etapas. A próxima atividade é auditar **somente dados e erros internos**
+da 3.9, especialmente a contribuição dos pares TGIF e atalhos de resolução,
+formato e conteúdo. O Mirage já foi observado; suas respostas não podem
+orientar outro ajuste.
 
 Os checkpoints da 3.8 ficam em
 `/content/drive/MyDrive/TCC_Final/modelos/fase3_8_aigi_pares256_v1/`;

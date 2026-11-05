@@ -72,13 +72,23 @@ O preparo, smoke e treino interno da 3.9 foram concluídos conforme saídas
 salvas no notebook: melhor época 10 de 12, AUC de seleção 0,8988236,
 temperatura 0,9187889, limiar 0,47. Os artefatos `phase3_final.pt` e
 `training_complete.json` foram confirmados pela célula de leitura. A
-avaliação comparativa Mirage da 3.9 ainda não foi executada.
+avaliação comparativa Mirage da 3.9 foi executada em 2.000 imagens:
+acurácia 0,5875, AUC 0,6328105, recall sintético 0,431 e especificidade
+real 0,744, conforme saída salva no notebook. A comparação pareada com a
+3.8 registrou 1.063 acertos conjuntos, 135 acertos exclusivos da 3.8,
+112 exclusivos da 3.9 e 690 erros conjuntos. O resultado não atingiu a meta.
 Ver `docs/README_fase3_9_execucao.md`. Não ajustar dados ou parâmetros às predições do
 Mirage. Detalhes do resultado 3.8 em `ESTADO_PROJETO.md` e
 `docs/README_fase3_8_execucao.md`.
-Na retomada, priorizar `docs/GUIA_RETOMADA_FASE3_9.md`: executar as células
-#1–#5 de configuração em novo runtime e depois as células de código #11–#14
-para a avaliação comparativa da 3.9. Não repetir preparo ou treino concluídos.
+Na retomada, priorizar `docs/GUIA_RETOMADA_FASE3_9.md`. Não repetir preparo,
+treino ou avaliação comparativa concluídos. A próxima análise é interna,
+sem usar predições Mirage para escolher dados ou parâmetros.
+O notebook `Notebooks/fase_3/auditar_interno_fase3_9_colab.ipynb` e o script
+`experimentos/auditoria_interna_fase3_9.py` compararam 3.8 e 3.9 na mesma
+seleção interna. A contagem completa informada pelo grupo foi 59 FP e 182 FN
+em 1.676 imagens; 115 FN vieram de 128 sintéticas TGIF. A seleção serviu para
+escolher o checkpoint: seus acertos são descritivos, não um teste independente.
+Ver `docs/AUDITORIA_INTERNA_FASE3_9.md`.
 
 O smoke conferiu 6.152 imagens de treino, 1.420 de seleção, 1.420 de
 calibração e 1.947 do teste OpenFake apenas por hash. Os pesos iniciais da
@@ -166,6 +176,11 @@ alterar a arquitetura ou iniciar novos experimentos.
 
 ## Modo de trabalho
 - Pode criar códigos completos, corrigir arquivos e implementar melhorias.
+- A partir de agora, numerar variantes novas como **Fase 3.9.1, 3.9.2,
+  3.9.3...**, com nomes correspondentes nos scripts, notebooks e diretórios
+  de artefatos (por exemplo, `fase3_9_1_...` no nome de arquivo). Não criar
+  Fase 3.10 ou 4.0 sem nova instrução do grupo. Preservar nomes e artefatos
+  históricos das fases já concluídas; esta regra não renomeia a 3.9.
 - Priorizar execução e resultados, evitando análises repetitivas.
 - Aproveitar funções, modelos e códigos existentes.
 - Não recriar o projeto desnecessariamente.
@@ -259,7 +274,25 @@ alterar a arquitetura ou iniciar novos experimentos.
 - Usar validação interna para selecionar modelos e limiares.
 - Medir acurácia, AUC, acurácia balanceada, precisão,
   recall, F1 e especificidade.
-- Investigar falsos positivos e falsos negativos.
+- Investigar **ambos** os tipos de erro: FP reais classificados como
+  sintéticos e FN sintéticos classificados como reais. Registrar contagem,
+  taxa com denominador e fonte/grupo para cada classe. Não considerar uma
+  variante melhor apenas por reduzir FN se ela aumentar FP a ponto de
+  prejudicar a acurácia total ou a acurácia balanceada; acompanhar também
+  AUC, recall sintético e especificidade real em conjuntos fixos.
+- Em toda **nova avaliação por imagem** (incluindo futuros notebooks,
+  relatórios de predição e demo), apresentar `p_real`, `p_sintetica`, a
+  classificação pelo limiar congelado e uma frase pré-definida em linguagem
+  simples de acordo com as probabilidades. As frases são comunicação, não
+  novos limiares de treino ou seleção. Se as probabilidades estiverem
+  próximas, dizer isso; não afirmar origem comprovada nem chamar a saída de
+  “certeza”. Manter métricas agregadas e CSV por imagem para benchmarks
+  grandes; a frase pode ser uma coluna, sem imprimir milhares de linhas.
+  Checkpoints sem calibração persistida devem ser identificados como tal.
+  Não reescrever resultados históricos ou scripts com hashes registrados
+  apenas para acrescentar frases: usar uma camada nova de apresentação.
+  A função `experimentos/linguagem_predicao.py::descrever_predicao` define
+  as frases e deve ser reutilizada para evitar textos divergentes por fase.
 - Comparar desempenho em geradores vistos e não vistos.
 - Não prometer 85% sem evidência experimental.
 - Antes da avaliação externa final, congelar checkpoint, temperatura e limiar.
