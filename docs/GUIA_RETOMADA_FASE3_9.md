@@ -58,6 +58,11 @@ Ao retomar em outro computador ou sessão:
 1. Abra o repositório na branch `fase3-ajuste-fino` e execute
    `git status -sb` e `git pull --ff-only origin fase3-ajuste-fino` se a cópia
    local estiver limpa. Leia este guia, `ESTADO_PROJETO.md` e a auditoria.
+   Para espelhar os `.ipynb` e `.py` no Drive, abra
+   `Notebooks/configuracao/sincronizar_codigo_drive_colab.ipynb` e execute
+   as células 1–5; confira `codigo_sync/<commit>.json`. Essa operação não
+   precisa de GPU nem repete treinamento. Veja
+   `docs/SINCRONIZACAO_CODIGO_DRIVE.md`.
 2. Defina **uma hipótese controlada** para a 3.9.1. A primeira candidata é
    corrigir a baixa massa de amostragem das sintéticas TGIF (1,740% contra
    7,835% para TGIF real), mantendo dados, divisões, arquitetura, checkpoint

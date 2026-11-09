@@ -1,5 +1,14 @@
 # Estado do projeto — Fase 3.9 treinada e avaliada no Mirage
 
+**Espelho de código no Drive preparado em 09/11/2026:** o notebook
+`Notebooks/configuracao/sincronizar_codigo_drive_colab.ipynb` e o script
+`experimentos/espelhar_codigo_drive.py` copiam `.ipynb` e `.py` da branch
+`fase3-ajuste-fino` para as mesmas pastas em
+`/content/drive/MyDrive/TCC_Final`. O Drive não foi montado nesta revisão:
+o upload remoto ainda depende de executar as células 1–5 desse notebook
+no Colab depois da publicação do código. Ver
+`docs/SINCRONIZACAO_CODIGO_DRIVE.md`.
+
 **Guia de retomada:** [`docs/GUIA_RETOMADA_FASE3_9.md`](docs/GUIA_RETOMADA_FASE3_9.md).
 Ele registra as células exatas, o estado da demo independente e alternativas
 para a próxima fase.

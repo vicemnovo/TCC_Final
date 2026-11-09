@@ -59,6 +59,13 @@ Google Drive. A cópia em `/content` é temporária e deve ser refeita após uma
 desconexão. O notebook funciona como interface; os scripts em `experimentos/`
 contêm a implementação principal.
 
+Os arquivos `.ipynb` e `.py` publicados na branch também podem ser espelhados
+no Drive, nas mesmas pastas relativas, pelo
+[notebook de sincronização](Notebooks/configuracao/sincronizar_codigo_drive_colab.ipynb).
+Execute suas células 1–5 após cada atualização publicada no GitHub. O
+[procedimento](docs/SINCRONIZACAO_CODIGO_DRIVE.md) explica a preservação de
+versões anteriores e como conferir a cópia.
+
 ## Resultados e limites
 
 | Conjunto | Modelos já avaliados | Melhor acurácia informada |
