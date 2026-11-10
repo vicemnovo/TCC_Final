@@ -68,7 +68,8 @@ As células 1–12 foram executadas em 10/11/2026. V2, V3 e fechamento estão
 gravados, mas o fechamento apontou revisão técnica pendente. A V2 anterior
 não identificou os pares porque procurava `path`, enquanto o manifesto TGIF
 usa `rows` com `image` e `image_id`. Isso foi corrigido. Após publicar o
-notebook atualizado, execute **1–5, 7, 9, 10, 12 e 13**. A V3 já verificou
+notebook atualizado, execute **1–7, 9, 10, 12 e 13**. A célula 6 espelha o
+novo notebook e o exportador de log no Drive. A V3 já verificou
 12.475 imagens em cerca de 38 minutos; a célula 12 pode reutilizar o relatório
 V3 mais recente, sem repetir essa leitura. A célula 13 lê as saídas que foram
 salvas no snapshot versionado do notebook. Se o runtime ainda usa um commit

@@ -10,7 +10,7 @@ internos no [notebook final da 3.9](../Notebooks/fase_3/fase3_9_final_colab.ipyn
 V2, V3 e fechamento já foram executados, mas o fechamento marcou
 `revisao_tecnica_pendente`. A V2 tinha um erro de leitura do manifesto TGIF,
 agora corrigido; a V3 não precisa ser repetida. Após publicar o código,
-execute no Colab **1–5, 7, 9, 10, 12 e 13**. A célula 12 reutiliza o V3
+execute no Colab **1–7, 9, 10, 12 e 13**. A célula 12 reutiliza o V3
 gravado; a 13 cria um `.log` datado no Drive com as saídas e os relatórios.
 Veja [`README_fase3_9_fechamento.md`](README_fase3_9_fechamento.md). Não
 repetir preparo, treino ou avaliação Mirage.
