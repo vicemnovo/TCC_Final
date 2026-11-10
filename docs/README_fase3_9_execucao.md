@@ -67,3 +67,10 @@ AUC **0,6328105**, recall sintético **0,431** e especificidade real **0,744**.
 O resultado está em `resultados/benchmark_externo_mirage_2000_v1/fase3_9_tgif_sd2fr_v1/`
 no Drive. Não repetir a avaliação nem usar o Mirage para escolher dados,
 pesos, limiar ou hiperparâmetros da próxima versão.
+
+Para concluir a revisão das perguntas V1–V3 e registrar o fechamento sem
+repetir treino ou avaliação, use o
+[`fase3_9_final_colab.ipynb`](../Notebooks/fase_3/fase3_9_final_colab.ipynb).
+Ele reúne a preparação deste notebook com a validação do notebook separado;
+o procedimento e os relatórios com data/hora estão em
+[`README_fase3_9_fechamento.md`](README_fase3_9_fechamento.md).

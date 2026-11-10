@@ -33,6 +33,11 @@ para a **3.9.1**. Consulte o
 O [notebook de auditoria interna da 3.9](Notebooks/fase_3/auditar_interno_fase3_9_colab.ipynb)
 e seu [relatório de resultados e limites](docs/AUDITORIA_INTERNA_FASE3_9.md)
 documentam 59 FP e 182 FN nas 1.676 imagens da seleção interna.
+O [notebook final da 3.9](Notebooks/fase_3/fase3_9_final_colab.ipynb)
+reúne a preparação necessária do notebook de execução com as perguntas
+V1–V3 do notebook de validação. O
+[guia de fechamento](docs/README_fase3_9_fechamento.md) descreve as células
+pendentes, os relatórios com data/hora e os limites da avaliação Mirage.
 
 O smoke test verifica dados, checkpoint e uma passagem pelo modelo; não mede
 acurácia. O treino escolhe a melhor época na seleção interna e ajusta

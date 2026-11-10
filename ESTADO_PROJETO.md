@@ -1,5 +1,15 @@
 # Estado do projeto — Fase 3.9 treinada e avaliada no Mirage
 
+**Fechamento preparado em 10/11/2026, ainda não executado no Colab:**
+`Notebooks/fase_3/fase3_9_final_colab.ipynb` reúne em um só notebook a
+preparação de `rodar_fase3_9_tgif_colab.ipynb` com as perguntas V1–V3 de
+`validar_perguntas_fase3_9_colab.ipynb`. Os originais e suas saídas ficam
+preservados. V1 foi executada no notebook separado conforme saída local;
+V2 foi interrompida antes de gravar seu relatório e V3 ainda não foi
+executada nesse notebook. Para fechar a 3.9, execute o notebook final na
+ordem documentada em `docs/README_fase3_9_fechamento.md`, revise avisos e
+guarde os relatórios novos. Não repetir treino ou avaliação Mirage.
+
 **Espelho de código no Drive preparado em 09/11/2026:** o notebook
 `Notebooks/configuracao/sincronizar_codigo_drive_colab.ipynb` e o script
 `experimentos/espelhar_codigo_drive.py` copiam `.ipynb` e `.py` da branch

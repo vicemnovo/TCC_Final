@@ -89,6 +89,13 @@ seleção interna. A contagem completa informada pelo grupo foi 59 FP e 182 FN
 em 1.676 imagens; 115 FN vieram de 128 sintéticas TGIF. A seleção serviu para
 escolher o checkpoint: seus acertos são descritivos, não um teste independente.
 Ver `docs/AUDITORIA_INTERNA_FASE3_9.md`.
+Para fechar a documentação da 3.9, usar
+`Notebooks/fase_3/fase3_9_final_colab.ipynb`: ele reúne a preparação do
+notebook de execução e as validações V1–V3 do notebook de perguntas, sem
+repetir treino ou inferência Mirage. V2/V3 ainda precisam ser executadas
+integralmente no Colab; logs novos têm data/hora UTC no nome e preservam
+anteriores. O notebook também espelha sua cópia no Drive e confere os
+artefatos finais. Procedimento em `docs/README_fase3_9_fechamento.md`.
 
 O smoke conferiu 6.152 imagens de treino, 1.420 de seleção, 1.420 de
 calibração e 1.947 do teste OpenFake apenas por hash. Os pesos iniciais da

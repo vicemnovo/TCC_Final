@@ -5,6 +5,14 @@ os arquivos do repositório. O Drive remoto não foi montado nesta revisão.
 
 ## Ponto exato da pausa
 
+**Antes de iniciar a 3.9.1**, concluir as perguntas V2/V3 e a conferência
+documental no [notebook final da 3.9](../Notebooks/fase_3/fase3_9_final_colab.ipynb).
+Ele reúne as partes necessárias dos notebooks de execução e validação,
+preserva ambos os originais e gera relatórios novos sem substituir os antigos.
+Execute as células 1–12 conforme
+[`README_fase3_9_fechamento.md`](README_fase3_9_fechamento.md). Não repetir
+preparo, treino ou avaliação Mirage.
+
 O código principal está na branch `fase3-ajuste-fino` do repositório privado
 `vicemnovo/TCC_Final`. A Fase 3.9 acrescentou **768 pares TGIF original +
 SD2 totalmente regenerado**, com seleção por ID COCO e caminho de categoria.
