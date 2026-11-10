@@ -13,9 +13,12 @@ conflitantes. Encontrou 71 candidatos visuais dHash; um par entre treino e
 seleção tem MAE RGB 1,25 e requer inspeção visual. O baseline apenas com
 dimensões e bytes obteve AUC 0,851 na seleção interna combinada e 0,996 no
 subconjunto CommunityForensics, sinal de possível atalho nos dados. Isso não
-autoriza alterar a 3.9 com base no Mirage. A célula 13 e
-`experimentos/exportar_log_notebook.py` arquivam as saídas e os relatórios em
-um `.log` datado no Drive, após publicar o notebook com as saídas. Ver
+autoriza alterar a 3.9 com base no Mirage. O grupo informou que a célula 13
+criou `resultados/validacao_perguntas_3_9_v1/logs/fase3_9_final_20261110_205759_095736_UTC.log`
+no Drive, com saídas de 12 células. A célula 14 foi preparada para conferir
+os 768 pares TGIF e produzir galerias dos candidatos visuais internos. A
+revisão dessas galerias ainda depende da execução no Colab e inspeção visual.
+Ver
 `docs/README_fase3_9_fechamento.md`. Não repetir treino, Mirage ou V3.
 
 **Espelho de código no Drive preparado em 09/11/2026:** o notebook

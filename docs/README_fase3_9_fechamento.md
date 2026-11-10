@@ -54,6 +54,14 @@ de código pelos números escritos no início de cada célula:
 8. **13, log:** arquiva no Drive as saídas textuais já executadas e anexa
    os JSON V2, V3 e fechamento desta revisão. Cria um arquivo datado em
    `resultados/validacao_perguntas_3_9_v1/logs/`, sem substituir logs antigos.
+9. **14, conferência visual:** verifica diretamente os 768 pares do manifesto
+   TGIF e usa os candidatos da V3 ainda em memória para criar CSV e galerias
+   datadas em `resultados/validacao_perguntas_3_9_v1/revisao_visual_interna_*`.
+   Mostra a primeira galeria no notebook. Não abre imagens do teste reservado
+   nessa revisão visual; a interpretação dos pares depende de inspeção humana.
+   Execute na mesma sessão em que a célula 11 produziu `achados`. Se o runtime
+   foi reiniciado, a lista completa de candidatos precisa ser reconstruída
+   pela célula 11; o JSON V3 anterior guarda contagens, não as identidades.
 
 Os relatórios e o log usam hora **UTC com microssegundos** e abertura exclusiva:
 reexecutar V2, V3 ou fechamento cria outro arquivo e não substitui um resumo
