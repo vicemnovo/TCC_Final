@@ -1,17 +1,19 @@
 # Retomada do TCC: Fase 3.9 e próximo experimento
 
-Atualizado em 05/11/2026. Este guia usa as saídas salvas no notebook Colab e
-os arquivos do repositório. O Drive remoto não foi montado nesta revisão.
+Atualizado em 10/11/2026. Este guia usa as saídas salvas no notebook Colab e
+os arquivos do repositório. O Drive remoto não é acessível nesta revisão local.
 
 ## Ponto exato da pausa
 
-**Antes de iniciar a 3.9.1**, concluir as perguntas V2/V3 e a conferência
-documental no [notebook final da 3.9](../Notebooks/fase_3/fase3_9_final_colab.ipynb).
-Ele reúne as partes necessárias dos notebooks de execução e validação,
-preserva ambos os originais e gera relatórios novos sem substituir os antigos.
-Execute as células 1–12 conforme
-[`README_fase3_9_fechamento.md`](README_fase3_9_fechamento.md). Não repetir
-preparo, treino ou avaliação Mirage.
+**Antes de iniciar a 3.9.1**, corrigir V2 e revisar os candidatos visuais
+internos no [notebook final da 3.9](../Notebooks/fase_3/fase3_9_final_colab.ipynb).
+V2, V3 e fechamento já foram executados, mas o fechamento marcou
+`revisao_tecnica_pendente`. A V2 tinha um erro de leitura do manifesto TGIF,
+agora corrigido; a V3 não precisa ser repetida. Após publicar o código,
+execute no Colab **1–5, 7, 9, 10, 12 e 13**. A célula 12 reutiliza o V3
+gravado; a 13 cria um `.log` datado no Drive com as saídas e os relatórios.
+Veja [`README_fase3_9_fechamento.md`](README_fase3_9_fechamento.md). Não
+repetir preparo, treino ou avaliação Mirage.
 
 O código principal está na branch `fase3-ajuste-fino` do repositório privado
 `vicemnovo/TCC_Final`. A Fase 3.9 acrescentou **768 pares TGIF original +

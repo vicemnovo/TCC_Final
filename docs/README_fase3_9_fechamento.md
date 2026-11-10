@@ -46,13 +46,16 @@ de código pelos números escritos no início de cada célula:
    AUC de um baseline de tamanho nas partições internas. Pode demorar pela
    leitura de 12.475 imagens e informa progresso. Grava um novo
    `v3_duplicatas_e_baseline_<data-hora-UTC>.json` no mesmo diretório.
-7. **12, fechamento:** confere que os relatórios desta sessão existem,
+7. **12, fechamento:** confere V2 e V3 (pode reutilizar o V3 já gravado),
    valida SHA-256 do checkpoint contra o bloqueio e o resultado Mirage,
    confere temperatura/limiar congelados e grava um novo
    `fechamento_fase3_9_<data-hora-UTC>.json`. Leia os avisos antes de
    declarar a revisão documental encerrada.
+8. **13, log:** arquiva no Drive as saídas textuais já executadas e anexa
+   os JSON V2, V3 e fechamento desta revisão. Cria um arquivo datado em
+   `resultados/validacao_perguntas_3_9_v1/logs/`, sem substituir logs antigos.
 
-Os três relatórios usam hora **UTC com microssegundos** e abertura exclusiva:
+Os relatórios e o log usam hora **UTC com microssegundos** e abertura exclusiva:
 reexecutar V2, V3 ou fechamento cria outro arquivo e não substitui um resumo
 antigo. A primeira cópia para o Drive exige que este notebook já esteja
 publicado na branch; o próprio código verifica isso. Não execute as células
@@ -61,10 +64,21 @@ publicado na branch; o próprio código verifica isso. Não execute as células
 ## Critério de encerramento e limite do resultado
 
 O treino interno e a avaliação comparativa Mirage da 3.9 já terminaram.
-O trabalho documental restante é executar V2/V3 até o fim e revisar o
-fechamento: se aparecerem arquivos ausentes, pares não identificados,
-duplicatas cruzadas ou candidatos visuais, registre e investigue antes de
-afirmar que a auditoria está resolvida. Nenhum aviso autoriza alterar a
+As células 1–12 foram executadas em 10/11/2026. V2, V3 e fechamento estão
+gravados, mas o fechamento apontou revisão técnica pendente. A V2 anterior
+não identificou os pares porque procurava `path`, enquanto o manifesto TGIF
+usa `rows` com `image` e `image_id`. Isso foi corrigido. Após publicar o
+notebook atualizado, execute **1–5, 7, 9, 10, 12 e 13**. A V3 já verificou
+12.475 imagens em cerca de 38 minutos; a célula 12 pode reutilizar o relatório
+V3 mais recente, sem repetir essa leitura. A célula 13 lê as saídas que foram
+salvas no snapshot versionado do notebook. Se o runtime ainda usa um commit
+antigo, atualize o snapshot antes de criar o log.
+
+A V3 achou três duplicatas exatas somente dentro do teste reservado, nenhuma
+entre divisões e nenhum rótulo conflitante. Há 71 candidatos visuais por
+dHash; um par entre treino e seleção tem MAE RGB 1,25 e precisa de inspeção
+visual. Esses números não comprovam vazamento, mas a auditoria visual ainda
+não pode ser declarada concluída. Nenhum aviso autoriza alterar a
 configuração da 3.9 usando o Mirage. A acurácia comparativa Mirage de 58,75%
 fica abaixo da meta; o conjunto já observado não é um teste final cego da
 próxima variante. O projeto continuará com uma nova hipótese interna na

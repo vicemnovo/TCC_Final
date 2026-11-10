@@ -1,14 +1,22 @@
 # Estado do projeto — Fase 3.9 treinada e avaliada no Mirage
 
-**Fechamento preparado em 10/11/2026, ainda não executado no Colab:**
-`Notebooks/fase_3/fase3_9_final_colab.ipynb` reúne em um só notebook a
-preparação de `rodar_fase3_9_tgif_colab.ipynb` com as perguntas V1–V3 de
-`validar_perguntas_fase3_9_colab.ipynb`. Os originais e suas saídas ficam
-preservados. V1 foi executada no notebook separado conforme saída local;
-V2 foi interrompida antes de gravar seu relatório e V3 ainda não foi
-executada nesse notebook. Para fechar a 3.9, execute o notebook final na
-ordem documentada em `docs/README_fase3_9_fechamento.md`, revise avisos e
-guarde os relatórios novos. Não repetir treino ou avaliação Mirage.
+**Fechamento executado em 10/11/2026, com revisão técnica pendente:**
+`Notebooks/fase_3/fase3_9_final_colab.ipynb` reuniu os dois notebooks
+anteriores. As células 1–12 foram executadas no Colab e gravaram V2, V3 e
+fechamento em `resultados/validacao_perguntas_3_9_v1/` no Drive. O fechamento
+confirmou hash do checkpoint, temperatura e limiar do Mirage, mas registrou
+`revisao_tecnica_pendente`. A V2 não reconheceu o manifesto TGIF porque
+buscava `path` em vez de `rows[*].image` e `image_id`; a célula 10 foi
+corrigida e deve ser reexecutada. A V3 verificou 12.475 imagens: três cópias
+exatas adicionais só no teste reservado, zero entre divisões e zero rótulos
+conflitantes. Encontrou 71 candidatos visuais dHash; um par entre treino e
+seleção tem MAE RGB 1,25 e requer inspeção visual. O baseline apenas com
+dimensões e bytes obteve AUC 0,851 na seleção interna combinada e 0,996 no
+subconjunto CommunityForensics, sinal de possível atalho nos dados. Isso não
+autoriza alterar a 3.9 com base no Mirage. A célula 13 e
+`experimentos/exportar_log_notebook.py` arquivam as saídas e os relatórios em
+um `.log` datado no Drive, após publicar o notebook com as saídas. Ver
+`docs/README_fase3_9_fechamento.md`. Não repetir treino, Mirage ou V3.
 
 **Espelho de código no Drive preparado em 09/11/2026:** o notebook
 `Notebooks/configuracao/sincronizar_codigo_drive_colab.ipynb` e o script
