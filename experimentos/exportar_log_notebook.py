@@ -37,14 +37,18 @@ def build_log(notebook_path, reports):
         "LOG DE EXECUÇÃO — FASE 3.9",
         f"Notebook: {notebook_path.name}",
         f"SHA-256 do notebook com saídas: {hashlib.sha256(raw).hexdigest()}",
-        "Fonte: saídas persistidas no notebook versionado; células não reexecutadas.",
+        "Fonte: saídas das células 1 a 12 persistidas no notebook versionado; células não reexecutadas.",
         "Os JSON anexados podem refletir a correção V2 posterior às saídas históricas do notebook.",
         "",
     ]
     captured = 0
+    code_number = 0
     for index, cell in enumerate(notebook["cells"], 1):
         if cell.get("cell_type") != "code":
             continue
+        code_number += 1
+        if code_number > 12:
+            break  # A própria célula de exportação não integra o log científico.
         output = "".join(text_output(item) for item in cell.get("outputs", []))
         if not output.strip():
             continue

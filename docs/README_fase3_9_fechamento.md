@@ -73,7 +73,11 @@ novo notebook e o exportador de log no Drive. A V3 já verificou
 12.475 imagens em cerca de 38 minutos; a célula 12 pode reutilizar o relatório
 V3 mais recente, sem repetir essa leitura. A célula 13 lê as saídas que foram
 salvas no snapshot versionado do notebook. Se o runtime ainda usa um commit
-antigo, atualize o snapshot antes de criar o log.
+antigo, **reexecute somente a célula 4 e depois a 13** para criar o log;
+as variáveis V2/V3/fechamento da sessão permanecem disponíveis. O erro
+`python3: can't open file .../exportar_log_notebook.py` com código 2
+identifica precisamente esse snapshot antigo, pois o script só entrou no
+commit `ee8605d`.
 
 A V3 achou três duplicatas exatas somente dentro do teste reservado, nenhuma
 entre divisões e nenhum rótulo conflitante. Há 71 candidatos visuais por
