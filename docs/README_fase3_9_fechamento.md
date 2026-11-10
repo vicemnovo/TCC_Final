@@ -1,5 +1,16 @@
 # Fechamento documental da Fase 3.9
 
+**Para as duas conferências pendentes, use agora**
+[`conferir_fase3_9_colab.ipynb`](../Notebooks/fase_3/conferir_fase3_9_colab.ipynb).
+Ele é um arquivo novo e independente, com três células de código identificadas
+como passos 1, 2 e 3. Abra a cópia **local do repositório** no VS Code, pois a
+cópia antiga do notebook final no Drive pode não conter a célula 14.
+O passo 2 valida diretamente os 768 pares TGIF; o passo 3 cria galerias sem
+abrir imagens do teste reservado. O notebook não precisa de token nem GPU.
+Se a lista `achados` da V3 ainda estiver na memória do mesmo kernel, a galeria
+cobre todos os candidatos internos. Em outro kernel, usa os até 30 candidatos
+mais próximos que ficaram impressos no log e informa a cobertura parcial.
+
 ## O que o notebook reúne
 
 [`fase3_9_final_colab.ipynb`](../Notebooks/fase_3/fase3_9_final_colab.ipynb)

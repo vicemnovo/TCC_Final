@@ -38,6 +38,11 @@ reúne a preparação necessária do notebook de execução com as perguntas
 V1–V3 do notebook de validação. O
 [guia de fechamento](docs/README_fase3_9_fechamento.md) descreve as células
 pendentes, os relatórios com data/hora e os limites da avaliação Mirage.
+Para conferir os 768 pares TGIF e gerar galerias dos candidatos visuais em
+um arquivo fácil de localizar, abra o
+[notebook de conferências da 3.9](Notebooks/fase_3/conferir_fase3_9_colab.ipynb).
+A revisão visual ainda depende de inspecionar as galerias; nenhum teste ou
+treino é repetido por esse notebook.
 
 O smoke test verifica dados, checkpoint e uma passagem pelo modelo; não mede
 acurácia. O treino escolhe a melhor época na seleção interna e ajusta

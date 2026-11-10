@@ -18,7 +18,12 @@ criou `resultados/validacao_perguntas_3_9_v1/logs/fase3_9_final_20261110_205759_
 no Drive, com saídas de 12 células. A célula 14 foi preparada para conferir
 os 768 pares TGIF e produzir galerias dos candidatos visuais internos. A
 revisão dessas galerias ainda depende da execução no Colab e inspeção visual.
-Ver
+Para evitar confusão com uma cópia antiga do notebook final, foi criado
+`Notebooks/fase_3/conferir_fase3_9_colab.ipynb`, com três passos autônomos:
+montagem do Drive, conferência dos pares e galeria interna. Ele usa o log
+persistido como fallback se a lista completa da V3 não estiver em memória;
+nesse caso, só os até 30 candidatos impressos no log são exibidos e a revisão
+continua parcial. Ver
 `docs/README_fase3_9_fechamento.md`. Não repetir treino, Mirage ou V3.
 
 **Espelho de código no Drive preparado em 09/11/2026:** o notebook
