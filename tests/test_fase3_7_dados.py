@@ -3,7 +3,7 @@
 from collections import defaultdict
 import unittest
 
-from experimentos.fase3_7_dados import select_rows
+from Notebooks.fase_3.fase3_7.fase3_7_dados import select_rows
 
 
 class SelecaoFase37(unittest.TestCase):

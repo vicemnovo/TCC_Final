@@ -3,7 +3,7 @@
 ## Onde ficam os arquivos
 
 O GitHub continua sendo a fonte versionada do código. Em cada sessão Colab,
-um commit da branch `fase3-ajuste-fino` é baixado para
+um commit da branch `main` é baixado para
 `/content/tcc_codigo/<sha>` para execução. O notebook
 [`sincronizar_codigo_drive_colab.ipynb`](../Notebooks/configuracao/sincronizar_codigo_drive_colab.ipynb)
 faz também uma cópia persistente dos arquivos `.ipynb` e `.py` desse **mesmo
@@ -11,8 +11,8 @@ commit** para `/content/drive/MyDrive/TCC_Final`, mantendo as pastas:
 
 | Repositório | Espelho no Drive |
 | --- | --- |
-| `Notebooks/fase_3/rodar_fase3_9_tgif_colab.ipynb` | `TCC_Final/Notebooks/fase_3/rodar_fase3_9_tgif_colab.ipynb` |
-| `experimentos/fase3_9_tgif_finetune.py` | `TCC_Final/experimentos/fase3_9_tgif_finetune.py` |
+| `Notebooks/fase_3/fase3_9/rodar_fase3_9_tgif_colab.ipynb` | `TCC_Final/Notebooks/fase_3/fase3_9/rodar_fase3_9_tgif_colab.ipynb` |
+| `Notebooks/fase_3/fase3_9/fase3_9_tgif_finetune.py` | `TCC_Final/Notebooks/fase_3/fase3_9/fase3_9_tgif_finetune.py` |
 | `tests/test_espelhar_codigo_drive.py` | `TCC_Final/tests/test_espelhar_codigo_drive.py` |
 
 O espelho cobre **todos** os `.ipynb` e `.py` do snapshot, inclusive fases
@@ -21,7 +21,7 @@ datasets, pesos, resultados, credenciais nem outros tipos de arquivo.
 
 ## Primeira sincronização e atualizações
 
-1. No VS Code, publique na branch `fase3-ajuste-fino` as alterações de código
+1. No VS Code, publique na branch `main` as alterações de código
    que devem chegar ao Drive. Mudanças apenas locais não aparecem no snapshot.
 2. Abra `Notebooks/configuracao/sincronizar_codigo_drive_colab.ipynb` com o
    runtime Colab da conta correta. GPU não é necessária.

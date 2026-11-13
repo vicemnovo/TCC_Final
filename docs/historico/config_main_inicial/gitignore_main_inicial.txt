@@ -1,0 +1,53 @@
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+
+# Jupyter e Colab
+.ipynb_checkpoints/
+
+# Ambientes e credenciais
+.env
+.env.*
+!.env.example
+credentials.json
+service_account.json
+*.pem
+*.key
+
+# Checkpoints e modelos treinados
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.h5
+*.hdf5
+
+# Bases de dados e arquivos grandes
+datasets/
+dataset/
+data/
+cache/
+modelos/
+checkpoints/
+
+# Arquivos compactados
+*.zip
+*.rar
+*.7z
+*.tar
+*.tar.gz
+
+# Arquivos temporários
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
+
+# Configurações pessoais do VS Code
+.vscode/settings.json

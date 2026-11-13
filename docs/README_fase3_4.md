@@ -2,7 +2,7 @@
 
 ## Primeira vez
 
-1. Publique, após revisão e autorização, os arquivos deste experimento na branch privada `fase3-ajuste-fino`. Alterações apenas no VS Code não ficam disponíveis para o runtime remoto.
+1. Publique, após revisão e autorização, os arquivos deste experimento na branch privada `main`. Alterações apenas no VS Code não ficam disponíveis para o runtime remoto.
 2. No navegador do Colab, abra `Notebooks/configuracao/configurar_github_colab.ipynb`. Configure no painel de Segredos um `GITHUB_TOKEN` fine-grained limitado a `vicemnovo/TCC_Final`, permissão **Contents: Read-only**, e autorize o notebook a lê-lo. Execute as duas células; escolha uma senha forte e guarde-a fora do projeto. O token cifrado será criado automaticamente em `TCC_Final/credenciais/github.enc` no Drive.
 3. Confirme que os checkpoints das Fases 2 e 3.3 estão em `/content/drive/MyDrive/TCC_Final/modelos/`.
 
@@ -10,7 +10,7 @@ O OpenFake é público e a coleta pode ser anônima. Para aproveitar o `HF_TOKEN
 
 ## Cada sessão pelo VS Code
 
-Abra `Notebooks/fase_3/rodar_fase3_4_colab.ipynb`, conecte a GPU do Colab e execute as células 1 a 5. Informe a senha quando solicitada. A célula 4 baixa um snapshot imutável da branch para `/content/tcc_codigo/<sha>`; não modifica o Drive nem arquivos locais do VS Code. A célula 5 verifica checkpoint e dependências.
+Abra `Notebooks/fase_3/fase3_4/rodar_fase3_4_colab.ipynb`, conecte a GPU do Colab e execute as células 1 a 5. Informe a senha quando solicitada. A célula 4 baixa um snapshot imutável da branch para `/content/tcc_codigo/<sha>`; não modifica o Drive nem arquivos locais do VS Code. A célula 5 verifica checkpoint e dependências.
 
 Na primeira sessão, execute a célula 6 para coletar o OpenFake em `TCC_Final/dados_fase3_4/` no Drive. Depois execute a 7 para testar dados, arquitetura, checkpoint, forward e gravação sem treino. Em sessões posteriores, dados e smoke existentes são preservados.
 

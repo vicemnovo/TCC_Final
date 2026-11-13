@@ -1,7 +1,7 @@
 # Fechamento documental da Fase 3.9
 
 **As duas conferências foram executadas; para reproduzi-las, use**
-[`conferir_fase3_9_colab.ipynb`](../Notebooks/fase_3/conferir_fase3_9_colab.ipynb).
+[`conferir_fase3_9_colab.ipynb`](../Notebooks/fase_3/fase3_9/conferir_fase3_9_colab.ipynb).
 Ele é um arquivo novo e independente, com três células de código identificadas
 como passos 1, 2 e 3. Abra a cópia **local do repositório** no VS Code, pois a
 cópia antiga do notebook final no Drive pode não conter a célula 14.
@@ -19,7 +19,7 @@ os nomes exatos das divisões estão em
 
 ## O que o notebook reúne
 
-[`fase3_9_final_colab.ipynb`](../Notebooks/fase_3/fase3_9_final_colab.ipynb)
+[`fase3_9_final_colab.ipynb`](../Notebooks/fase_3/fase3_9/fase3_9_final_colab.ipynb)
 é o notebook único para o trabalho restante da 3.9. Ele **junta** a
 preparação do runtime, a cópia local dos dados e a leitura dos resultados de
 `rodar_fase3_9_tgif_colab.ipynb` com as perguntas V1, V2 e V3 de
@@ -38,13 +38,13 @@ célula de status e pelo fechamento, sem nova avaliação.
 
 ## Execução no Google Colab
 
-Abra `Notebooks/fase_3/fase3_9_final_colab.ipynb` no VS Code e conecte o
+Abra `Notebooks/fase_3/fase3_9/fase3_9_final_colab.ipynb` no VS Code e conecte o
 runtime Colab da conta correta. **GPU não é necessária.** Execute as células
 de código pelos números escritos no início de cada célula:
 
 1. **1–5, preparação:** verificam dependências, montam o Drive, pedem a
    senha da credencial GitHub cifrada e baixam o snapshot do commit atual
-   da branch `fase3-ajuste-fino` para `/content`. Nenhum token é impresso.
+   da branch `main` para `/content`. Nenhum token é impresso.
 2. **6, espelho:** copia este notebook e todos os `.ipynb`/`.py` da branch
    para as respectivas pastas em `/content/drive/MyDrive/TCC_Final`.
    Arquivos divergentes já presentes no Drive são preservados em

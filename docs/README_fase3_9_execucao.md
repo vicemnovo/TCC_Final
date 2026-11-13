@@ -26,7 +26,7 @@ parcial ou checkpoint anterior é substituído.
 
 ## Procedimento no Colab
 
-Abra `Notebooks/fase_3/rodar_fase3_9_tgif_colab.ipynb` e execute:
+Abra `Notebooks/fase_3/fase3_9/rodar_fase3_9_tgif_colab.ipynb` e execute:
 
 1. **Células 1–5:** conectam GPU e Drive, desbloqueiam a credencial GitHub
    existente e sincronizam o código da branch publicada. A senha não fica
@@ -70,7 +70,7 @@ pesos, limiar ou hiperparâmetros da próxima versão.
 
 Para concluir a revisão das perguntas V1–V3 e registrar o fechamento sem
 repetir treino ou avaliação, use o
-[`fase3_9_final_colab.ipynb`](../Notebooks/fase_3/fase3_9_final_colab.ipynb).
+[`fase3_9_final_colab.ipynb`](../Notebooks/fase_3/fase3_9/fase3_9_final_colab.ipynb).
 Ele reúne a preparação deste notebook com a validação do notebook separado;
 o procedimento e os relatórios com data/hora estão em
 [`README_fase3_9_fechamento.md`](README_fase3_9_fechamento.md).

@@ -18,7 +18,7 @@ registro histórico; a revisão posterior e seus limites estão em
 preparo, treino ou avaliação Mirage. A próxima mudança experimental será
 uma variante 3.9.1 definida apenas com dados internos.
 
-O código principal está na branch `fase3-ajuste-fino` do repositório privado
+O código principal está na branch `main` do repositório privado
 `vicemnovo/TCC_Final`. A Fase 3.9 acrescentou **768 pares TGIF original +
 SD2 totalmente regenerado**, com seleção por ID COCO e caminho de categoria.
 Os pares foram divididos em 512 para treino, 128 para seleção de época e 128
@@ -54,7 +54,7 @@ em um teste cego independente.
 Não repita preparo, smoke, treino ou avaliação da 3.9 (células #6 a #14 do
 notebook de execução), nem a auditoria interna já concluída. Preserve
 `phase3_final.pt`, o lock da avaliação, `metrics.json` e o relatório de
-auditoria. O [notebook de auditoria](../Notebooks/fase_3/auditar_interno_fase3_9_colab.ipynb)
+auditoria. O [notebook de auditoria](../Notebooks/fase_3/fase3_9/auditar_interno_fase3_9_colab.ipynb)
 teve suas células #7–#11 executadas pelo grupo; a #10 mostra apenas erros
 visuais extremos e a #11 conta todos os erros. O
 [relatório completo](AUDITORIA_INTERNA_FASE3_9.md) registra os resultados.
@@ -68,8 +68,8 @@ já observado ficou em 58,75%; não usar seus erros para definir a 3.9.1.
 
 Ao retomar em outro computador ou sessão:
 
-1. Abra o repositório na branch `fase3-ajuste-fino` e execute
-   `git status -sb` e `git pull --ff-only origin fase3-ajuste-fino` se a cópia
+1. Abra o repositório na branch `main` e execute
+   `git status -sb` e `git pull --ff-only origin main` se a cópia
    local estiver limpa. Leia este guia, `ESTADO_PROJETO.md` e a auditoria.
    Para espelhar os `.ipynb` e `.py` no Drive, abra
    `Notebooks/configuracao/sincronizar_codigo_drive_colab.ipynb` e execute
@@ -102,7 +102,7 @@ nem representam certeza de origem. Resultados históricos não são regravados.
 
 ## Como a avaliação Mirage foi executada
 
-Abra `Notebooks/fase_3/rodar_fase3_9_tgif_colab.ipynb` no VS Code e conecte
+Abra `Notebooks/fase_3/fase3_9/rodar_fase3_9_tgif_colab.ipynb` no VS Code e conecte
 o runtime Colab com GPU. Se for **um runtime novo**, execute as células de
 código **#1 a #5 em ordem**: dependências/GPU, montagem do Drive,
 desbloqueio da credencial GitHub, snapshot da branch e definição de
@@ -183,7 +183,7 @@ orientar mudanças posteriores.
 ## Conferência do Git ao voltar
 
 No projeto principal, execute `git status -sb` e `git log -1 --oneline`.
-Confira que a branch é `fase3-ajuste-fino` e que o commit local acompanha
-`origin/fase3-ajuste-fino`. No repositório da demo, a branch é `main`.
+Confira que a branch é `main` e que o commit local acompanha
+`origin/main`. No repositório da demo, a branch é `main`.
 Datasets, checkpoints, credenciais e resultados grandes ficam no Drive,
 fora de ambos os repositórios Git. Preserve os diretórios das fases antigas.

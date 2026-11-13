@@ -143,7 +143,7 @@ def frozen_model(root, code_root):
     config_path = run / 'experiment_config.json'
     metrics_path = run / 'internal_metrics.json'
     complete_path = run / 'training_complete.json'
-    source = code_root / 'Notebooks/fase_3/fase3.3_compressao.ipynb'
+    source = code_root / 'Notebooks/fase_3/fase3_3/fase3.3_compressao.ipynb'
     for path in (checkpoint, config_path, metrics_path, complete_path, source):
         if not path.is_file():
             raise FileNotFoundError(path)

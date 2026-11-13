@@ -27,7 +27,7 @@ MODELS = {
 def architecture_sources(code_root):
     """Extrai as classes originais de cada fase sem executar células de treino."""
     phase1_source = code_root / "Notebooks/fase_1/fase1_vit.ipynb"
-    phase2_source = code_root / "Notebooks/fase_3/fase3.3_compressao.ipynb"
+    phase2_source = code_root / "Notebooks/fase_3/fase3_3/fase3.3_compressao.ipynb"
     if not phase1_source.is_file() or not phase2_source.is_file():
         raise FileNotFoundError("Notebook original da Fase 1 ou 3.3 ausente no snapshot")
     phase1_cells = json.loads(phase1_source.read_text(encoding="utf-8"))["cells"]

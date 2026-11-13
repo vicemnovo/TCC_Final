@@ -31,7 +31,7 @@ novas métricas internas por grupo até essa execução.
 
 ## Preservação e execução da auditoria
 
-O script [`auditoria_interna_fase3_8.py`](../experimentos/auditoria_interna_fase3_8.py)
+O script [`auditoria_interna_fase3_8.py`](../Notebooks/fase_3/fase3_8/auditoria_interna_fase3_8.py)
 confere os hashes da arquitetura, script de treino, manifestos e checkpoint,
 e reconcilia as linhas das partições antes de abrir imagens. A célula de cópia
 local verifica os hashes das imagens novas. O script usa temperatura e limiar já salvos,
@@ -40,8 +40,8 @@ recortes **somente** na seleção interna. Não treina, não recalibra, não inf
 calibração, teste OpenFake ou Mirage. O hash do checkpoint conhecido serve
 apenas para conferir sua identidade; nenhuma predição externa é lida.
 
-Após a publicação autorizada do código na branch `fase3-ajuste-fino`, abra
-[`auditar_interno_fase3_8_colab.ipynb`](../Notebooks/fase_3/auditar_interno_fase3_8_colab.ipynb)
+Após a publicação autorizada do código na branch `main`, abra
+[`auditar_interno_fase3_8_colab.ipynb`](../Notebooks/fase_3/fase3_8/auditar_interno_fase3_8_colab.ipynb)
 no VS Code com GPU do Colab:
 
 1. Células **1–5**: ambiente, Drive, credencial GitHub, snapshot e progresso.
@@ -73,7 +73,7 @@ diretório final não aparece; se falhar durante a gravação, uma pasta parcial
 
 As opções são **hipóteses**, sem promessa de atingir 85%. Após a auditoria
 interna da 3.8, o grupo escolheu combinar **A + C** como hipótese de dados da
-3.9. Os pilotos estão em `Notebooks/fase_3/pilotos_fase3_9_colab.ipynb` e o
+3.9. Os pilotos estão em `Notebooks/fase_3/fase3_9/pilotos_fase3_9_colab.ipynb` e o
 procedimento em `docs/README_fase3_9.md`. Quantidades e divisões ainda
 dependem do piloto; não usar predições Mirage para defini-las.
 A [página oficial do Open Images V7](https://storage.googleapis.com/openimages/web/download_v7.html)

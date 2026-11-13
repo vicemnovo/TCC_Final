@@ -35,7 +35,7 @@ As falhas incluíram URLs inacessíveis, imagens ilegíveis e lado curto abaixo
 de 256 px. Quinze provas são insuficientes para fixar o tamanho ou descartar
 o AIGI. Os relatórios existentes permanecem preservados.
 
-**Execute agora** `Notebooks/fase_3/piloto_ampliado_fase3_9_colab.ipynb`:
+**Execute agora** `Notebooks/fase_3/fase3_9/piloto_ampliado_fase3_9_colab.ipynb`:
 células 1–5 para montar o ambiente e sincronizar o código; célula 6 para
 verificar **20** fotos reais por grupo nos três grupos anteriores, mantendo
 o relatório original; célula 7 para mostrar o resumo. GPU não é necessária.
@@ -47,12 +47,12 @@ reutilizado; em sessão nova, os arquivos completos serão baixados novamente.
 
 ## Procedimento do primeiro piloto (histórico)
 
-Abra `Notebooks/fase_3/pilotos_fase3_9_colab.ipynb` no runtime do Colab.
+Abra `Notebooks/fase_3/fase3_9/pilotos_fase3_9_colab.ipynb` no runtime do Colab.
 GPU não é necessária neste passo. Execute as células em ordem:
 
 1. **1–5:** dependências, Drive, credencial GitHub, snapshot da branch e
    função que imprime progresso. O código precisa estar publicado na branch
-   `fase3-ajuste-fino`; o Colab não lê o disco `E:`.
+   `main`; o Colab não lê o disco `E:`.
 2. **6:** piloto Open Images. Baixa o CSV oficial completo e dez JPEGs para
    `/content`, de autores declarados distintos. Pode demorar no primeiro
    download. Metadados e inspeção técnica não comprovam, por si, que cada

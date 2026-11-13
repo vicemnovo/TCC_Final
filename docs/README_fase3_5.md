@@ -43,9 +43,9 @@ não comprova ausência de viés sem auditoria adicional.
 
 ## Arquivos e isolamento
 
-- `experimentos/fase3_5_dados.py`: `pilot`, `prepare` e `stage`.
-- `experimentos/fase3_5_finetune.py`: `smoke`, `train`, `resume` e `auto`.
-- `Notebooks/fase_3/rodar_fase3_5_colab.ipynb`: interface Colab.
+- `Notebooks/fase_3/fase3_5/fase3_5_dados.py`: `pilot`, `prepare` e `stage`.
+- `Notebooks/fase_3/fase3_5/fase3_5_finetune.py`: `smoke`, `train`, `resume` e `auto`.
+- `Notebooks/fase_3/fase3_5/rodar_fase3_5_colab.ipynb`: interface Colab.
 - Dados persistentes: `dados_fase3_5/fase3_5_novos_v1/` no Drive; enquanto
   incompleto, `.incompleto/`. Cópia efêmera: `/content/fase3_5_novos_v1/`.
 - Novo experimento: `modelos/fase3_5_cfsmall_v1/`; smoke separado em
@@ -85,9 +85,9 @@ significa classe fotográfica do dataset, não veracidade da cena ou notícia.
 
 ## Passo a passo no Colab
 
-Antes: publique os arquivos novos na branch `fase3-ajuste-fino` **somente após
+Antes: publique os arquivos novos na branch `main` **somente após
 autorização para commit/push**. A sessão do VS Code não vê arquivos locais no
-disco E:. Abra `Notebooks/fase_3/rodar_fase3_5_colab.ipynb` e conecte GPU.
+disco E:. Abra `Notebooks/fase_3/fase3_5/rodar_fase3_5_colab.ipynb` e conecte GPU.
 
 1. Execute as células **1–5**: GPU/dependências, Drive, senha da credencial
    GitHub existente, snapshot da branch e comandos. Não refaça a configuração
@@ -121,8 +121,8 @@ Os comandos equivalentes no terminal do Colab, **após** montar o Drive,
 sincronizar o código e executar `stage`, são:
 
 ```bash
-TCC_CODE_ROOT=/content/tcc_codigo/<sha> python -u /content/tcc_codigo/<sha>/experimentos/fase3_5_finetune.py smoke
-TCC_CODE_ROOT=/content/tcc_codigo/<sha> python -u /content/tcc_codigo/<sha>/experimentos/fase3_5_finetune.py auto
+TCC_CODE_ROOT=/content/tcc_codigo/<sha> python -u /content/tcc_codigo/<sha>/Notebooks/fase_3/fase3_5/fase3_5_finetune.py smoke
+TCC_CODE_ROOT=/content/tcc_codigo/<sha> python -u /content/tcc_codigo/<sha>/Notebooks/fase_3/fase3_5/fase3_5_finetune.py auto
 ```
 
 Substitua `<sha>` pelo commit que a célula 4 imprimiu. `auto` inicia ou retoma;
@@ -161,7 +161,7 @@ inferidos nessa célula.
 
 ## Diagnóstico interno após o treino
 
-`experimentos/diagnostico_interno_fase3_5.py` confere que o manifesto e as
+`Notebooks/fase_3/fase3_5/diagnostico_interno_fase3_5.py` confere que o manifesto e as
 partições ainda correspondem à execução concluída, carrega somente o checkpoint
 final da 3.5 e faz inferência na partição interna de seleção.
 Usa cinco recortes e a temperatura e o limiar **congelados** no checkpoint; não
@@ -179,7 +179,7 @@ células 4 e 5 para atualizar o snapshot e a **célula 12** para o diagnóstico.
 Em sessão nova, execute 1–5 e 8 antes da 12. Não repita preparo ou treino.
 
 O diagnóstico foi concluído no Colab conforme saída fornecida pelo usuário.
-Para avançar sem novo treino especulativo, `experimentos/auditar_erros_internos_fase3_5.py`
+Para avançar sem novo treino especulativo, `Notebooks/fase_3/fase3_5/auditar_erros_internos_fase3_5.py`
 analisa as predições já salvas da seleção, lê apenas os metadados e dimensões
 dessas imagens e grava `errors.csv`, `segments.csv`, `selection_metadata.csv`
 e `summary.json` em `resultados/auditoria_erros_internos_fase3_5_v1/`.

@@ -4,7 +4,7 @@ Este repositório guarda **código, notebooks e documentação**. Novas saídas 
 execução dos notebooks devem ser revisadas antes de entrar em um commit. O
 Google Drive guarda datasets, manifestos de execução, checkpoints e
 resultados. O GitHub não substitui o Drive; `/content` do Colab é temporário.
-Trabalhamos na branch `fase3-ajuste-fino`.
+Trabalhamos na branch `main`.
 
 ## Termos usados aqui
 
@@ -12,7 +12,7 @@ Trabalhamos na branch `fase3-ajuste-fino`.
 | --- | --- |
 | *Commit* | Registro local de uma mudança com mensagem e identificador |
 | *Push* | Envio dos commits locais ao GitHub |
-| *Branch* | Linha de desenvolvimento; a atual é `fase3-ajuste-fino` |
+| *Branch* | Linha de desenvolvimento; a atual é `main` |
 | *Snapshot* | Cópia de um commit específico baixada pelo notebook no Colab |
 | *Checkpoint* | Pesos e estado do modelo salvos no Drive, fora do Git |
 
@@ -26,13 +26,13 @@ git branch --show-current
 git fetch origin
 ```
 
-Confira que a branch é `fase3-ajuste-fino`. Se `git status -sb` mostrar
+Confira que a branch é `main`. Se `git status -sb` mostrar
 arquivos modificados, revise-os antes de atualizar: podem ser saídas de
 notebook ou trabalho de outro integrante. Com o trabalho local identificado,
 atualize a branch:
 
 ```powershell
-git pull --ff-only origin fase3-ajuste-fino
+git pull --ff-only origin main
 ```
 
 Se o `pull` recusar por mudanças locais ou commits divergentes, pare e revise
@@ -65,7 +65,7 @@ com o grupo. Não use `reset --hard`, `clean -fd` ou `push --force` para resolve
 5. Publique e confira o resultado:
 
    ```powershell
-   git push origin fase3-ajuste-fino
+   git push origin main
    git status -sb
    git log -1 --oneline
    ```
@@ -87,7 +87,7 @@ sem revisar, pois ele também tenta incluir arquivos novos indesejados.
   sincronização do snapshot e definição dos comandos do notebook. Confira o
   SHA impresso antes de preparar dados ou treinar.
 - O notebook da 3.8 é
-  [`rodar_fase3_8_colab.ipynb`](../Notebooks/fase_3/rodar_fase3_8_colab.ipynb).
+  [`rodar_fase3_8_colab.ipynb`](../Notebooks/fase_3/fase3_8/rodar_fase3_8_colab.ipynb).
   O roteiro de execução está em [`README_fase3_8_execucao.md`](README_fase3_8_execucao.md).
 - Após desconexão, monte o Drive e copie dados necessários para `/content`.
   `last.pt` permite retomar treino incompleto. Não repita preparo ou smoke

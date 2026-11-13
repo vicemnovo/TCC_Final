@@ -13,7 +13,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location(
-    'fase3_5_dados', ROOT / 'experimentos/fase3_5_dados.py')
+    'fase3_5_dados', ROOT / 'Notebooks/fase_3/fase3_5/fase3_5_dados.py')
 data = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(data)
 

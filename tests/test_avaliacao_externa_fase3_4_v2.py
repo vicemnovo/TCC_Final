@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 
 
-SCRIPT = Path(__file__).resolve().parents[1] / 'experimentos' / 'avaliar_externo_fase3_4_v2.py'
+SCRIPT = Path(__file__).resolve().parents[1] / 'Notebooks/fase_3/fase3_4/avaliar_externo_fase3_4_v2.py'
 spec = importlib.util.spec_from_file_location('avaliar_externo_v2', SCRIPT)
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)

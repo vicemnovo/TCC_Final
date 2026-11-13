@@ -74,7 +74,7 @@ não será considerada melhoria. O Mirage já visto não pode definir esse ajust
 
 ## O que o notebook faz
 
-Abra `Notebooks/fase_3/auditar_interno_fase3_9_colab.ipynb` em um runtime
+Abra `Notebooks/fase_3/fase3_9/auditar_interno_fase3_9_colab.ipynb` em um runtime
 Colab com GPU. Execute as células de código **#1 a #5** em ordem para montar
 Drive, desbloquear a credencial GitHub e sincronizar a branch publicada.
 Execute **#6** para copiar os dados internos congelados ao `/content` com
@@ -86,7 +86,7 @@ com contagem, denominador e taxa. Para essa célula, em uma nova sessão basta
 montar o Drive pela #2: ela não precisa de GPU, código do GitHub ou nova
 inferência. Nenhuma célula inicia treino ou recalibração.
 
-O script principal `experimentos/auditoria_interna_fase3_9.py`:
+O script principal `Notebooks/fase_3/fase3_9/auditoria_interna_fase3_9.py`:
 
 - Confere hashes de checkpoints, scripts, arquitetura e manifestos de treino.
 - Verifica que as divisões da 3.8 permanecem na 3.9 e que somente os 768

@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from experimentos.fase3_8_aigi_piloto import public_https_url, real_rows
+from Notebooks.fase_3.fase3_8.fase3_8_aigi_piloto import public_https_url, real_rows
 
 
 class AigiPilotTests(unittest.TestCase):

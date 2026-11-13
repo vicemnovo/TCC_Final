@@ -18,7 +18,7 @@ artefatos úteis. Não declarar melhoria antes de medir.
 
 ## Única mudança experimental
 
-`experimentos/fase3_6_escala.py` copia o fluxo de ajuste fino da 3.5 e
+`Notebooks/fase_3/fase3_6/fase3_6_escala.py` copia o fluxo de ajuste fino da 3.5 e
 altera apenas a probabilidade de `RandomDownUp` no treino de **0,15 para
 0,50**; o intervalo de escala continua **0,5–0,9**. A transformação vale
 para ambas as classes. A arquitetura ViT-Tiny + FFT + EfficientNet-B0,
@@ -35,7 +35,7 @@ seleção, calibração nem escolha de parâmetros.
 
 ## Execução no Colab
 
-Abra `Notebooks/fase_3/rodar_fase3_6_colab.ipynb` em GPU. O notebook não
+Abra `Notebooks/fase_3/fase3_6/rodar_fase3_6_colab.ipynb` em GPU. O notebook não
 treina ao abrir e reutiliza a credencial GitHub e os dados já congelados.
 
 1. Execute **1–5**: GPU/dependências, Drive, senha, snapshot do GitHub e
@@ -95,12 +95,12 @@ enviada pelo usuário. Não usar esses casos para ajustar a Fase 3.7.
 
 ### Procedimento já executado, preservado para reprodutibilidade
 
-Abra `Notebooks/fase_3/avaliar_fase3_6_mirage_2000_colab.ipynb` no Colab
+Abra `Notebooks/fase_3/fase3_6/avaliar_fase3_6_mirage_2000_colab.ipynb` no Colab
 com GPU e execute, em ordem:
 
 1. Células **1–5**: dependências, montagem do Drive, desbloqueio da
    credencial GitHub, código da branch e função de progresso. O snapshot
-   deve incluir `experimentos/avaliar_fase3_6_mirage.py`.
+   deve incluir `Notebooks/fase_3/fase3_6/avaliar_fase3_6_mirage.py`.
 2. Célula **6**: copia as 2.000 imagens do Drive para `/content` e verifica
    seus hashes; não refaz o download das fontes nem o plano congelado.
 3. Célula **7**: congela, antes da inferência, o hash do manifesto, o

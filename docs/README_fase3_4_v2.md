@@ -6,11 +6,11 @@ O manifesto existente `dados_fase3_4/manifest.json` é reutilizado. A v2 **não*
 
 ## Antes do Colab
 
-Publique os novos arquivos na branch `fase3-ajuste-fino` **somente com autorização**. Alterações locais no VS Code não chegam ao runtime remoto até o push. Não repita a configuração das credenciais já concluída e não execute novamente o preparo de dados da v1.
+Publique os novos arquivos na branch `main` **somente com autorização**. Alterações locais no VS Code não chegam ao runtime remoto até o push. Não repita a configuração das credenciais já concluída e não execute novamente o preparo de dados da v1.
 
 ## Execução no Colab
 
-1. Abra `Notebooks/fase_3/rodar_fase3_4_v2_colab.ipynb` e conecte uma GPU.
+1. Abra `Notebooks/fase_3/fase3_4/rodar_fase3_4_v2_colab.ipynb` e conecte uma GPU.
 2. Execute as células **1 a 6** em ordem. A célula 6 somente confirma o manifesto existente. A célula 4 baixa o snapshot publicado da branch para `/content/tcc_codigo/<sha>`.
 3. Execute a célula **7** para o smoke test: partições, hashes, arquitetura, checkpoint, forward e gravação em `modelos/fase3_4_finetune_v2_sqrt_sampler_smoke/`. Não treina.
 4. Confira o smoke. Para **iniciar ou retomar o treino manualmente**, execute a célula **8**, que chama `executar_com_progresso('auto')`. Se `final_metrics.json` já existir, não treina novamente. A célula **9** lê os artefatos sem alterar a avaliação.

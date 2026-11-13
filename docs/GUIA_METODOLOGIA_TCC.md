@@ -57,7 +57,7 @@ de cor/pigmentação, relações globais e frequências como hipóteses verific�
 em dados internos, uma mudança por vez. O detector continua recebendo pixels,
 sem exigir metadados de origem de quem envia a imagem.
 Os scripts das Fases 3.5 e 3.6 remontam essa arquitetura a partir de
-[`fase3.3_compressao.ipynb`](../Notebooks/fase_3/fase3.3_compressao.ipynb),
+[`fase3.3_compressao.ipynb`](../Notebooks/fase_3/fase3_3/fase3.3_compressao.ipynb),
 carregam estritamente o checkpoint inicial da 3.3 e treinam uma nova cópia.
 
 No treino há recorte, inversão horizontal, desfoque leve, redimensionamento
@@ -140,9 +140,9 @@ isolada. A meta externa de **85% ainda não foi alcançada**.
 
 ## Onde conferir a implementação
 
-- [`fase3_5_finetune.py`](../experimentos/fase3_5_finetune.py): dados internos,
+- [`fase3_5_finetune.py`](../Notebooks/fase_3/fase3_5/fase3_5_finetune.py): dados internos,
   verificação de hashes, seleção, calibração e checkpoints da 3.5.
-- [`fase3_6_escala.py`](../experimentos/fase3_6_escala.py): variante com mudança
+- [`fase3_6_escala.py`](../Notebooks/fase_3/fase3_6/fase3_6_escala.py): variante com mudança
   única de `RandomDownUp`.
 - [`benchmark_mirage_2000.py`](../experimentos/benchmark_mirage_2000.py):
   seleção fixa, cópia local, inferência de cinco recortes e cálculo das métricas.

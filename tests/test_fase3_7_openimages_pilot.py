@@ -10,7 +10,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location(
-    'fase3_7_openimages_pilot', ROOT / 'experimentos/fase3_7_openimages_pilot.py')
+    'fase3_7_openimages_pilot', ROOT / 'Notebooks/fase_3/fase3_7/fase3_7_openimages_pilot.py')
 pilot = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(pilot)
 
@@ -63,7 +63,7 @@ class OpenImagesPilotTests(unittest.TestCase):
                 pilot.scan_metadata(metadata)
 
     def test_notebook_exige_piloto_manual_sem_treino(self):
-        path = ROOT / 'Notebooks/fase_3/piloto_fase3_7_openimages_colab.ipynb'
+        path = ROOT / 'Notebooks/fase_3/fase3_7/piloto_fase3_7_openimages_colab.ipynb'
         notebook = json.loads(path.read_text(encoding='utf-8'))
         sources = [''.join(cell['source']) for cell in notebook['cells']]
         for index, cell in enumerate(notebook['cells']):
@@ -73,7 +73,7 @@ class OpenImagesPilotTests(unittest.TestCase):
                 self.assertFalse(cell['outputs'])
         self.assertEqual(sum("run_live('piloto Open Images 3.7'" in source
                              for source in sources), 1)
-        self.assertIn('experimentos/fase3_7_openimages_pilot.py', ''.join(sources))
+        self.assertIn('Notebooks/fase_3/fase3_7/fase3_7_openimages_pilot.py', ''.join(sources))
         self.assertNotIn('fase3_5_finetune.py', ''.join(sources))
 
 

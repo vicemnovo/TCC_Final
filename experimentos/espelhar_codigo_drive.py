@@ -83,7 +83,7 @@ def mirror(source_root: Path, drive_root: Path, commit: str) -> dict:
             or drive_root in source_root.parents:
         raise ValueError('Origem e Drive devem estar em árvores separadas')
     files = collect_files(source_root)
-    manifest = {'branch': 'fase3-ajuste-fino', 'commit': commit,
+    manifest = {'branch': 'main', 'commit': commit,
                 'file_count': len(files), 'total_bytes': sum(item[3] for item in files),
                 'files': [{'path': relative.as_posix(), 'sha256': expected_hash,
                            'bytes': size} for _, relative, expected_hash, size in files]}

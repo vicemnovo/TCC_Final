@@ -7,6 +7,7 @@ import unittest
 
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'experimentos'))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'Notebooks/fase_3/fase3_5'))
 import diagnostico_interno_fase3_5 as diagnostic
 
 

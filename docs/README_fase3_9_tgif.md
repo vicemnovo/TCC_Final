@@ -47,7 +47,7 @@ entrará no treino da 3.9.
 
 ## Execute agora: piloto TGIF, sem GPU
 
-Abra `Notebooks/fase_3/piloto_fase3_9_tgif_colab.ipynb` no Colab:
+Abra `Notebooks/fase_3/fase3_9/piloto_fase3_9_tgif_colab.ipynb` no Colab:
 
 1. **Células 1–5:** dependências, Drive, desbloqueio GitHub, sincronização
    do commit publicado e função de progresso.

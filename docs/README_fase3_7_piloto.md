@@ -26,7 +26,7 @@ imagem entra no Git.
 
 ## O que o piloto faz
 
-O script [`fase3_7_openimages_pilot.py`](../experimentos/fase3_7_openimages_pilot.py)
+O script [`fase3_7_openimages_pilot.py`](../Notebooks/fase_3/fase3_7/fase3_7_openimages_pilot.py)
 baixa integralmente `train-images-boxable-with-rotation.csv` para `/content`
 e registra seu SHA-256. Recusa CSV acima de 1 GB e começa apenas com ao menos
 2 GB livres no disco local. Conta fotos elegíveis e autores distintos,
@@ -45,7 +45,7 @@ durante treino ou avaliação, conforme a [política de dados](POLITICA_DADOS_FU
 
 ## Execução manual no Colab
 
-1. Abra [`piloto_fase3_7_openimages_colab.ipynb`](../Notebooks/fase_3/piloto_fase3_7_openimages_colab.ipynb)
+1. Abra [`piloto_fase3_7_openimages_colab.ipynb`](../Notebooks/fase_3/fase3_7/piloto_fase3_7_openimages_colab.ipynb)
    no VS Code e conecte um runtime Colab. **CPU é suficiente; não precisa de
    GPU.** O notebook não inicia o piloto ao abrir.
 2. Execute as células **1–5** em ordem: dependências, Drive, senha de

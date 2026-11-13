@@ -8,6 +8,7 @@ import unittest
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'experimentos'))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'Notebooks/fase_3/fase3_8'))
 import auditoria_interna_fase3_8 as audit
 
 

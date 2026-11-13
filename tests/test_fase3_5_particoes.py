@@ -5,7 +5,7 @@ from pathlib import Path
 import unittest
 
 
-SCRIPT = Path(__file__).resolve().parents[1] / 'experimentos/fase3_5_finetune.py'
+SCRIPT = Path(__file__).resolve().parents[1] / 'Notebooks/fase_3/fase3_5/fase3_5_finetune.py'
 
 
 class ParticoesFase35Test(unittest.TestCase):

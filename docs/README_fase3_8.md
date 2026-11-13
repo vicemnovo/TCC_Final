@@ -32,14 +32,14 @@ rótulos e separar divisões; a rede continuará a receber **apenas pixels**.
 
 ## Piloto implementado
 
-- `experimentos/fase3_8_aigi_piloto.py`: fixa o commit público do dataset;
+- `Notebooks/fase_3/fase3_8/fase3_8_aigi_piloto.py`: fixa o commit público do dataset;
   baixa por inteiro `real_images_metadata.csv` (cerca de 1,8 MB) e
   `data/fake-00000-of-00015.parquet` (cerca de 495 MB) para `/content`;
   verifica esquema, rótulos implícitos, geradores, formatos e resoluções;
   confere a leitura de uma sintética; procura `uid` pareados com URLs HTTPS
   das fontes LAION/CC3M; baixa por inteiro até 16 fotos reais para verificar
   disponibilidade, formato e tamanho.
-- `Notebooks/fase_3/piloto_fase3_8_aigi_colab.ipynb`: interface Colab com
+- `Notebooks/fase_3/fase3_8/piloto_fase3_8_aigi_colab.ipynb`: interface Colab com
   credencial GitHub já configurada, snapshot da branch e indicador de atividade.
   CPU basta. Nenhuma célula treina ao abrir.
 - Saída temporária: `/content/fase3_8_aigi_piloto/pilot_summary.json`. Não
@@ -52,7 +52,7 @@ completo dos arquivos selecionados, sem `streaming=True`.
 
 ## Como executar agora
 
-1. Abra `Notebooks/fase_3/piloto_fase3_8_aigi_colab.ipynb` no VS Code e conecte
+1. Abra `Notebooks/fase_3/fase3_8/piloto_fase3_8_aigi_colab.ipynb` no VS Code e conecte
    um runtime Colab. Pode ser CPU; não reserve GPU para o piloto.
 2. Execute as **células 1–5**: dependências, Drive, senha de desbloqueio da
    credencial GitHub existente, código publicado e comando com progresso.

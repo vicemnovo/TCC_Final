@@ -30,17 +30,17 @@ limiar congelados: acurácia **58,75%** e AUC **0,6328**. A auditoria interna
 da 3.9 foi concluída; a próxima tarefa é definir uma alteração controlada
 para a **3.9.1**. Consulte o
 [guia de retomada](docs/GUIA_RETOMADA_FASE3_9.md).
-O [notebook de auditoria interna da 3.9](Notebooks/fase_3/auditar_interno_fase3_9_colab.ipynb)
+O [notebook de auditoria interna da 3.9](Notebooks/fase_3/fase3_9/auditar_interno_fase3_9_colab.ipynb)
 e seu [relatório de resultados e limites](docs/AUDITORIA_INTERNA_FASE3_9.md)
 documentam 59 FP e 182 FN nas 1.676 imagens da seleção interna.
-O [notebook final da 3.9](Notebooks/fase_3/fase3_9_final_colab.ipynb)
+O [notebook final da 3.9](Notebooks/fase_3/fase3_9/fase3_9_final_colab.ipynb)
 reúne a preparação necessária do notebook de execução com as perguntas
 V1–V3 do notebook de validação. O
 [guia de fechamento](docs/README_fase3_9_fechamento.md) descreve os
 relatórios com data/hora e os limites da avaliação Mirage.
 Para conferir os 768 pares TGIF e gerar galerias dos candidatos visuais em
 um arquivo fácil de localizar, abra o
-[notebook de conferências da 3.9](Notebooks/fase_3/conferir_fase3_9_colab.ipynb).
+[notebook de conferências da 3.9](Notebooks/fase_3/fase3_9/conferir_fase3_9_colab.ipynb).
 As três galerias recebidas foram inspecionadas. Dois pares mostram a mesma
 fotografia em divisões internas que envolvem calibração; a conclusão e a
 cobertura parcial estão em
@@ -56,20 +56,20 @@ depois do congelamento desses valores.
 | Pasta/arquivo | Conteúdo |
 | --- | --- |
 | `Notebooks/fase_1/` e `Notebooks/fase_2/` | Notebooks históricos das primeiras fases |
-| `Notebooks/fase_3/` | Notebooks históricos e interfaces de execução no Colab |
+| `Notebooks/fase_3/fase3_1/` a `fase3_9/` | Scripts e notebooks agrupados por versão |
 | `Notebooks/configuracao/` | Configuração inicial das credenciais cifradas |
-| `experimentos/` | Scripts Python principais de preparo, treino e avaliação |
+| `experimentos/` | Módulos Python compartilhados entre versões |
 | `tests/` | Verificações locais sem iniciar treino completo |
 | `docs/` | Metodologia, resultados históricos, protocolos e guias |
 | `ESTADO_PROJETO.md` | Estado verificado e próxima ação |
 | `.gitignore` | Impede novos dados, credenciais e checkpoints no Git |
 
-O código da branch `fase3-ajuste-fino` é copiado para
+O código da branch `main` é copiado para
 `/content/tcc_codigo/<sha>` no Colab. Datasets selecionados, manifestos,
 checkpoints e resultados ficam sob `/content/drive/MyDrive/TCC_Final` no
 Google Drive. A cópia em `/content` é temporária e deve ser refeita após uma
-desconexão. O notebook funciona como interface; os scripts em `experimentos/`
-contêm a implementação principal.
+desconexão. O notebook funciona como interface; os scripts na subpasta da
+versão em `Notebooks/fase_3/` contêm a implementação principal.
 
 Os arquivos `.ipynb` e `.py` publicados na branch também podem ser espelhados
 no Drive, nas mesmas pastas relativas, pelo

@@ -89,9 +89,9 @@ copia os 2.000 JPEGs congelados do Drive para `/content` e valida hashes.
 
 ## Notebook e resultados
 
-Abra `Notebooks/fase_3/avaliar_fases_benchmark_2000_colab.ipynb`. As primeiras
+Abra `Notebooks/fase_3/comparativos/avaliar_fases_benchmark_2000_colab.ipynb`. As primeiras
 células montam o Drive, desbloqueiam a credencial GitHub existente e sincronizam
-o código publicado na branch `fase3-ajuste-fino`. Depois execute, na ordem:
+o código publicado na branch `main`. Depois execute, na ordem:
 
 1. célula intitulada **"5. Dependências e entradas"**: presença do CSV RAISE;
 2. **"6. PILOTO MANUAL"**: uma imagem de cada fonte;

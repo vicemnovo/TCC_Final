@@ -28,21 +28,21 @@ As reais sem fonte individual são divididas por imagem, uma limitação explíc
 
 ## Isolamento e artefatos
 
-`experimentos/fase3_7_dados.py` fixa o commit da fonte, os shards, os índices,
+`Notebooks/fase_3/fase3_7/fase3_7_dados.py` fixa o commit da fonte, os shards, os índices,
 grupos, divisões e hashes em `dados_fase3_7/fase3_7_cfsmall_expansao_v1/` no
 Drive. A seleção consulta hashes de OpenFake, da 3.5, RAISE/MNW, Mirage e das
 imagens históricas somente para impedir duplicatas exatas. **Não lê predições
 externas**. O mesmo gerador sintético da 3.5 recebe a mesma divisão na 3.7.
 Não há garantia de ausência de quase duplicatas nem de fontes reais inéditas.
 
-`experimentos/fase3_7_finetune.py` usa dados internos OpenFake e os dois
+`Notebooks/fase_3/fase3_7/fase3_7_finetune.py` usa dados internos OpenFake e os dois
 manifestos Community Forensics. O teste OpenFake é verificado por hash, sem
 inferência. O melhor checkpoint é escolhido pela AUC da seleção interna;
 temperatura e limiar são ajustados somente na calibração interna. O treino salva
 `last.pt` para retomada, `best.pt`, `phase3_final.pt`, histórico, configuração,
 divisões e métricas em `modelos/fase3_7_cfsmall_expansao_v1/`.
 
-`experimentos/avaliar_fase3_7_mirage.py` congela checkpoint, código, manifesto,
+`Notebooks/fase_3/fase3_7/avaliar_fase3_7_mirage.py` congela checkpoint, código, manifesto,
 temperatura e limiar antes de inferir as mesmas 2.000 imagens Mirage. O resultado
 vai para `resultados/benchmark_externo_mirage_2000_v1/fase3_7_cfsmall_expansao_v1/`.
 O Mirage **já foi observado** nas fases anteriores; é comparação, não teste
@@ -50,7 +50,7 @@ cego independente. Nunca usar suas respostas para treinar ou recalibrar a 3.7.
 
 ## Execução manual no Colab
 
-Abra `Notebooks/fase_3/rodar_fase3_7_colab.ipynb` no VS Code e conecte uma GPU
+Abra `Notebooks/fase_3/fase3_7/rodar_fase3_7_colab.ipynb` no VS Code e conecte uma GPU
 Colab. As células não iniciam treino ao abrir.
 
 1. **1–5 — ambiente:** dependências, Drive, senha da credencial GitHub existente,

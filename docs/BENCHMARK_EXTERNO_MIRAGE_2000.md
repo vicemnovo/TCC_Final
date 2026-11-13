@@ -72,7 +72,7 @@ desenvolvida em resposta a seus erros.
 
 ## Procedimento de execução registrado (histórico)
 
-Abra `Notebooks/fase_3/avaliar_fase3_5_mirage_2000_colab.ipynb` e conecte a
+Abra `Notebooks/fase_3/fase3_5/avaliar_fase3_5_mirage_2000_colab.ipynb` e conecte a
 GPU do Colab. A branch remota precisa conter o novo script e notebook; as
 alterações locais só chegam ao runtime após publicação autorizada.
 

@@ -60,8 +60,8 @@ das imagens; o resultado de 16 URLs não garante disponibilidade das demais.
 
 ## Execução no Colab pelo VS Code
 
-Abra `Notebooks/fase_3/rodar_fase3_8_colab.ipynb` no commit publicado da branch
-`fase3-ajuste-fino`. Conecte GPU e execute as células de código **1 a 5** em
+Abra `Notebooks/fase_3/fase3_8/rodar_fase3_8_colab.ipynb` no commit publicado da branch
+`main`. Conecte GPU e execute as células de código **1 a 5** em
 ordem: dependências, Drive, desbloqueio da credencial GitHub, snapshot do
 repositório e função de progresso. A célula **6** apenas registra que o piloto
 já foi analisado. A numeração abaixo refere-se aos comentários `# N.` dentro

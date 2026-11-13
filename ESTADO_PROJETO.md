@@ -1,7 +1,7 @@
 # Estado do projeto — Fase 3.9 treinada e avaliada no Mirage
 
 **Fechamento executado em 10/11/2026, com revisão técnica pendente:**
-`Notebooks/fase_3/fase3_9_final_colab.ipynb` reuniu os dois notebooks
+`Notebooks/fase_3/fase3_9/fase3_9_final_colab.ipynb` reuniu os dois notebooks
 anteriores. As células 1–12 foram executadas no Colab e gravaram V2, V3 e
 fechamento em `resultados/validacao_perguntas_3_9_v1/` no Drive. O fechamento
 confirmou hash do checkpoint, temperatura e limiar do Mirage, mas registrou
@@ -19,7 +19,7 @@ no Drive, com saídas de 12 células. A célula 14 foi preparada para conferir
 os 768 pares TGIF e produzir galerias dos candidatos visuais internos. A
 revisão dessas galerias ainda depende da execução no Colab e inspeção visual.
 Para evitar confusão com uma cópia antiga do notebook final, foi criado
-`Notebooks/fase_3/conferir_fase3_9_colab.ipynb`, com três passos autônomos:
+`Notebooks/fase_3/fase3_9/conferir_fase3_9_colab.ipynb`, com três passos autônomos:
 montagem do Drive, conferência dos pares e galeria interna. Ele usa o log
 persistido como fallback se a lista completa da V3 não estiver em memória;
 nesse caso, só os até 30 candidatos impressos no log são exibidos e a revisão
@@ -44,7 +44,7 @@ efeito nas métricas e não demonstram, por si, viés na AUC de seleção. Ver
 **Espelho de código no Drive preparado em 09/11/2026:** o notebook
 `Notebooks/configuracao/sincronizar_codigo_drive_colab.ipynb` e o script
 `experimentos/espelhar_codigo_drive.py` copiam `.ipynb` e `.py` da branch
-`fase3-ajuste-fino` para as mesmas pastas em
+`main` para as mesmas pastas em
 `/content/drive/MyDrive/TCC_Final`. O Drive não foi montado nesta revisão:
 o upload remoto ainda depende de executar as células 1–5 desse notebook
 no Colab depois da publicação do código. Ver
@@ -54,7 +54,7 @@ no Colab depois da publicação do código. Ver
 Ele registra as células exatas, o estado da demo independente e alternativas
 para a próxima fase.
 **Auditoria interna concluída:** o notebook
-[`Notebooks/fase_3/auditar_interno_fase3_9_colab.ipynb`](Notebooks/fase_3/auditar_interno_fase3_9_colab.ipynb)
+[`Notebooks/fase_3/fase3_9/auditar_interno_fase3_9_colab.ipynb`](Notebooks/fase_3/fase3_9/auditar_interno_fase3_9_colab.ipynb)
 compara 3.8/3.9 apenas na seleção interna. Instruções em
 [`docs/AUDITORIA_INTERNA_FASE3_9.md`](docs/AUDITORIA_INTERNA_FASE3_9.md).
 A auditoria foi executada no Colab conforme resumo fornecido pelo grupo:
@@ -116,8 +116,8 @@ direta nesta máquina. O registro detalhado anterior está em
 74 falsos positivos e 43 falsos negativos. O checkpoint manteve SHA-256
 `de4a11cbb733ad9088860d5f254cbb2a900f181cc1ccb28b2fd894cf4a37706a`.
 Os pilotos combinados Open Images + novos pares AIGI estão preparados em
-`Notebooks/fase_3/pilotos_fase3_9_colab.ipynb` e
-`experimentos/fase3_9_piloto_aigi.py` e foram executados pelo grupo. O
+`Notebooks/fase_3/fase3_9/pilotos_fase3_9_colab.ipynb` e
+`Notebooks/fase_3/fase3_9/fase3_9_piloto_aigi.py` e foram executados pelo grupo. O
 Open Images mostrou 1.739.728 candidatos elegíveis nos metadados, 76.961
 autores declarados e dez JPEGs legíveis. O AIGI mostrou 129, 129 e 311 UIDs
 novos pareáveis em FLUX.1_dev, PA_alpha e SD_2.1, mas somente 0, 0 e 2 fotos
@@ -125,13 +125,13 @@ reais utilizáveis nas cinco primeiras provas por grupo. A prova ampliada teve
 0/20 fotos utilizáveis em FLUX.1_dev, 0/20 em PA_alpha e 5/20 em SD_2.1.
 O grupo decidiu verificar TGIF/TGIF2 no lugar de ampliar AIGI. O piloto de
 acesso e pareamento TGIF foi executado em
-`Notebooks/fase_3/piloto_fase3_9_tgif_colab.ipynb`.
+`Notebooks/fase_3/fase3_9/piloto_fase3_9_tgif_colab.ipynb`.
 Ver `docs/README_fase3_9_execucao.md`. O treino interno já foi concluído;
 a avaliação comparativa Mirage da 3.9 está concluída.
 
 ## Histórico da Fase 3.8 e contexto da 3.9
 
-- **Branch:** `fase3-ajuste-fino`, acompanhando `origin/fase3-ajuste-fino` no
+- **Branch:** `main`, acompanhando `origin/main` no
   início desta revisão. Em outro computador, confirme o commit com
   `git status -sb` e `git rev-parse HEAD` antes de abrir o Colab.
 - **Objetivo:** detector de imagens reais e sintéticas com pelo menos 85% de
@@ -178,12 +178,12 @@ RAISE/MNW e as 20 imagens externas antigas também são históricos.
 
 O experimento 3.8 está concluído; não repetir `# 7` (preparo), `# 9` (smoke),
 `# 10` (treino) nem `# 14` (avaliação). Para consultar as saídas, abra
-[`Notebooks/fase_3/rodar_fase3_8_colab.ipynb`](Notebooks/fase_3/rodar_fase3_8_colab.ipynb)
+[`Notebooks/fase_3/fase3_8/rodar_fase3_8_colab.ipynb`](Notebooks/fase_3/fase3_8/rodar_fase3_8_colab.ipynb)
 e leia as células `# 11` e `# 15` já executadas. Em novo runtime, os resultados
 persistidos estão no Drive nos caminhos abaixo; `/content` é temporário.
 
 Auditoria **interna** executada pelo grupo com
-[`Notebooks/fase_3/auditar_interno_fase3_8_colab.ipynb`](Notebooks/fase_3/auditar_interno_fase3_8_colab.ipynb)
+[`Notebooks/fase_3/fase3_8/auditar_interno_fase3_8_colab.ipynb`](Notebooks/fase_3/fase3_8/auditar_interno_fase3_8_colab.ipynb)
 e resultado resumido informado nesta conversa. Ela inspeciona dados de treino/seleção e
 erros da seleção por fonte, gerador, resolução e formato; não abre imagens de
 calibração/teste nem predições Mirage. As quatro alternativas originais para 3.9 estão em

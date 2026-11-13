@@ -47,15 +47,15 @@ duplicatas exatas não comprova independência de origem ou de conteúdo.
 
 ## Procedimento usado no Colab (registro; não repetir)
 
-1. Publique o código novo na branch `fase3-ajuste-fino` **somente após
+1. Publique o código novo na branch `main` **somente após
    autorização para commit/push**. O código local não aparece no snapshot
    remoto sem publicação. Não mova os dados nem os checkpoints.
-2. No notebook `Notebooks/fase_3/rodar_fase3_4_v2_colab.ipynb`, conecte GPU
+2. No notebook `Notebooks/fase_3/fase3_4/rodar_fase3_4_v2_colab.ipynb`, conecte GPU
    e execute as células 1–5 para montar Drive, desbloquear credencial e
    sincronizar o snapshot atualizado. A célula 6 apenas confirma o manifesto.
    **Não repita as células 7 ou 8**: smoke e treino já concluíram.
 3. Execute a célula **10**, explicitamente marcada como avaliação externa
-   final manual. Ela chama `experimentos/avaliar_externo_fase3_4_v2.py`.
+   final manual. Ela chama `Notebooks/fase_3/fase3_4/avaliar_externo_fase3_4_v2.py`.
    A verificação de hashes de 3.979 arquivos OpenFake pode levar muitos
    minutos; o processo informa avanço periodicamente. O script bloqueia
    sobreposição exata com treino, seleção, calibração e teste OpenFake.

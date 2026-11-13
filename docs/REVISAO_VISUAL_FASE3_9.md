@@ -3,7 +3,7 @@
 ## Evidência disponível
 
 Em 10/11/2026, o grupo executou
-`Notebooks/fase_3/conferir_fase3_9_colab.ipynb`. A saída da célula 2
+`Notebooks/fase_3/fase3_9/conferir_fase3_9_colab.ipynb`. A saída da célula 2
 confirmou **1.536 registros e 768 pares TGIF**, com 512 pares no treino,
 128 na seleção e 128 na calibração. O relatório V2 mais recente também
 registrou 768 pares. O comprovante foi gravado no Drive como

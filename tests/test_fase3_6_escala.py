@@ -7,9 +7,9 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE = ROOT / 'experimentos/fase3_5_finetune.py'
-VARIANT = ROOT / 'experimentos/fase3_6_escala.py'
-NOTEBOOK = ROOT / 'Notebooks/fase_3/rodar_fase3_6_colab.ipynb'
+BASE = ROOT / 'Notebooks/fase_3/fase3_5/fase3_5_finetune.py'
+VARIANT = ROOT / 'Notebooks/fase_3/fase3_6/fase3_6_escala.py'
+NOTEBOOK = ROOT / 'Notebooks/fase_3/fase3_6/rodar_fase3_6_colab.ipynb'
 
 
 def assignment(tree, name):
@@ -41,7 +41,7 @@ class Fase36IsolationTests(unittest.TestCase):
                 compile(''.join(cell['source']), '<cell>', 'exec')
         # O usuário já executou o notebook: contadores e saídas podem existir.
         # O isolamento depende das chamadas nas células, não desses metadados.
-        self.assertIn('experimentos/fase3_6_escala.py', cells[5])
+        self.assertIn('Notebooks/fase_3/fase3_6/fase3_6_escala.py', cells[5])
         self.assertEqual(sum("'auto'" in cell for cell in cells), 1)
         self.assertIn("'smoke'", cells[8])
         self.assertIn("'auto'", cells[9])
