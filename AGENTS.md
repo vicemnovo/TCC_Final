@@ -81,8 +81,17 @@ Ver `docs/README_fase3_9_execucao.md`. Não ajustar dados ou parâmetros às pre
 Mirage. Detalhes do resultado 3.8 em `ESTADO_PROJETO.md` e
 `docs/README_fase3_8_execucao.md`.
 Na retomada, priorizar `docs/GUIA_RETOMADA_FASE3_9.md`. Não repetir preparo,
-treino ou avaliação comparativa concluídos. A próxima análise é interna,
-sem usar predições Mirage para escolher dados ou parâmetros.
+treino ou avaliação comparativa concluídos. A auditoria visual posterior
+confirmou 768 pares TGIF e revisou 19 candidatos internos exibidos em três
+galerias. Dois pares mostram a mesma fotografia: seleção × calibração e
+treino × calibração, ambos reais. Um terceiro reutiliza a mesma cena
+sintética com alteração na tela, também treino × calibração. O relatório
+V3 contém 71 candidatos dHash no total, portanto não afirmar que todos
+foram visualmente revisados. A calibração histórica deve ser interpretada
+com essa limitação; os pares vistos não demonstram viés na AUC de seleção.
+Ver `docs/REVISAO_VISUAL_FASE3_9.md`. A próxima variante deve ser 3.9.1,
+com hipótese definida somente por dados internos, sem usar predições
+Mirage para escolher dados ou parâmetros.
 O notebook `Notebooks/fase_3/auditar_interno_fase3_9_colab.ipynb` e o script
 `experimentos/auditoria_interna_fase3_9.py` compararam 3.8 e 3.9 na mesma
 seleção interna. A contagem completa informada pelo grupo foi 59 FP e 182 FN

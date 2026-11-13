@@ -5,15 +5,18 @@ os arquivos do repositório. O Drive remoto não é acessível nesta revisão lo
 
 ## Ponto exato da pausa
 
-**Antes de iniciar a 3.9.1**, corrigir V2 e revisar os candidatos visuais
-internos no [notebook final da 3.9](../Notebooks/fase_3/fase3_9_final_colab.ipynb).
-V2, V3 e fechamento já foram executados, mas o fechamento marcou
-`revisao_tecnica_pendente`. A V2 tinha um erro de leitura do manifesto TGIF,
-agora corrigido; a V3 não precisa ser repetida. Após publicar o código,
-execute no Colab **1–7, 9, 10, 12 e 13**. A célula 12 reutiliza o V3
-gravado; a 13 cria um `.log` datado no Drive com as saídas e os relatórios.
-Veja [`README_fase3_9_fechamento.md`](README_fase3_9_fechamento.md). Não
-repetir preparo, treino ou avaliação Mirage.
+**A Fase 3.9 está treinada, avaliada e auditada com uma limitação documentada.**
+A conferência corrigida confirmou os 768 pares TGIF, e o log foi salvo no
+Drive. As três galerias recebidas mostram, entre os 19 candidatos internos
+exibidos, duas fotografias visualmente repetidas envolvendo a divisão de
+calibração e uma cena sintética derivada. O CSV confirmou os pares 1–3 como
+seleção × calibração, treino × calibração e treino × calibração,
+respectivamente. Nenhum dos três pares observados cruza treino e seleção.
+O fechamento JSON anterior continua com `revisao_tecnica_pendente` como
+registro histórico; a revisão posterior e seus limites estão em
+[`REVISAO_VISUAL_FASE3_9.md`](REVISAO_VISUAL_FASE3_9.md). Não repetir V3,
+preparo, treino ou avaliação Mirage. A próxima mudança experimental será
+uma variante 3.9.1 definida apenas com dados internos.
 
 O código principal está na branch `fase3-ajuste-fino` do repositório privado
 `vicemnovo/TCC_Final`. A Fase 3.9 acrescentou **768 pares TGIF original +

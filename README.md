@@ -36,13 +36,15 @@ documentam 59 FP e 182 FN nas 1.676 imagens da seleção interna.
 O [notebook final da 3.9](Notebooks/fase_3/fase3_9_final_colab.ipynb)
 reúne a preparação necessária do notebook de execução com as perguntas
 V1–V3 do notebook de validação. O
-[guia de fechamento](docs/README_fase3_9_fechamento.md) descreve as células
-pendentes, os relatórios com data/hora e os limites da avaliação Mirage.
+[guia de fechamento](docs/README_fase3_9_fechamento.md) descreve os
+relatórios com data/hora e os limites da avaliação Mirage.
 Para conferir os 768 pares TGIF e gerar galerias dos candidatos visuais em
 um arquivo fácil de localizar, abra o
 [notebook de conferências da 3.9](Notebooks/fase_3/conferir_fase3_9_colab.ipynb).
-A revisão visual ainda depende de inspecionar as galerias; nenhum teste ou
-treino é repetido por esse notebook.
+As três galerias recebidas foram inspecionadas. Dois pares mostram a mesma
+fotografia em divisões internas que envolvem calibração; a conclusão e a
+cobertura parcial estão em
+[revisão visual da 3.9](docs/REVISAO_VISUAL_FASE3_9.md).
 
 O smoke test verifica dados, checkpoint e uma passagem pelo modelo; não mede
 acurácia. O treino escolhe a melhor época na seleção interna e ajusta

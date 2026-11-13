@@ -26,6 +26,21 @@ nesse caso, só os até 30 candidatos impressos no log são exibidos e a revisã
 continua parcial. Ver
 `docs/README_fase3_9_fechamento.md`. Não repetir treino, Mirage ou V3.
 
+**Conferência parcial de 10/11/2026:** a saída do novo notebook confirmou
+768 pares TGIF e a V2 mais recente também registrou 768. O `resumo.json`
+enviado pelo grupo documenta 19 candidatos internos nas galerias, retirados
+dos até 30 candidatos impressos no log de um total de 71 da V3. A primeira
+galeria, embutida no notebook local, mostrou duas fotografias visualmente
+repetidas entre divisões internas; portanto, não declarar ausência de
+repetição visual. O grupo enviou as galerias 02 e 03 em ZIP; os pares 4–19
+parecem visualmente diferentes. O `candidatos.csv` foi recebido depois do ZIP
+e confirmou: par 1, seleção × calibração real; par 2, treino × calibração
+real; par 3, treino × calibração sintética com a mesma cena e tela alterada.
+A inferência anterior de que o par 2 envolvia seleção estava incorreta. Os
+achados comprovam repetição visual envolvendo calibração; não quantificam
+efeito nas métricas e não demonstram, por si, viés na AUC de seleção. Ver
+`docs/REVISAO_VISUAL_FASE3_9.md` para as observações e seus limites.
+
 **Espelho de código no Drive preparado em 09/11/2026:** o notebook
 `Notebooks/configuracao/sincronizar_codigo_drive_colab.ipynb` e o script
 `experimentos/espelhar_codigo_drive.py` copiam `.ipynb` e `.py` da branch
